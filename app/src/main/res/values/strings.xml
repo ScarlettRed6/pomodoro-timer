@@ -1,3 +1,19 @@
 <resources>
+    <!-- put string texts here -->
+
+    <!-- Titles -->
     <string name="app_name">pomodoro-timer</string>
+
+    <!-- Menu labels/titles (may use visibility to not visible in bottom nav control) -->
+    <string name="menu_timer">Timer</string>
+    <string name="menu_task">Task</string>
+    <string name="menu_stats">Stats</string>
+    <string name="menu_settings">Settings</string>
+
+    <!-- Misc or just placeholders -->
+    <string name="fragment_ph_timer">This is the timer fragment</string>
+    <string name="fragment_ph_task">This is the task fragment</string>
+    <string name="fragment_ph_stats">This is the stats fragment</string>
+    <string name="fragment_ph_settings">This is the settings fragment</string>
+
 </resources>

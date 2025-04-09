@@ -30,6 +30,5 @@ public class MainActivity extends AppCompatActivity {
         //Put context here
 
 
-        edge();
     }
 }
