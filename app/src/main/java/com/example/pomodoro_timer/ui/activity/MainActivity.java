@@ -9,8 +9,10 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.NavigationUI;
 
 import com.example.pomodoro_timer.R;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,6 +42,11 @@ public class MainActivity extends AppCompatActivity {
                 getSupportFragmentManager()
                         .findFragmentById(R.id.nav_host_fragment_container);
         NavController navController = navHost.getNavController();
+
+        //Setup bottom nav control
+        BottomNavigationView bottomNav = findViewById(R.id.bottom_nav);
+        NavigationUI.setupWithNavController(bottomNav, navController);
+
     }
 
 }
