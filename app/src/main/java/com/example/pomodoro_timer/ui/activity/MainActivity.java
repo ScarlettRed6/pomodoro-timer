@@ -7,6 +7,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.pomodoro_timer.R;
 
@@ -28,7 +30,16 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //Put context here
+        setupNavigation();
 
 
     }
+
+    private void setupNavigation() {
+        NavHostFragment navHost = (NavHostFragment)
+                getSupportFragmentManager()
+                        .findFragmentById(R.id.nav_host_fragment_container);
+        NavController navController = navHost.getNavController();
+    }
+
 }
