@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "641613801266",
+    "project_id": "pomodoro-timer-63351",
+    "storage_bucket": "pomodoro-timer-63351.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:641613801266:android:39add412e0ac6cb411992b",
+        "android_client_info": {
+          "package_name": "com.example.pomodoro_timer"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCqupq4yr05wxbSs8KrH7rgTDYqOdTMppc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
