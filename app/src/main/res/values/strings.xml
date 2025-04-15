@@ -16,4 +16,15 @@
     <string name="fragment_ph_stats">This is the stats fragment</string>
     <string name="fragment_ph_settings">This is the settings fragment</string>
 
+    <!-- Used Theme Settings Fragment -->
+    <string-array name="theme_options">
+        <item>Theme 1</item>
+        <item>Theme 2</item>
+    </string-array>
+
+    <string-array name="alarm_options">
+        <item>Alarm 1</item>
+        <item>Alarm 2</item>
+    </string-array>
+
 </resources>
