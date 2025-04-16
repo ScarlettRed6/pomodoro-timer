@@ -28,4 +28,7 @@
         <item>Alarm 2</item>
     </string-array>
 
+    <!-- Image views or others content descriptions -->
+    <string name="start_resume_pause_btn">Start or Resume or Pause button</string>
+
 </resources>

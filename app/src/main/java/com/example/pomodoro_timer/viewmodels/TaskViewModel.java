@@ -1,4 +1,6 @@
 package com.example.pomodoro_timer.viewmodels;
 
-public class TaskViewModel {
+import androidx.lifecycle.ViewModel;
+
+public class TaskViewModel extends ViewModel {
 }

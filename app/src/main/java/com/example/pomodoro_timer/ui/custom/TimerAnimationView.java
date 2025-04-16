@@ -86,8 +86,8 @@ public class TimerAnimationView extends View {
         RectF oval = new RectF(cX - radius, cY - radius, cX + radius, cY + radius);
         canvas.drawCircle(cX, cY, radius, backgroundPaint);
         canvas.drawArc(oval, -90, sweepAngle, true, piePaint);
-        canvas.drawArc(oval, -90, sweepAngle, true, progressRing);
-        Log.d("CHEK ONDRAW","ON DRAW METHOD CALLED!");
+        canvas.drawArc(oval, -90, sweepAngle, false, progressRing);
+        //Log.d("CHEK ONDRAW","ON DRAW METHOD CALLED!");
     }//End of onDraw method
 
     //This thang sets everything,

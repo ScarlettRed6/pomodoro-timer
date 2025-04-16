@@ -1,17 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/fragment_ph_timer"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <data>
+        <variable
+            name="timerVM"
+            type="com.example.pomodoro_timer.viewmodels.TimerViewModel" />
+    </data>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.example.pomodoro_timer.ui.custom.TimerAnimationView
+            android:id="@+id/timer_animation_view_id"
+            android:layout_width="wrap_content"
+            android:layout_height="280dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Stop/Done button -->
+<!--        <com.google.android.material.button.MaterialButton-->
+<!--            android:id="@+id/stop_btn"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginEnd="100dp"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/timer_animation_view_id"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"/>-->
+
+        <!-- Stop/Done button NEW AND IMPROVED haha -->
+        <FrameLayout
+            android:id="@+id/stop_btn"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:layout_marginEnd="100dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="@drawable/rounded_btn_bg2"
+            app:layout_constraintTop_toBottomOf="@+id/timer_animation_view_id"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <ImageView
+                android:id="@+id/stop_btn_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="8dp"
+                android:contentDescription="@string/start_resume_pause_btn"
+                android:src="@drawable/ic_stop"/>
+
+        </FrameLayout>
+
+        <!-- Start/Pause/Resume button -->
+        <FrameLayout
+            android:id="@+id/start_btn"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="@drawable/rounded_btn_bg"
+            app:layout_constraintTop_toBottomOf="@+id/timer_animation_view_id"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/stop_btn">
+
+            <ImageView
+                android:id="@+id/start_btn_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="6dp"
+                android:contentDescription="@string/start_resume_pause_btn"
+                android:src="@drawable/ic_start"/>
+
+        </FrameLayout>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/timer_text_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{timerVM.timerText}"
+            android:textSize="50sp"
+            android:textColor="@color/count_down_color"
+            app:layout_constraintTop_toTopOf="@id/timer_animation_view_id"
+            app:layout_constraintBottom_toBottomOf="@+id/timer_animation_view_id"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

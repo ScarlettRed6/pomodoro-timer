@@ -1,4 +1,6 @@
 package com.example.pomodoro_timer.viewmodels;
 
-public class StatsViewModel {
+import androidx.lifecycle.ViewModel;
+
+public class StatsViewModel extends ViewModel {
 }
