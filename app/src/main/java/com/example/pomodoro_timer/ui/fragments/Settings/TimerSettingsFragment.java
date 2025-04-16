@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.pomodoro_timer.R;
+
 public class TimerSettingsFragment extends Fragment {
 
     public TimerSettingsFragment() {

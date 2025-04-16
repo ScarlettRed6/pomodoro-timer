@@ -1,4 +1,4 @@
-package com.example.pomodorotimer;
+package com.example.pomodoro_timer.ui.fragments.Settings;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
+
+import com.example.pomodoro_timer.R;
 
 public class ThemeSettingsFragment extends Fragment {
 

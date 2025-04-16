@@ -9,6 +9,7 @@
     <string name="menu_task">Task</string>
     <string name="menu_stats">Stats</string>
     <string name="menu_settings">Settings</string>
+    <string name="menu_dot">.</string>
 
     <!-- Misc or just placeholders -->
     <string name="fragment_ph_timer">This is the timer fragment</string>
