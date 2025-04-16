@@ -12,6 +12,22 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <!-- Add guidelines/barriers here -->
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintGuide_percent="0.25"
+            android:orientation="vertical"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintGuide_percent="0.75"
+            android:orientation="vertical"/>
+
+
         <com.example.pomodoro_timer.ui.custom.TimerAnimationView
             android:id="@+id/timer_animation_view_id"
             android:layout_width="wrap_content"
@@ -36,13 +52,11 @@
             android:id="@+id/stop_btn"
             android:layout_width="65dp"
             android:layout_height="65dp"
-            android:layout_marginEnd="100dp"
             android:clickable="true"
             android:focusable="true"
             android:background="@drawable/rounded_btn_bg2"
             app:layout_constraintTop_toBottomOf="@+id/timer_animation_view_id"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintStart_toEndOf="@+id/guideline1">
 
             <ImageView
                 android:id="@+id/stop_btn_icon"
@@ -64,8 +78,7 @@
             android:focusable="true"
             android:background="@drawable/rounded_btn_bg"
             app:layout_constraintTop_toBottomOf="@+id/timer_animation_view_id"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/stop_btn">
+            app:layout_constraintEnd_toStartOf="@+id/guideline2">
 
             <ImageView
                 android:id="@+id/start_btn_icon"
