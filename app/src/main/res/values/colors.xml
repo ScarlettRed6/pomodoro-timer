@@ -2,4 +2,24 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Origin Chrono-forgers Theme (Purple based)-->
+
+    <!-- Timer colors -->
+
+    <color name="count_down_color">#7356F3</color>
+    <color name="ellipse_color">#FFFFFF</color>
+    <color name="cropped_ellipse_color1">#7255F3</color>
+    <color name="cropped_ellipse_color2">#F695F9</color>
+    <color name="cropped_ellipse_color3">#ECE3FC</color>
+
+    <!-- Icon colors -->
+
+    <!-- Belongs to a linear gradient -->
+    <color  name="icon_bg1">#50389A</color>
+    <color  name="icon_bg2">#7549C9</color>
+    <color  name="icon_bg3">#C59ECC</color>
+    <!-- Belongs to a linear gradient -->
+
+
 </resources>
