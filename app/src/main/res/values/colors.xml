@@ -21,5 +21,19 @@
     <color  name="icon_bg3">#C59ECC</color>
     <!-- Belongs to a linear gradient -->
 
+    <color name="task_indicator_color1">#F790FA</color>
+    <color name="task_indicator_color2">#935BEE</color>
+
+    <!-- Category colors -->
+    <color name="category_rectangle_bg_color1">#50389A</color>
+
+    <!-- Category titles colors -->
+    <color name="category_title_color1">#50389A</color>
+    <color name="category_title_color2">#A364CA</color>
+    <color name="category_title_color3">#50389A</color>
+    <color name="category_title_color4">#898989</color> <!-- When not selected -->
+
+    <color name="progress_bar_color1">#6145AC</color>
+    <color name="progress_bar_color2">#CB79F5</color>
 
 </resources>
