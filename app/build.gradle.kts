@@ -72,7 +72,15 @@ dependencies {
     // Import the Firebase BoM
     implementation(platform("com.google.firebase:firebase-bom:33.12.0"))
 
-    // TODO: Add the dependencies for Firebase products you want to use
     // When using the BoM, don't specify versions in Firebase dependencies
+
+    // TODO: Add the dependencies for Firebase products you want to use
     // https://firebase.google.com/docs/android/setup#available-libraries
+
+    // Firebase Authentication: for authenticating log-ins and managing accounts
+    implementation("com.google.firebase:firebase-auth")
+
+    // Cloud Firestore: for tracking session history and user preferences
+    // For start/end times, task names & work duration, break duration, notifs blablabla
+    implementation("com.google.firebase:firebase-firestore")
 }
