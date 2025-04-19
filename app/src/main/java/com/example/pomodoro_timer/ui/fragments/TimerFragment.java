@@ -15,12 +15,15 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.pomodoro_timer.R;
 import com.example.pomodoro_timer.databinding.FragmentTimerBinding;
 import com.example.pomodoro_timer.ui.custom.TimerAnimationView;
+import com.example.pomodoro_timer.viewmodels.SharedViewModel;
 import com.example.pomodoro_timer.viewmodels.TimerViewModel;
 
 public class TimerFragment extends Fragment {
 
+    //Fields
     private TimerViewModel timerVM;
     private TimerAnimationView timerAnimView;
+    private SharedViewModel sharedVM;
 
     public TimerFragment(){
 
@@ -29,6 +32,7 @@ public class TimerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         FragmentTimerBinding binding = FragmentTimerBinding.inflate(inflater, container, false);
+        sharedVM = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
         timerVM = new ViewModelProvider(requireActivity()).get(TimerViewModel.class);
         binding.setTimerVM(timerVM);
         binding.setLifecycleOwner(this);
@@ -90,4 +94,15 @@ public class TimerFragment extends Fragment {
 
     }//End of timerListener method
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        sharedVM.setShowAddTaskBtn(false);
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        sharedVM.setShowAddTaskBtn(true);
+    }
 }

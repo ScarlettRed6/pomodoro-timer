@@ -30,5 +30,6 @@
 
     <!-- Image views or others content descriptions -->
     <string name="start_resume_pause_btn">Start or Resume or Pause button</string>
+    <string name="add_task_category_btn">Add task or category button</string>
 
 </resources>
