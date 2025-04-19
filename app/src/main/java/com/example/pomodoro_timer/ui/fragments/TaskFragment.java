@@ -30,6 +30,9 @@ public class TaskFragment extends Fragment {
 
         taskVM.initializeTasks();
 
+        //If you want horizontal scroll
+        //binding.taskRecyclerViewId.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+
         binding.taskRecyclerViewId.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.taskRecyclerViewId.setAdapter(taskVM.getAdapter());
 
