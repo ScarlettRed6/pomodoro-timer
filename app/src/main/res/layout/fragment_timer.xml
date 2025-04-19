@@ -85,7 +85,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:padding="6dp"
+                android:padding="5dp"
                 android:contentDescription="@string/start_resume_pause_btn"
                 android:src="@drawable/ic_start"/>
 

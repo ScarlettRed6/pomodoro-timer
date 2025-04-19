@@ -44,7 +44,7 @@ public class TimerFragment extends Fragment {
         timerVM.getProgressAngle().observe(getViewLifecycleOwner(), angle -> {
             if(angle != null){
                 timerAnimView.setProgress(angle);
-                Log.d("ANGLE", "GOHDAYUM");
+                //Log.d("ANGLE", "GOHDAYUM");
             }
         });
 
@@ -52,6 +52,8 @@ public class TimerFragment extends Fragment {
         ImageView startBtnIcon = binding.startBtnIcon;
         FrameLayout stopBtn = binding.stopBtn;
         ImageView stopBtnIcon = binding.stopBtnIcon;
+
+        timerVM.setStartBtnIcon(startBtnIcon);
 
         binding.startBtnIcon.setImageResource(R.drawable.ic_start);
         startBtn.setOnClickListener(v -> {

@@ -2,9 +2,12 @@ package com.example.pomodoro_timer.viewmodels;
 
 import android.os.CountDownTimer;
 import android.util.Log;
+import android.widget.ImageView;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
+import com.example.pomodoro_timer.R;
 
 public class TimerViewModel extends ViewModel {
 
@@ -13,6 +16,7 @@ public class TimerViewModel extends ViewModel {
     private long totalTime = 10 * 1000; // 25 * 60 * 1000 for 25 minutes
     private long remainingTime = totalTime;
     private boolean isRunning = false;
+    private ImageView startBtnIcon;
 
     //Getters and setters
     public long getTotalTime() {
@@ -29,6 +33,9 @@ public class TimerViewModel extends ViewModel {
     }
     public void setTotalTime(long totalTime) {
         this.totalTime = totalTime;
+    }
+    public void setStartBtnIcon(ImageView startBtnIcon) {
+        this.startBtnIcon = startBtnIcon;
     }
 
     //Getters and setters for live data
@@ -57,7 +64,7 @@ public class TimerViewModel extends ViewModel {
                 float angle = ((float) millisUntilFinished / totalTime) * 360f;
                 progressAngle.setValue(angle);
                 timerText.setValue(formatTime(remainingTime));
-                Log.d("CHEK MILLIS", "MILLIS: " + millisUntilFinished);
+                //Log.d("CHEK MILLIS", "MILLIS: " + millisUntilFinished);
             }
 
             @Override
@@ -66,6 +73,7 @@ public class TimerViewModel extends ViewModel {
                 remainingTime = totalTime;
                 progressAngle.setValue(360f);
                 timerText.setValue(formatTime(remainingTime));
+                startBtnIcon.setImageResource(R.drawable.ic_start);
             }
         };
         countDownTimer.start();
