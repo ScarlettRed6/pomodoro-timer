@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="taskModel"
+            type="com.example.pomodoro_timer.model.TaskModel" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:padding="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <View
+                android:id="@+id/priority_level_dot_id"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:backgroundTint="@color/progress_bar_color1"
+                android:background="@color/progress_bar_color1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/task_title_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{taskModel.title}"
+                android:textSize="16sp"
+                app:layout_constraintStart_toEndOf="@+id/priority_level_dot_id"
+                app:layout_constraintEnd_toStartOf="@+id/session_count_id"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/session_count_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{String.valueOf(taskModel.sessionCount)}"
+                android:textSize="14sp"
+                app:layout_constraintStart_toEndOf="@+id/task_title_id"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</layout>
