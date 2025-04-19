@@ -15,6 +15,7 @@ import com.example.pomodoro_timer.viewmodels.TaskViewModel;
 
 public class TaskFragment extends Fragment {
 
+    //Fields
     private FragmentTaskBinding binding;
     private TaskViewModel taskVM;
     public TaskFragment(){

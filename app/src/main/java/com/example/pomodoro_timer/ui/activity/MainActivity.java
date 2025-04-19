@@ -49,6 +49,15 @@ public class MainActivity extends AppCompatActivity {
         //Setup bottom nav control
         BottomNavigationView bottomNav = findViewById(R.id.bottom_nav);
         NavigationUI.setupWithNavController(bottomNav, navController);
+
+        SharedViewModel sharedVM = new ViewModelProvider(this).get(SharedViewModel.class);
+
+        navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
+            int destId = destination.getId();
+            // Hide everywhere else
+            sharedVM.setShowAddTaskBtn(destId == R.id.menu_task); // Show FAB only in Task
+        });
+
     }//End of setupNavigation method
 
     private void showFab(){
