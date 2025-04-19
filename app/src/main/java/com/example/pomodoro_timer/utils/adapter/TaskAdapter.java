@@ -15,7 +15,8 @@ import java.util.List;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder> {
 
-   private List<TaskModel> taskList;
+    //Fields
+   private List<TaskModel> taskList = new ArrayList<>();
 
    //This sets the list
    public void setTasks(List<TaskModel> tasks){

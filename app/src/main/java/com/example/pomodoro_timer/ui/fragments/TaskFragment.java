@@ -29,13 +29,16 @@ public class TaskFragment extends Fragment {
         binding.setTaskVM(taskVM);
         binding.setLifecycleOwner(this);
 
+        //Initialize tasks and categories, it populates the lists
         taskVM.initializeTasks();
+        taskVM.initializeCategories();
 
-        //If you want horizontal scroll
-        //binding.taskRecyclerViewId.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-
+        //For task recycler view
         binding.taskRecyclerViewId.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.taskRecyclerViewId.setAdapter(taskVM.getAdapter());
+        //For category recycler view
+        binding.categoryRecyclerViewId.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        binding.categoryRecyclerViewId.setAdapter(taskVM.getCategoryAdapter());
 
         return binding.getRoot();
     }

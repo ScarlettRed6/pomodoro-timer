@@ -6,7 +6,9 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.pomodoro_timer.model.CategoryModel;
 import com.example.pomodoro_timer.model.TaskModel;
+import com.example.pomodoro_timer.utils.adapter.CategoryAdapter;
 import com.example.pomodoro_timer.utils.adapter.TaskAdapter;
 
 import java.util.ArrayList;
@@ -16,8 +18,11 @@ public class TaskViewModel extends ViewModel {
 
     //Fields
     private List<TaskModel> testTasks;
+    private List<CategoryModel> testCategories;
+    private CategoryAdapter categoryAdapter = new CategoryAdapter();
     private TaskAdapter adapter = new TaskAdapter();
     private MutableLiveData<List<TaskModel>> taskList = new MutableLiveData<>(new ArrayList<>());
+    private MutableLiveData<List<CategoryModel>> categoryList = new MutableLiveData<>(new ArrayList<>());
 
     //Getters and Setters
     public LiveData<List<TaskModel>> getTaskList(){
@@ -25,6 +30,12 @@ public class TaskViewModel extends ViewModel {
     }
     public TaskAdapter getAdapter(){
         return adapter;
+    }
+    public LiveData<List<CategoryModel>> getCategoryList(){
+        return categoryList;
+    }
+    public CategoryAdapter getCategoryAdapter(){
+        return categoryAdapter;
     }
 
     //THIS IS FOR TESTING PURPOSES ONLY
@@ -40,11 +51,26 @@ public class TaskViewModel extends ViewModel {
 
         Log.d("TaskViewModel", "TEST INITIALIZE TASK!");
     }
+    public void initializeCategories(){
+        testCategories = new ArrayList<>();
+        testCategories.add(new CategoryModel("Category 1", "Category Icon 1"));
+        testCategories.add(new CategoryModel("Category 2", "Category Icon 2"));
+        testCategories.add(new CategoryModel("Category 3", "Category Icon 3"));
+
+        categoryList.setValue(testCategories);
+        categoryAdapter.setCategoryList(testCategories);
+    }
 
     public void addTask(TaskModel task){
         testTasks.add(task);
         taskList.setValue(testTasks);
         adapter.setTasks(testTasks);
+    }
+
+    public void addCategory(CategoryModel category){
+        testCategories.add(category);
+        categoryList.setValue(testCategories);
+        categoryAdapter.setCategoryList(testCategories);
     }
 
 }
