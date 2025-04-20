@@ -61,14 +61,14 @@ public class TaskViewModel extends ViewModel {
         categoryAdapter.setCategoryList(testCategories);
     }
 
-    public void addTask(TaskModel task){
-        testTasks.add(task);
+    public void addTask(String taskTitle, int sessionCount, int priorityLevel){
+        testTasks.add(new TaskModel(taskTitle, sessionCount, priorityLevel));
         taskList.setValue(testTasks);
         adapter.setTasks(testTasks);
     }
 
-    public void addCategory(CategoryModel category){
-        testCategories.add(category);
+    public void addCategory(String categoryTitle, String icon){
+        testCategories.add(new CategoryModel(categoryTitle, icon));
         categoryList.setValue(testCategories);
         categoryAdapter.setCategoryList(testCategories);
     }

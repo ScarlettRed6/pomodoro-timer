@@ -52,10 +52,10 @@ public class MainActivity extends AppCompatActivity {
 
         SharedViewModel sharedVM = new ViewModelProvider(this).get(SharedViewModel.class);
 
+        //Setup FAB control
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
             int destId = destination.getId();
-            // Hide everywhere else
-            sharedVM.setShowAddTaskBtn(destId == R.id.menu_task); // Show FAB only in Task
+            sharedVM.setShowAddTaskBtn(destId == R.id.menu_task); //Show FAB only in Task
         });
 
     }//End of setupNavigation method
@@ -83,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
                         .start();
             }
         });
+        fab.setOnClickListener(v -> sharedVM.onAddBtnClick());
 
     }//End of showFab method
 

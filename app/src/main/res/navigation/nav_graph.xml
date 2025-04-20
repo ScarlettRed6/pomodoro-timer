@@ -37,6 +37,9 @@
         <action
             android:id="@+id/action_menu_task_to_menu_settings2"
             app:destination="@id/menu_settings" />
+        <action
+            android:id="@+id/action_menu_task_to_addFragment"
+            app:destination="@id/addFragment" />
     </fragment>
 
     <fragment
@@ -71,6 +74,16 @@
         <action
             android:id="@+id/action_menu_settings_to_menu_timer"
             app:destination="@id/menu_timer" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/addFragment"
+        android:name="com.example.pomodoro_timer.ui.fragments.Tasks.AddFragment"
+        android:label="AddFragment"
+        tools:layout="@layout/fragment_task_add">
+        <action
+            android:id="@+id/action_addFragment_to_menu_task"
+            app:destination="@id/menu_task" />
     </fragment>
 
 </navigation>
