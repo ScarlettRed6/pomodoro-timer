@@ -1,6 +1,7 @@
 package com.example.pomodoro_timer.ui.activity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.activity.EdgeToEdge;
@@ -56,9 +57,42 @@ public class MainActivity extends AppCompatActivity {
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
             int destId = destination.getId();
             sharedVM.setShowAddTaskBtn(destId == R.id.menu_task); //Show FAB only in Task
+
+        });
+
+        bottomNav.setOnItemSelectedListener(item -> {
+            int destId = item.getItemId();
+            int currentId = navController.getCurrentDestination() != null ? navController.getCurrentDestination().getId() : -1;
+
+            if (currentId == R.id.addFragment && destId != R.id.menu_task) {
+                Boolean inAdd = sharedVM.getInAddMode().getValue();
+
+                Log.d("AddModeCheck", "ID ADD MODE: " + inAdd);
+                if (inAdd != null && inAdd) {
+                    showLeaveAddDialog(() -> {
+                        sharedVM.setInAddMode(false);
+                        navController.navigate(destId);
+                        bottomNav.setSelectedItemId(destId);
+                    });
+                    return false;
+                }
+            }//End of if statement
+
+            navController.navigate(destId);
+            return true;
         });
 
     }//End of setupNavigation method
+
+    private void showLeaveAddDialog(Runnable onConfirm) {
+        Log.d("TaskFragment", "DIALOG CALLED!");
+        new androidx.appcompat.app.AlertDialog.Builder(this)
+                .setTitle("Discard Changes?")
+                .setMessage("You have unsaved changes. Are you sure you want to leave?")
+                .setPositiveButton("Yes", (dialog, which) -> onConfirm.run())
+                .setNegativeButton("Cancel", null)
+                .show();
+    }
 
     private void showFab(){
         SharedViewModel sharedVM = new ViewModelProvider(this).get(SharedViewModel.class);

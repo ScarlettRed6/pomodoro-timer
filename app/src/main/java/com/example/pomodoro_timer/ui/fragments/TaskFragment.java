@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -21,6 +22,8 @@ public class TaskFragment extends Fragment {
     private FragmentTaskBinding binding;
     private SharedViewModel sharedVM;
     private TaskViewModel taskVM;
+
+    //Constructor
     public TaskFragment(){
 
     }
@@ -32,9 +35,9 @@ public class TaskFragment extends Fragment {
         binding.setTaskVM(taskVM);
         binding.setLifecycleOwner(this);
 
-        //Initialize tasks and categories, it populates the lists
-        taskVM.initializeTasks();
-        taskVM.initializeCategories();
+        //Initialize tasks and categories, it populates the lists, this is just for testing my ass
+        //taskVM.initializeTasks();
+        //taskVM.initializeCategories();
 
         //For task recycler view
         binding.taskRecyclerViewId.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -44,7 +47,7 @@ public class TaskFragment extends Fragment {
         binding.categoryRecyclerViewId.setAdapter(taskVM.getCategoryAdapter());
 
         onAddBtnClick();
-
+        sharedVM.setInAddMode(false);
         return binding.getRoot();
     }
 
@@ -58,9 +61,20 @@ public class TaskFragment extends Fragment {
                 sharedVM.getAddBtnClicked().setValue(false);
             }
         });
-
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
 
+        sharedVM.getInAddMode().observe(getViewLifecycleOwner(), inAddMode -> {
+            if (inAddMode) {
+                sharedVM.setInAddMode(false);
+
+                NavController navController = NavHostFragment.findNavController(this);
+                navController.popBackStack(R.id.menu_task, false);
+            }
+        });
+    }
 
 }
