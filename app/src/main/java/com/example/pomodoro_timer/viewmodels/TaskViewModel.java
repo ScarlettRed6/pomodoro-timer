@@ -17,22 +17,32 @@ import java.util.List;
 public class TaskViewModel extends ViewModel {
 
     //Fields
-    private List<TaskModel> testTasks;
-    private List<CategoryModel> testCategories;
+    private List<TaskModel> testTasks = new ArrayList<>();
+    private List<CategoryModel> testCategories = new ArrayList<>();
     private CategoryAdapter categoryAdapter = new CategoryAdapter();
     private TaskAdapter adapter = new TaskAdapter();
+
+    //Task list
     private MutableLiveData<List<TaskModel>> taskList = new MutableLiveData<>(new ArrayList<>());
+    private MutableLiveData<TaskModel> firstTask = new MutableLiveData<>();
     private MutableLiveData<List<CategoryModel>> categoryList = new MutableLiveData<>(new ArrayList<>());
 
     //Task fields
     private final MutableLiveData<String> taskTitle = new MutableLiveData<>("");
-    private MutableLiveData<String> sessionCount = new MutableLiveData<>();
-    private MutableLiveData<Integer> priorityLevel = new MutableLiveData<>(1);
-    private MutableLiveData<Integer> selectedPriority = new MutableLiveData<>();
+    private final MutableLiveData<String> sessionCount = new MutableLiveData<>();
+    private final MutableLiveData<Integer> priorityLevel = new MutableLiveData<>(1);
+    private final MutableLiveData<Integer> selectedPriority = new MutableLiveData<>();
+
+    //Category fields
+    private MutableLiveData<String> categoryTitle = new MutableLiveData<>("");
+    private MutableLiveData<String> categoryIcon = new MutableLiveData<>("");
 
     //Getters and Setters
     public LiveData<List<TaskModel>> getTaskList(){
         return taskList;
+    }
+    public LiveData<TaskModel> getFirstTask(){
+        return firstTask;
     }
     public TaskAdapter getAdapter(){
         return adapter;
@@ -42,6 +52,16 @@ public class TaskViewModel extends ViewModel {
     }
     public CategoryAdapter getCategoryAdapter(){
         return categoryAdapter;
+    }
+    public void setTaskList(List<TaskModel> newList){
+        taskList.setValue(newList);
+        updateFirstTask();
+    }
+    public void updateFirstTask(){
+        List<TaskModel> currentList = taskList.getValue();
+        if (currentList != null && !currentList.isEmpty()) {
+            firstTask.setValue(currentList.get(0));
+        }
     }
 
     //Task getters and setters
@@ -62,28 +82,34 @@ public class TaskViewModel extends ViewModel {
         selectedPriority.setValue(radioBtnId);
     }
 
+    //Category getters and setters
+    public MutableLiveData<String> getCategoryTitle(){
+        return categoryTitle;
+    }
+    public MutableLiveData<String> getCategoryIcon(){
+        return categoryIcon;
+    }
+    public void setCategoryIcon(String icon) {
+        categoryIcon.setValue(icon);
+    }
     //THIS IS FOR TESTING PURPOSES ONLY
     //LATER USE FOR ACTUAL DATA FROM DATABASE FIREBASE
-//    public void initializeTasks(){
-//        testTasks = new ArrayList<>();
-//        testTasks.add(new TaskModel("Task 1", 4, 1));
-//        testTasks.add(new TaskModel("Task 2", 4, 2));
-//        testTasks.add(new TaskModel("Task 3", 4, 3));
-//
-//        taskList.setValue(testTasks);
-//        adapter.setTasks(testTasks);
-//
-//        Log.d("TaskViewModel", "TEST INITIALIZE TASK!");
-//    }
-//    public void initializeCategories(){
-//        testCategories = new ArrayList<>();
-//        testCategories.add(new CategoryModel("Category 1", "Category Icon 1"));
-//        testCategories.add(new CategoryModel("Category 2", "Category Icon 2"));
-//        testCategories.add(new CategoryModel("Category 3", "Category Icon 3"));
-//
-//        categoryList.setValue(testCategories);
-//        categoryAdapter.setCategoryList(testCategories);
-//    }
+    public void initializeTasks(){
+        if (testTasks.isEmpty()) {
+            testTasks.add(new TaskModel("Task 1", 4, 1));
+
+            taskList.setValue(testTasks);
+            adapter.setTasks(testTasks);
+        }
+        //Log.d("TaskViewModel", "TEST INITIALIZE TASK!");
+    }
+    public void initializeCategories(){
+        if (testCategories.isEmpty()) {
+            testCategories.add(new CategoryModel("Category 1", "Category Icon 1"));
+            categoryList.setValue(testCategories);
+            categoryAdapter.setCategoryList(testCategories);
+        }
+    }
 
     public void clearTaskFields(){
         taskTitle.setValue("");
@@ -91,15 +117,18 @@ public class TaskViewModel extends ViewModel {
         priorityLevel.setValue(1);
     }
 
+    public void clearCategoryFields(){
+        categoryTitle.setValue("");
+        categoryIcon.setValue("");
+    }
+
     public void addTask(String taskTitle, int sessionCount, int priorityLevel){
-        testTasks = new ArrayList<>();
         testTasks.add(new TaskModel(taskTitle, sessionCount, priorityLevel));
         taskList.setValue(testTasks);
         adapter.setTasks(testTasks);
     }
 
     public void addCategory(String categoryTitle, String icon){
-        testCategories = new ArrayList<>();
         testCategories.add(new CategoryModel(categoryTitle, icon));
         categoryList.setValue(testCategories);
         categoryAdapter.setCategoryList(testCategories);

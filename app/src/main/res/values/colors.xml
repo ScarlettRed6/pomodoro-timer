@@ -41,4 +41,8 @@
     <color name="bottom_nav_color2">#9A5AF8</color>
 
 
+    <!-- Misc colors -->
+    <color name="dim_color">#AD9999</color>
+    <color name="dim_color2">#33000000</color>
+
 </resources>

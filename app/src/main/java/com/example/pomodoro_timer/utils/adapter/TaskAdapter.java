@@ -23,6 +23,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         this.taskList = tasks;
         //Log.d("TaskAdapter", "TEST SET TASKS!");
    }
+   public List<TaskModel> getTaskList(){
+        return taskList;
+   }
 
     @NonNull
     @Override

@@ -8,13 +8,16 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.pomodoro_timer.R;
 import com.example.pomodoro_timer.databinding.FragmentTimerBinding;
+import com.example.pomodoro_timer.model.TaskModel;
 import com.example.pomodoro_timer.ui.custom.TimerAnimationView;
+import com.example.pomodoro_timer.viewmodels.TaskViewModel;
 import com.example.pomodoro_timer.viewmodels.TimerViewModel;
 
 public class TimerFragment extends Fragment {
@@ -22,6 +25,8 @@ public class TimerFragment extends Fragment {
     //Fields
     private TimerViewModel timerVM;
     private TimerAnimationView timerAnimView;
+    private TaskViewModel taskVM;
+    private FragmentTimerBinding binding;
 
     public TimerFragment(){
 
@@ -29,17 +34,26 @@ public class TimerFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-        FragmentTimerBinding binding = FragmentTimerBinding.inflate(inflater, container, false);
+        binding = FragmentTimerBinding.inflate(inflater, container, false);
         timerVM = new ViewModelProvider(requireActivity()).get(TimerViewModel.class);
+        taskVM = new ViewModelProvider(requireActivity()).get(TaskViewModel.class);
         binding.setTimerVM(timerVM);
         binding.setLifecycleOwner(this);
 
-        timerListener(binding);
+        //Initialize things
+        init();
 
         return binding.getRoot();
     }
 
-    private void timerListener(FragmentTimerBinding binding){
+    private void init(){
+        taskVM.initializeTasks();
+        taskVM.initializeCategories();
+        setFirstPriorityTask();
+        timerListener();
+    }
+
+    private void timerListener(){
         timerAnimView = binding.timerAnimationViewId;
 
         timerVM.getProgressAngle().observe(getViewLifecycleOwner(), angle -> {
@@ -90,5 +104,21 @@ public class TimerFragment extends Fragment {
         });
 
     }//End of timerListener method
+
+    private void setFirstPriorityTask(){
+        taskVM.getTaskList().observe(getViewLifecycleOwner(), tasks -> {
+            if(tasks != null && !tasks.isEmpty()){
+                TaskModel firstTask = tasks.get(0);
+
+                TextView taskTitle = binding.taskTitleId;
+                TextView sessionCount = binding.sessionCountId;
+
+                taskTitle.setText(firstTask.getTitle());
+                sessionCount.setText(String.valueOf(firstTask.getSessionCount()));
+                binding.firstTaskCardId.setVisibility(View.VISIBLE);
+            }
+
+        });
+    }//End of setFirstPriorityTask method
 
 }

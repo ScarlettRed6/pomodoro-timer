@@ -25,14 +25,10 @@
     <string name="desc_label">Description</string>
     <string name="desc_placeholder">(Optional)</string>
     <string name="add_task_category_label">Category</string>
-
-    <!-- Misc or just placeholders -->
-    <string name="fragment_ph_timer">This is the timer fragment</string>
-    <string name="fragment_ph_task">This is the task fragment</string>
-    <string name="fragment_ph_stats">This is the stats fragment</string>
-    <string name="fragment_ph_settings">This is the settings fragment</string>
-    <string name="cancel_btn">Cancel</string>
-    <string name="save_btn">Save</string>
+    <string name="category_icon_selector_label">Category Icon</string>
+    <string name="category_icon_selector_label2">Choose an Icon for your category</string>
+    <string name="task_list_label">Tasks</string>
+    <string name="category_list_label">Categories</string>
 
     <!-- Used Theme Settings Fragment -->
     <string-array name="theme_options">
@@ -50,5 +46,17 @@
     <string name="add_task_category_btn">Add task or category button</string>
     <string name="add_category_btn">Add category button</string>
     <string name="category_icon">Category icon</string>
+
+    <string name="selector_icon_laptop">Selected_laptop_icon</string>
+    <string name="selector_icon_book">Selected_book_icon</string>
+
+    <!-- Misc or just placeholders -->
+    <string name="fragment_ph_timer">This is the timer fragment</string>
+    <string name="fragment_ph_task">This is the task fragment</string>
+    <string name="fragment_ph_stats">This is the stats fragment</string>
+    <string name="fragment_ph_settings">This is the settings fragment</string>
+    <string name="cancel_btn">Cancel</string>
+    <string name="save_btn">Save</string>
+    <string name="percent_placeholder">30%</string>
 
 </resources>
