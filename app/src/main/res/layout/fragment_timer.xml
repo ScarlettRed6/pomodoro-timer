@@ -33,6 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="invisible"
+            app:strokeWidth="0dp"
             app:layout_constraintBottom_toTopOf="@id/timer_animation_view_id"
             app:layout_constraintTop_toTopOf="parent">
 

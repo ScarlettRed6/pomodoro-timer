@@ -4,10 +4,10 @@ public class CategoryModel {
 
     //Fields
     private String categoryTitle;
-    private String icon;
+    private Integer icon;
 
     //Constructor
-    public CategoryModel(String categoryTitle, String icon){
+    public CategoryModel(String categoryTitle, Integer icon){
         this.categoryTitle = categoryTitle;
         this.icon = icon;
     }
@@ -17,7 +17,7 @@ public class CategoryModel {
         return categoryTitle;
     }
 
-    public String getIcon(){
+    public Integer getIcon(){
         return icon;
     }
 
@@ -25,7 +25,7 @@ public class CategoryModel {
         this.categoryTitle = categoryTitle;
     }
 
-    public void setIcon(String icon){
+    public void setIcon(int icon){
         this.icon = icon;
     }
 

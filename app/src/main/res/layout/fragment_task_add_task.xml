@@ -150,6 +150,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/desc_placeholder"
+                    android:text="@={taskVM.taskDescription}"
                     android:textSize="16sp"
                     android:maxLines="5"
                     android:gravity="top|start"/>
@@ -176,16 +177,42 @@
                 android:textColor="@color/count_down_color"
                 android:textSize="20sp" />
 
+            <!-- This plus icon disappears if a category is picked -->
             <ImageButton
                 android:id="@+id/add_task_category_btn_id"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:src="@drawable/ic_add2"
                 android:contentDescription="@string/add_category_btn"
                 android:background="@android:color/transparent"
                 android:elevation="10dp"
                 android:scaleType="fitCenter"
-                />
+                android:layout_gravity="center"/>
+
+            <!-- APPEARS -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+            <ImageView
+                android:id="@+id/task_category_icon_id"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:contentDescription="@string/category_icon"
+                android:scaleType="fitCenter"
+                android:visibility="gone"/>
+            <TextView
+                android:id="@+id/task_category_title_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{taskVM.categoryTitle}"
+                android:textColor="@color/count_down_color"
+                android:textSize="18sp"
+                android:visibility="gone"
+                android:layout_gravity="center"
+                android:layout_marginStart="8dp"/>
+        </LinearLayout>
 
         </LinearLayout>
         <!-- Cancel and Save buttons -->

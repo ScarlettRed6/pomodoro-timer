@@ -68,7 +68,7 @@ public class AddCategoryFragment extends Fragment {
                 }
                 v.setSelected(true);
                 v.setAlpha(1f);
-                taskVM.setCategoryIcon(v.getContentDescription().toString());
+                taskVM.setCategoryIcon(Integer.valueOf(v.getContentDescription().toString()));
             });
         }//End of foreach
     }//End of setIconSelector method
@@ -84,7 +84,7 @@ public class AddCategoryFragment extends Fragment {
     private void onSaveBtnClick(){
         binding.saveBtnId.setOnClickListener(v -> {
             String newCategoryTitle = taskVM.getCategoryTitle().getValue();
-            String newCategoryIcon = taskVM.getCategoryIcon().getValue(); //Just test to get icon from content description,
+            int newCategoryIcon = taskVM.getCategoryIcon().getValue(); //Just test to get icon from content description,
             //Implement later the actual fetching of the icon and display it
 
             taskVM.addCategory(newCategoryTitle, newCategoryIcon);

@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.pomodoro_timer.R;
 import com.example.pomodoro_timer.model.CategoryModel;
 import com.example.pomodoro_timer.model.TaskModel;
 import com.example.pomodoro_timer.utils.adapter.CategoryAdapter;
@@ -32,10 +33,12 @@ public class TaskViewModel extends ViewModel {
     private final MutableLiveData<String> sessionCount = new MutableLiveData<>();
     private final MutableLiveData<Integer> priorityLevel = new MutableLiveData<>(1);
     private final MutableLiveData<Integer> selectedPriority = new MutableLiveData<>();
+    private final MutableLiveData<String> taskDescription = new MutableLiveData<>("");
 
     //Category fields
     private MutableLiveData<String> categoryTitle = new MutableLiveData<>("");
-    private MutableLiveData<String> categoryIcon = new MutableLiveData<>("");
+    private MutableLiveData<Integer> categoryIcon = new MutableLiveData<>();
+    private MutableLiveData<CategoryModel> category = new MutableLiveData<>();
 
     //Getters and Setters
     public LiveData<List<TaskModel>> getTaskList(){
@@ -81,23 +84,32 @@ public class TaskViewModel extends ViewModel {
         priorityLevel.setValue(priority);
         selectedPriority.setValue(radioBtnId);
     }
+    public MutableLiveData<String> getTaskDescription(){
+        return taskDescription;
+    }
 
     //Category getters and setters
     public MutableLiveData<String> getCategoryTitle(){
         return categoryTitle;
     }
-    public MutableLiveData<String> getCategoryIcon(){
+    public MutableLiveData<Integer> getCategoryIcon(){
         return categoryIcon;
     }
-    public void setCategoryIcon(String icon) {
+    public void setCategoryIcon(Integer icon) {
         categoryIcon.setValue(icon);
     }
+    public MutableLiveData<CategoryModel> getCategory(){
+        return category;
+    }
+    public void setCategory(CategoryModel category){
+        this.category.setValue(category);
+    }
+
     //THIS IS FOR TESTING PURPOSES ONLY
     //LATER USE FOR ACTUAL DATA FROM DATABASE FIREBASE
     public void initializeTasks(){
         if (testTasks.isEmpty()) {
-            testTasks.add(new TaskModel("Task 1", 4, 1));
-
+            testTasks.add(new TaskModel("Task 1", 4, 1, "Category 1", "eyo"));
             taskList.setValue(testTasks);
             adapter.setTasks(testTasks);
         }
@@ -105,7 +117,7 @@ public class TaskViewModel extends ViewModel {
     }
     public void initializeCategories(){
         if (testCategories.isEmpty()) {
-            testCategories.add(new CategoryModel("Category 1", "Category Icon 1"));
+            testCategories.add(new CategoryModel("Work", R.drawable.ic_category_laptop));
             categoryList.setValue(testCategories);
             categoryAdapter.setCategoryList(testCategories);
         }
@@ -119,16 +131,16 @@ public class TaskViewModel extends ViewModel {
 
     public void clearCategoryFields(){
         categoryTitle.setValue("");
-        categoryIcon.setValue("");
+        categoryIcon.setValue(0);
     }
 
-    public void addTask(String taskTitle, int sessionCount, int priorityLevel){
-        testTasks.add(new TaskModel(taskTitle, sessionCount, priorityLevel));
+    public void addTask(String taskTitle, int sessionCount, int priorityLevel, String categoryTitle, String taskDescription){
+        testTasks.add(new TaskModel(taskTitle, sessionCount, priorityLevel, categoryTitle, taskDescription));
         taskList.setValue(testTasks);
         adapter.setTasks(testTasks);
     }
 
-    public void addCategory(String categoryTitle, String icon){
+    public void addCategory(String categoryTitle, Integer icon){
         testCategories.add(new CategoryModel(categoryTitle, icon));
         categoryList.setValue(testCategories);
         categoryAdapter.setCategoryList(testCategories);

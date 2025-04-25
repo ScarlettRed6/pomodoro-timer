@@ -4,11 +4,15 @@ public class TaskModel {
     private String taskTitle;
     private int sessionCount;
     private int priorityLevel; //Levels: 1 = low, 2 = medium, 3 = high
+    private String categoryTitle;
+    private String taskDescription = "";
 
-    public TaskModel(String taskTitle, int sessionCount, int priorityLevel){
+    public TaskModel(String taskTitle, int sessionCount, int priorityLevel, String categoryTitle, String taskDescription){
         this.taskTitle = taskTitle;
         this.sessionCount = sessionCount;
         this.priorityLevel = priorityLevel;
+        this.categoryTitle = categoryTitle;
+        this.taskDescription = taskDescription;
     }
 
     //Getters and Setters
@@ -20,6 +24,12 @@ public class TaskModel {
     }
     public int getPriorityLevel(){
         return priorityLevel;
+    }
+    public String getCategory(){
+        return categoryTitle;
+    }
+    public String getTaskDescription(){
+        return taskDescription;
     }
 
 }

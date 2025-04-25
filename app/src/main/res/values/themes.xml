@@ -6,4 +6,11 @@
     </style>
 
     <style name="Theme.Pomodorotimer" parent="Base.Theme.Pomodorotimer" />
+
+    <!-- This is custom style for dialog fragment for CategoryPicker -->
+    <style name="RoundedCornersDialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:windowBackground">@drawable/background_gradient_card</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
 </resources>
