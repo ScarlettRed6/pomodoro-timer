@@ -1,11 +1,14 @@
 package com.example.pomodoro_timer.ui.fragments.Tasks;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -59,19 +62,44 @@ public class AddCategoryFragment extends Fragment {
                 binding.icon2
         };
 
-        for (ImageView icon : icons){
-            icon.setOnClickListener(v -> {
-                //Set dim if not selected
-                for (ImageView notSelected : icons){
-                    notSelected.setSelected(false);
-                    notSelected.setAlpha(0.5f);
-                }
-                v.setSelected(true);
-                v.setAlpha(1f);
-                taskVM.setCategoryIcon(Integer.valueOf(v.getContentDescription().toString()));
-            });
-        }//End of foreach
+        binding.icon1.setOnClickListener(v ->{
+            setIconSelection(v, R.drawable.ic_category_laptop);
+        });
+        binding.icon2.setOnClickListener(v ->{
+            setIconSelection(v, R.drawable.ic_category_book);
+        });
+
+//        for (ImageView icon : icons){
+//            icon.setOnClickListener(v -> {
+//                //Set dim if not selected
+//                for (ImageView notSelected : icons){
+//                    notSelected.setSelected(false);
+//                    notSelected.setAlpha(0.5f);
+//                }
+//                v.setSelected(true);
+//                v.setAlpha(1f);
+//                int testId = icon.getId();
+//                Log.d("AddCategoryFragment", "TEST ID: " + testId);
+//                taskVM.setCategoryIcon(testId);
+//            });
+//        }//End of foreach
     }//End of setIconSelector method
+
+    private void setIconSelection(View selectedIcon, int iconDrawableId){
+        for(ImageView notSelected: icons){
+            notSelected.setSelected(false);
+            notSelected.setAlpha(0.5f);
+        }
+        selectedIcon.setSelected(true);
+        selectedIcon.setAlpha(1f);
+
+        if(selectedIcon.getId() == R.id.icon1){
+            taskVM.setCategoryIcon(R.drawable.ic_category_laptop);
+        }else {
+            taskVM.setCategoryIcon(R.drawable.ic_category_book);
+        }
+
+    }
 
     private void onCancelBtnClick(){
         binding.cancelBtnId.setOnClickListener(v -> {

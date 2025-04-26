@@ -80,7 +80,7 @@
             android:layout_height="100dp"
             android:layout_marginStart="16dp"
             android:elevation="4dp"
-            android:src="@drawable/ic_category_laptop"
+            app:srcCompat="@{categoryModel.icon}"
             android:contentDescription="@string/category_icon"
             app:layout_constraintStart_toStartOf="@id/category_card"
             app:layout_constraintTop_toTopOf="parent" />

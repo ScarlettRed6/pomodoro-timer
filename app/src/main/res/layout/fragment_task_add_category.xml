@@ -110,6 +110,7 @@
                 android:textColor="@color/dim_color"
                 android:textSize="14sp" />
 
+            <!-- Category selection icons -->
             <LinearLayout
                 android:id="@+id/iconSelectorLayout"
                 android:layout_width="match_parent"
