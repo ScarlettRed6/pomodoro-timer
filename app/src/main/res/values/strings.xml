@@ -12,6 +12,8 @@
     <string name="menu_dot">.</string>
     <string name="new_task">New Task</string>
     <string name="new_category">New Category</string>
+    <string name="my_account">My Account</string>
+    <string name="view_profile">View Profile</string>
 
     <!-- Titles and description labels -->
     <string name="title_label">Title</string>
@@ -47,6 +49,7 @@
     <string name="add_task_in_category_btn">Add task button</string>
     <string name="add_category_btn">Add category button</string>
     <string name="category_icon">Category icon</string>
+    <string name="dropdown_icon">Dropdown icon</string>
 
     <string name="selector_icon_laptop">Selected_laptop_icon</string>
     <string name="selector_icon_book">Selected_book_icon</string>

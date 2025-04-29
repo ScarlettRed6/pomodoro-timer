@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/my_account_menu_id"
+        android:title="@string/my_account"
+        android:enabled="false" /> <!-- Disable click if needed -->
+
+    <item
+        android:id="@+id/view_profile_menu_id"
+        android:title="@string/view_profile" />
+</menu>

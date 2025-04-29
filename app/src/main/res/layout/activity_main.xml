@@ -1,82 +1,155 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.activity.MainActivity">
+    android:layout_height="match_parent">
 
-    <!-- Guidelines -->
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.activity.MainActivity">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline1"
+        <!-- Guidelines -->
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.07"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.905"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_add_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.87"/>
+
+        <!-- End of Guidelines -->
+
+        <!-- Profile circle image view -->
+        <LinearLayout
+            android:id="@+id/profile_container_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:padding="5dp"
+            android:focusable="true"
+            android:clickable="true"
+            app:layout_constraintBottom_toTopOf="@+id/guideline1"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profile_image"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:src="@drawable/personal_pic_placeholder"
+                app:civ_border_color="#FFFFFF"
+                app:civ_border_width="1dp" />
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_drop_down_arrow"
+                android:contentDescription="@string/dropdown_icon"/>
+
+        </LinearLayout>
+
+        <!-- Fragment container -->
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/nav_host_fragment_container"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:defaultNavHost="true"
+            app:navGraph="@navigation/nav_graph"
+            tools:layout="@layout/fragment_timer"
+            app:layout_constraintTop_toBottomOf="@+id/guideline1"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <ImageButton
+            android:id="@+id/add_task_category_btn_id"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginBottom="35dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/add_task_category_btn"
+            android:elevation="10dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_add_task"
+            app:layout_constraintTop_toBottomOf="@+id/guideline_add_icon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <!--
+            After adding the icons assets
+            set the labelVisibility mode to unlabeled
+        -->
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_nav"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@drawable/bottom_nav_bg_curved"
+            app:itemActiveIndicatorStyle="@android:color/transparent"
+            app:itemIconSize="35dp"
+            app:itemIconTint="@color/white"
+            app:itemTextColor="@color/white"
+            app:layout_constraintTop_toBottomOf="@+id/guideline2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:menu="@menu/bottom_nav_menu" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Fullscreen transparent overlay -->
+    <View
+        android:id="@+id/dropdown_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent"
+        android:visibility="gone"/>
+
+    <!-- Your dropdown menu -->
+    <LinearLayout
+        android:id="@+id/profile_dropdown"
+        android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.06"/>
+        android:layout_gravity="end|top"
+        android:background="@drawable/background_curved_white"
+        android:visibility="gone"
+        android:layout_marginTop="55dp"
+        android:layout_marginEnd="16dp"
+        android:padding="4dp">
 
-    <!-- End of Guidelines -->
+        <!-- Add menu items here -->
+        <TextView
+            android:id="@+id/my_account"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/my_account"
+            android:padding="8dp"
+            android:layout_marginEnd="50dp"/>
 
-    <!-- Profile circle image view -->
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/profile_image"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:focusable="true"
-        android:src="@drawable/personal_pic_placeholder"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        app:civ_border_color="#FFFFFF"
-        app:civ_border_width="1dp"
-        android:clickable="true"
-        app:layout_constraintBottom_toTopOf="@+id/guideline1"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
-
-    <!-- Fragment container -->
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/nav_host_fragment_container"
-        android:name="androidx.navigation.fragment.NavHostFragment"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:defaultNavHost="true"
-        app:navGraph="@navigation/nav_graph"
-        tools:layout="@layout/fragment_timer"
-        app:layout_constraintTop_toBottomOf="@+id/guideline1"
-        app:layout_constraintBottom_toTopOf="@+id/bottom_nav"/>
-
-    <ImageButton
-        android:id="@+id/add_task_category_btn_id"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginBottom="45dp"
-        android:background="@android:color/transparent"
-        android:contentDescription="@string/add_task_category_btn"
-        android:elevation="10dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/ic_add_task"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <!--
-        After adding the icons assets
-        set the labelVisibility mode to unlabeled
-    -->
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_nav"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bottom_nav_bg_curved"
-        app:itemActiveIndicatorStyle="@android:color/transparent"
-        app:itemIconSize="35dp"
-        app:itemIconTint="@color/white"
-        app:itemTextColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/bottom_nav_menu" />
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/view_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/view_profile"
+            android:padding="8dp"/>
+    </LinearLayout>
+</FrameLayout>
