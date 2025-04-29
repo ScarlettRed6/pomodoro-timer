@@ -21,6 +21,7 @@ import androidx.navigation.ui.NavigationUI;
 import com.example.pomodoro_timer.R;
 import com.example.pomodoro_timer.viewmodels.SharedViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.textview.MaterialTextView;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout profileContainer;
     private View dropdownOverlay;
     private LinearLayout dropdownMenu;
+    private MaterialTextView viewProfile;
 
     //method for edge to edge(optional)
     protected void edge(){
@@ -56,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         mainLayout = findViewById(R.id.main);
         mainLayout.setBackgroundResource(R.drawable.background_app1);
         profileContainer = findViewById(R.id.profile_container_id);
+        viewProfile = findViewById(R.id.view_profile);
         setupNavigation();
         showFab();
         showProfileDropDown();
@@ -72,6 +75,17 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(bottomNav, navController);
 
         SharedViewModel sharedVM = new ViewModelProvider(this).get(SharedViewModel.class);
+
+        //Navigate to settings screen from view profile
+        viewProfile.setOnClickListener(v -> {
+            Log.d("Dropdown", "View Profile clicked");
+
+            //Delays to allow navigation to happen first
+            v.postDelayed(() -> {
+                hideDropdown();
+                bottomNav.setSelectedItemId(R.id.menu_settings);
+            }, 100);
+        });
 
         //Setup FAB control
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
@@ -185,10 +199,10 @@ public class MainActivity extends AppCompatActivity {
             hideDropdown();
         });
 
-        findViewById(R.id.view_profile).setOnClickListener(v -> {
-            Log.d("Dropdown", "View Profile clicked");
-            hideDropdown();
-        });
+//        findViewById(R.id.view_profile).setOnClickListener(v -> {
+//            Log.d("Dropdown", "View Profile clicked");
+//            hideDropdown();
+//        });
     }//End of showProfileDropDown method
 
     private void hideDropdown() {

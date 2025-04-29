@@ -142,14 +142,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/my_account"
+            android:textStyle="bold"
             android:padding="8dp"
             android:layout_marginEnd="50dp"/>
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/view_profile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
             android:text="@string/view_profile"
+            android:textColor="@color/task_indicator_color2"
+            android:textStyle="italic"
             android:padding="8dp"/>
     </LinearLayout>
 </FrameLayout>

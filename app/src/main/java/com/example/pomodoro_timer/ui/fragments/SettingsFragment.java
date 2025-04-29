@@ -43,7 +43,7 @@ public class SettingsFragment extends Fragment {
             if (position == 0) {
                 tab.setText("Account");
             } else if (position == 1) {
-                tab.setText("Appearance");
+                tab.setText("Timer");
             } else {
                 tab.setText("Notifications");
             }
