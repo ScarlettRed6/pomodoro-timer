@@ -64,7 +64,8 @@ public class MainActivity extends AppCompatActivity {
             int destId = item.getItemId();
             int currentId = navController.getCurrentDestination() != null ? navController.getCurrentDestination().getId() : -1;
 
-            if (currentId == R.id.addFragment && destId != R.id.menu_task) {
+            //Return this in the condition statement if not working :     && destId != R.id.menu_task
+            if (currentId == R.id.addFragment) {
                 Boolean inAdd = sharedVM.getInAddMode().getValue();
 
                 Log.d("AddModeCheck", "ID ADD MODE: " + inAdd);

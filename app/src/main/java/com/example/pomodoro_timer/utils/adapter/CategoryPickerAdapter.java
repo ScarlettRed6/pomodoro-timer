@@ -37,7 +37,7 @@ public class CategoryPickerAdapter extends ArrayAdapter<CategoryModel> {
         }catch (NullPointerException e){
             Log.d("CategoryPickerAdapter", "NULL POINTER EXCEPTION ENCOUNTERED: category");
         }
-        iconImageView.setImageResource(R.drawable.ic_category_laptop);
+        iconImageView.setImageResource(category.getIcon());
 
         return convertView;
     }//End of getView method

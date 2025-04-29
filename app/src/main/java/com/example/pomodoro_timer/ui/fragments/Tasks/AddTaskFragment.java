@@ -42,19 +42,38 @@ public class AddTaskFragment extends Fragment {
         sharedVM.setInAddMode(true);
 
         //Add other contexts here
-        onCancelBtnClick();
-        onSaveBtnClick();
-        onCategoryPickBtn();
-        observeCategory();
+        initializeThings();
 
         return binding.getRoot();
     }//End of onCreateView method
+
+    private void initializeThings(){
+        onCancelBtnClick();
+        onSaveBtnClick();
+        onCategoryPickBtn();
+        onRemoveCategoryBtn();
+        observeCategory();
+    }//End of initializeThings method
+
+    private void clearCredentials(){
+        binding.priorityGroup.clearCheck();
+        taskVM.clearTaskFields();
+        taskVM.clearCategoryFields();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding.priorityGroup.clearCheck();
+        taskVM.clearTaskFields();
+        taskVM.clearCategoryFields();
+    }
 
     //Button functions for cancel and save buttons
 
     private void onCancelBtnClick(){
         binding.cancelBtnId.setOnClickListener(v -> {
-            taskVM.clearTaskFields();
+            clearCredentials();
             navController.popBackStack(R.id.menu_task, false);
             sharedVM.setInAddMode(false);
         });
@@ -68,7 +87,7 @@ public class AddTaskFragment extends Fragment {
             String newCategory = taskVM.getCategory().getValue().getCategoryTitle();
             String taskDescription = taskVM.getTaskDescription().getValue();
             //Log.d("CHECK CATEGORY TITLE","CATEGORY TITLE: " + newCategory);
-            Log.d("CHECK TASK DESCRIPTION", "TASK DESCRIPTION: " + taskDescription);
+            //Log.d("CHECK TASK DESCRIPTION", "TASK DESCRIPTION: " + taskDescription);
 
             //Exception handlers
             try {
@@ -85,7 +104,7 @@ public class AddTaskFragment extends Fragment {
             }
 
             taskVM.addTask(newTitle, newSessionCount, newPriority, newCategory, taskDescription);
-            taskVM.clearTaskFields();
+            clearCredentials();
             navController.popBackStack(R.id.menu_task, false);
             sharedVM.setInAddMode(false);
         });
@@ -98,16 +117,27 @@ public class AddTaskFragment extends Fragment {
         });
     }
 
+    private void onRemoveCategoryBtn(){
+        binding.removePickedCategoryBtnId.setOnClickListener(v -> {
+            binding.addTaskCategoryBtnId.setVisibility(View.VISIBLE);
+            binding.removePickedCategoryBtnId.setVisibility(View.GONE);
+            binding.taskCategoryIconId.setVisibility(View.GONE);
+            binding.taskCategoryTitleId.setVisibility(View.GONE);
+        });
+    }//End of onRemoveCategoryBtn method
+
     private void observeCategory(){
         taskVM.getCategory().observe(getViewLifecycleOwner(), category -> {
             if (category != null) {
                 binding.addTaskCategoryBtnId.setVisibility(View.GONE);
                 binding.taskCategoryIconId.setVisibility(View.VISIBLE);
                 binding.taskCategoryTitleId.setVisibility(View.VISIBLE);
+                binding.removePickedCategoryBtnId.setVisibility(View.VISIBLE);
                 binding.taskCategoryIconId.setImageResource(category.getIcon());
                 binding.taskCategoryTitleId.setText(category.getCategoryTitle());
             }else{
                 binding.addTaskCategoryBtnId.setVisibility(View.VISIBLE);
+                binding.removePickedCategoryBtnId.setVisibility(View.GONE);
                 binding.taskCategoryIconId.setVisibility(View.GONE);
                 binding.taskCategoryTitleId.setVisibility(View.GONE);
             }

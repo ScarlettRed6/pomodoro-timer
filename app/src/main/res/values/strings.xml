@@ -44,11 +44,13 @@
     <!-- Image views or others content descriptions -->
     <string name="start_resume_pause_btn">Start or Resume or Pause button</string>
     <string name="add_task_category_btn">Add task or category button</string>
+    <string name="add_task_in_category_btn">Add task button</string>
     <string name="add_category_btn">Add category button</string>
     <string name="category_icon">Category icon</string>
 
     <string name="selector_icon_laptop">Selected_laptop_icon</string>
     <string name="selector_icon_book">Selected_book_icon</string>
+    <string name="delete_btn">Delete Button</string>
 
     <!-- Misc or just placeholders -->
     <string name="fragment_ph_timer">This is the timer fragment</string>

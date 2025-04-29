@@ -1,6 +1,5 @@
 package com.example.pomodoro_timer.ui.fragments.Tasks;
 
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,16 +7,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.pomodoro_timer.R;
 import com.example.pomodoro_timer.databinding.FragmentTaskAddCategoryBinding;
+import com.example.pomodoro_timer.model.TaskModel;
 import com.example.pomodoro_timer.viewmodels.SharedViewModel;
 import com.example.pomodoro_timer.viewmodels.TaskViewModel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AddCategoryFragment extends Fragment {
 
@@ -69,20 +72,6 @@ public class AddCategoryFragment extends Fragment {
             setIconSelection(v, R.drawable.ic_category_book);
         });
 
-//        for (ImageView icon : icons){
-//            icon.setOnClickListener(v -> {
-//                //Set dim if not selected
-//                for (ImageView notSelected : icons){
-//                    notSelected.setSelected(false);
-//                    notSelected.setAlpha(0.5f);
-//                }
-//                v.setSelected(true);
-//                v.setAlpha(1f);
-//                int testId = icon.getId();
-//                Log.d("AddCategoryFragment", "TEST ID: " + testId);
-//                taskVM.setCategoryIcon(testId);
-//            });
-//        }//End of foreach
     }//End of setIconSelector method
 
     private void setIconSelection(View selectedIcon, int iconDrawableId){

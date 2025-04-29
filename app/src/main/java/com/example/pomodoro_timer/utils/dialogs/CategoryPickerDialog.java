@@ -2,6 +2,7 @@ package com.example.pomodoro_timer.utils.dialogs;
 
 import android.app.Dialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -41,6 +42,7 @@ public class CategoryPickerDialog extends DialogFragment {
                 CategoryModel selectedCategory = categories.get(position);
                 taskVM.getCategoryTitle().setValue(selectedCategory.getCategoryTitle());
                 taskVM.getCategoryIcon().setValue(selectedCategory.getIcon());
+                //Log.d("CHECK LIST SIZE", "SIZE: " + categories.size());
                 taskVM.setCategory(selectedCategory);
                 dismiss();
             }

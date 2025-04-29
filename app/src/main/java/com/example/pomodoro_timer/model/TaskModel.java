@@ -32,4 +32,25 @@ public class TaskModel {
         return taskDescription;
     }
 
+    @Override
+    public String toString() {
+        return "TaskModel{" +
+                "title='" + taskTitle + '\'' +
+                ", sessionCount=" + sessionCount +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        TaskModel task = (TaskModel) obj;
+        return taskTitle.equals(task.taskTitle);
+    }
+
+    @Override
+    public int hashCode() {
+        return taskTitle.hashCode();
+    }
+
 }

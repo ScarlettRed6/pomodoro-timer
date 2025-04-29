@@ -109,7 +109,7 @@ public class TaskViewModel extends ViewModel {
     //LATER USE FOR ACTUAL DATA FROM DATABASE FIREBASE
     public void initializeTasks(){
         if (testTasks.isEmpty()) {
-            testTasks.add(new TaskModel("Task 1", 4, 1, "Category 1", "eyo"));
+            testTasks.add(new TaskModel("Task 1", 4, 1, "", "eyo"));
             taskList.setValue(testTasks);
             adapter.setTasks(testTasks);
         }
@@ -127,6 +127,8 @@ public class TaskViewModel extends ViewModel {
         taskTitle.setValue("");
         sessionCount.setValue("");
         priorityLevel.setValue(1);
+        taskDescription.setValue("");
+        category.setValue(null);
     }
 
     public void clearCategoryFields(){
