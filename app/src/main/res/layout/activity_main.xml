@@ -7,29 +7,58 @@
     android:layout_height="match_parent"
     tools:context=".ui.activity.MainActivity">
 
+    <!-- Guidelines -->
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.06"/>
+
+    <!-- End of Guidelines -->
+
+    <!-- Profile circle image view -->
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profile_image"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:focusable="true"
+        android:src="@drawable/personal_pic_placeholder"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        app:civ_border_color="#FFFFFF"
+        app:civ_border_width="1dp"
+        android:clickable="true"
+        app:layout_constraintBottom_toTopOf="@+id/guideline1"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+
     <!-- Fragment container -->
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         app:defaultNavHost="true"
         app:navGraph="@navigation/nav_graph"
-        tools:layout="@layout/fragment_timer" />
+        tools:layout="@layout/fragment_timer"
+        app:layout_constraintTop_toBottomOf="@+id/guideline1"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_nav"/>
 
     <ImageButton
         android:id="@+id/add_task_category_btn_id"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:src="@drawable/ic_add_task"
-        android:contentDescription="@string/add_task_category_btn"
         android:layout_marginBottom="45dp"
         android:background="@android:color/transparent"
+        android:contentDescription="@string/add_task_category_btn"
         android:elevation="10dp"
         android:scaleType="fitCenter"
+        android:src="@drawable/ic_add_task"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <!--
         After adding the icons assets
@@ -39,14 +68,15 @@
         android:id="@+id/bottom_nav"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:menu="@menu/bottom_nav_menu"
-        app:itemTextColor="@color/white"
         android:background="@drawable/bottom_nav_bg_curved"
-        app:itemIconTint="@color/white"
-        app:itemIconSize="35dp"
         app:itemActiveIndicatorStyle="@android:color/transparent"
+        app:itemIconSize="35dp"
+        app:itemIconTint="@color/white"
+        app:itemTextColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/bottom_nav_menu" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

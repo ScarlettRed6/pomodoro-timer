@@ -48,6 +48,7 @@ dependencies {
     // Views/Fragments integration
     implementation("androidx.navigation:navigation-fragment:$navVersion")
     implementation("androidx.navigation:navigation-ui:$navVersion")
+    implementation ("de.hdodenhof:circleimageview:3.1.0")
 
     implementation("androidx.navigation:navigation-fragment-ktx:$navVersion")
     implementation("androidx.navigation:navigation-ui-ktx:$navVersion")
