@@ -42,7 +42,7 @@ android {
 }
 
 dependencies {
-    implementation(libs.room.common.jvm)
+
     //Added new dependencies for fragments and navigation component
     val navVersion = "2.8.9"
 
