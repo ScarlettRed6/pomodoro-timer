@@ -40,6 +40,9 @@
     <color name="bottom_nav_color1">#50389A</color>
     <color name="bottom_nav_color2">#9A5AF8</color>
 
+    <!-- card colors or for dimmed backgrounds -->
+    <color name="background_dim_color1">#806E4CB5</color>
+    <color name="background_dim_color2">#CCFFFFFF</color>
 
     <!-- Misc colors -->
     <color name="dim_color">#AD9999</color>

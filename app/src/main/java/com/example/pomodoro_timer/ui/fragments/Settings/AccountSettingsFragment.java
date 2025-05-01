@@ -18,6 +18,6 @@ public class AccountSettingsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_settings_account, container, false);
+        return inflater.inflate(R.layout.fragment_settings_login_account, container, false);
     }
 }

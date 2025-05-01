@@ -5,7 +5,7 @@ public class TaskModel {
     private int sessionCount;
     private int priorityLevel; //Levels: 1 = low, 2 = medium, 3 = high
     private String categoryTitle;
-    private String taskDescription = "";
+    private String taskDescription;
 
     public TaskModel(String taskTitle, int sessionCount, int priorityLevel, String categoryTitle, String taskDescription){
         this.taskTitle = taskTitle;

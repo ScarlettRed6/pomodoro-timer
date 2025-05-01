@@ -31,6 +31,19 @@
     <string name="category_icon_selector_label2">Choose an Icon for your category</string>
     <string name="task_list_label">Tasks</string>
     <string name="category_list_label">Categories</string>
+    <string name="login_title">Login</string>
+    <string name="sign_up_title">Sign Up</string>
+    <string name="username_input">UserName</string>
+    <string name="password_input">Password</string>
+    <string name="confirm_password_input">Confirm Password</string>
+    <string name="remember_me_label">Remember Me</string>
+    <string name="show_password">Show password</string>
+    <string name="forgot_password_label"><u>Forgot Password?</u></string>
+    <string name="dont_have_an_account_label">Don\'t have an account?</string>
+    <string name="sign_up_label"><u>Sign Up</u></string>
+    <string name="sign_in_label">Sign in</string>
+    <string name="or_label">Or</string>
+    <string name="google_title">Google</string>
 
     <!-- Used Theme Settings Fragment -->
     <string-array name="theme_options">
@@ -50,6 +63,7 @@
     <string name="add_category_btn">Add category button</string>
     <string name="category_icon">Category icon</string>
     <string name="dropdown_icon">Dropdown icon</string>
+    <string name="google_icon">Google icon</string>
 
     <string name="selector_icon_laptop">Selected_laptop_icon</string>
     <string name="selector_icon_book">Selected_book_icon</string>
