@@ -4,7 +4,7 @@ plugins {
     kotlin("plugin.serialization") version "2.0.21"
 
     // Add the Google services Gradle plugin
-    id("com.google.gms.google-services")
+    //id("com.google.gms.google-services")
 }
 
 android {
@@ -45,6 +45,13 @@ dependencies {
     //Added new dependencies for fragments and navigation component
     val navVersion = "2.8.9"
 
+    //Dependencies for Room database
+    val room_version = "2.7.1"
+    implementation("androidx.room:room-runtime:$room_version")
+    // If this project only uses Java source, use the Java annotationProcessor
+    // No additional plugins are necessary
+    annotationProcessor("androidx.room:room-compiler:$room_version")
+
     // Views/Fragments integration
     implementation("androidx.navigation:navigation-fragment:$navVersion")
     implementation("androidx.navigation:navigation-ui:$navVersion")
@@ -69,19 +76,4 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
-
-    // Import the Firebase BoM
-    implementation(platform("com.google.firebase:firebase-bom:33.12.0"))
-
-    // When using the BoM, don't specify versions in Firebase dependencies
-
-    // TODO: Add the dependencies for Firebase products you want to use
-    // https://firebase.google.com/docs/android/setup#available-libraries
-
-    // Firebase Authentication: for authenticating log-ins and managing accounts
-    implementation("com.google.firebase:firebase-auth")
-
-    // Cloud Firestore: for tracking session history and user preferences
-    // For start/end times, task names & work duration, break duration, notifs blablabla
-    implementation("com.google.firebase:firebase-firestore")
 }
