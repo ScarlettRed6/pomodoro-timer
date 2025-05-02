@@ -33,7 +33,7 @@ public class SettingsFragment extends Fragment {
         binding = FragmentSettingsBinding.inflate(inflater, container, false);
         settingsVM = new ViewModelProvider(requireActivity()).get(SettingsViewModel.class);
         binding.setSettingsVM(settingsVM);
-        binding.setLifecycleOwner(this);
+        binding.setLifecycleOwner(getViewLifecycleOwner());
 
         //Context here
 //        binding.settingsTabLayoutId.addTab(binding.settingsTabLayoutId.newTab().setText("Account"));

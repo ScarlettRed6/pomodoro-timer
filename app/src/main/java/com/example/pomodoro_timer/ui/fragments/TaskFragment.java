@@ -38,7 +38,7 @@ public class TaskFragment extends Fragment {
         binding = FragmentTaskBinding.inflate(inflater, container, false);
         taskVM = new ViewModelProvider(requireActivity()).get(TaskViewModel.class);
         binding.setTaskVM(taskVM);
-        binding.setLifecycleOwner(this);
+        binding.setLifecycleOwner(getViewLifecycleOwner());
 
         //Initialize tasks and categories, it populates the lists, this is just for testing my ass
         taskVM.initializeTasks();

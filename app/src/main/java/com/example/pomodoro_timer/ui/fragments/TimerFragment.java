@@ -38,7 +38,7 @@ public class TimerFragment extends Fragment {
         timerVM = new ViewModelProvider(requireActivity()).get(TimerViewModel.class);
         taskVM = new ViewModelProvider(requireActivity()).get(TaskViewModel.class);
         binding.setTimerVM(timerVM);
-        binding.setLifecycleOwner(this);
+        binding.setLifecycleOwner(getViewLifecycleOwner());
 
         //Initialize things
         init();
