@@ -1,6 +1,7 @@
 package com.example.pomodoro_timer.ui.fragments.Settings;
 
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,7 @@ public class LoginSettingsFragment extends Fragment {
 
         //Context here
         onSignupClick();
+        showTogglePassword();
 
         return binding.getRoot();
     }
@@ -38,12 +40,22 @@ public class LoginSettingsFragment extends Fragment {
     private void onSignupClick(){
         binding.signUpTextBtnId.setOnClickListener(v -> {
             //Set visibility to GONE
-            binding.loginTitleId.setText("Sign Up");
+            binding.loginTitleId.setText(R.string.sign_up_title);
             binding.loginGroup.setVisibility(View.GONE);
             //Set Visibility to VISIBLE
             binding.signInGroup.setVisibility(View.VISIBLE);
 
         });
     }//End of onSignupClick
+
+    private void showTogglePassword(){
+        binding.showPasswordCheckboxId.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            int inputType = isChecked ? InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+                    : InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD;
+
+            binding.newPasswordInputId.setInputType(inputType);
+            binding.confirmPasswordInputId.setInputType(inputType);
+        });
+    }
 
 }
