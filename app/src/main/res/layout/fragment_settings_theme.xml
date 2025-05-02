@@ -1,52 +1,166 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:padding="16dp"
+    <data>
+        <variable
+            name="settingsVM"
+            type="com.example.pomodoro_timer.viewmodels.SettingsViewModel" />
+    </data>
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="1000dp">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:text="Theme Selection"
-            android:layout_width="200dp"
-            android:layout_height="30dp"/>
-        <Spinner
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:entries="@array/theme_options"/>
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:text="Alarm"
-            android:layout_marginTop="16dp"
-            android:layout_width="200dp"
-            android:layout_height="30dp"/>
+            <!-- Theme header title -->
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/theme_selection_title_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/themes_selection_title"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
 
-        <Spinner
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:entries="@array/alarm_options" />
+            <!-- Theme spinner -->
+            <RelativeLayout
+                android:id="@+id/theme_spinner_layout_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/background_gradient_card"
+                app:layout_constraintTop_toBottomOf="@+id/theme_selection_title_id">
 
-        <TextView
-            android:text="Allow Notifications"
-            android:layout_marginTop="16dp"
-            android:layout_width="200dp"
-            android:layout_height="30dp"/>
-        <Switch
-            android:layout_width="50dp"
-            android:layout_height="50dp"/>
+                <Spinner
+                    android:id="@+id/theme_spinner_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:padding="12dp"
+                    style="@style/Widget.App.Spinner"
+                    android:layout_marginVertical="8dp"/>
 
-        <TextView
-            android:text= "Nudge"
-            android:layout_marginTop="8dp"
-            android:layout_width="200dp"
-            android:layout_height="30dp"/>
-        <Switch
-            android:layout_width="50dp"
-            android:layout_height="50dp"/>
+            </RelativeLayout>
 
-    </LinearLayout>
-</ScrollView>
+            <!-- Alarm header title -->
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/alarm_title_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/alarm_title"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:layout_marginTop="20dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/theme_spinner_layout_id"/>
+
+            <!-- Alarm spinner -->
+            <RelativeLayout
+                android:id="@+id/alarm_spinner_layout_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_gradient_card"
+                android:layout_marginTop="20dp"
+                app:layout_constraintTop_toBottomOf="@+id/alarm_title_id">
+
+                <Spinner
+                    android:id="@+id/alarm_spinner_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:padding="12dp"
+                    style="@style/Widget.App.Spinner"
+                    android:layout_marginVertical="8dp"/>
+
+            </RelativeLayout>
+
+            <!-- Notifications header title -->
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/notification_title_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/notifications_label"
+                android:textColor="@color/white"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/alarm_spinner_layout_id" />
+
+            <!-- Allow notifications layout -->
+            <LinearLayout
+                android:id="@+id/allow_notification_layout_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_marginTop="12dp"
+                app:layout_constraintTop_toBottomOf="@+id/notification_title_id">
+
+                <!-- Allow notification label -->
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/allow_notification_label_id"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/allow_notifications_label"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:gravity="center|start"/>
+
+                <!-- Allow notifications switch -->
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/allow_notification_switch_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:thumbTint="@color/cropped_ellipse_color3"
+                    app:trackTint="@color/icon_bg1"
+                    android:thumb="@drawable/custom_switch_thumb"
+                    app:track="@drawable/custom_switch_track"/>
+            </LinearLayout>
+
+            <!-- Nudge layout -->
+            <LinearLayout
+                android:id="@+id/nudge_layout_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                app:layout_constraintTop_toBottomOf="@+id/allow_notification_layout_id">
+
+                <!-- Nudge label -->
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/nudge_label_id"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/nudge_label"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:gravity="center|start"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/allow_notification_layout_id"/>
+
+                <!-- Nudge switch -->
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/nudge_switch_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:thumbTint="@color/cropped_ellipse_color3"
+                    app:trackTint="@color/icon_bg1"
+                    android:thumb="@drawable/custom_switch_thumb"
+                    app:track="@drawable/custom_switch_track"
+                    app:layout_constraintTop_toBottomOf="@id/allow_notification_layout_id"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+            </LinearLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</layout>
+

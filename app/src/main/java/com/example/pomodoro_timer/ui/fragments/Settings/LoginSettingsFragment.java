@@ -31,11 +31,15 @@ public class LoginSettingsFragment extends Fragment {
         binding.setLifecycleOwner(getViewLifecycleOwner());
 
         //Context here
-        onSignupClick();
-        showTogglePassword();
+        initStuff();
 
         return binding.getRoot();
     }
+
+    private void initStuff(){
+        onSignupClick();
+        showTogglePassword();
+    }//End of initStuff method
 
     private void onSignupClick(){
         binding.signUpTextBtnId.setOnClickListener(v -> {
@@ -56,6 +60,6 @@ public class LoginSettingsFragment extends Fragment {
             binding.newPasswordInputId.setInputType(inputType);
             binding.confirmPasswordInputId.setInputType(inputType);
         });
-    }
+    }//End of showTogglePassword method
 
 }

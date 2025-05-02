@@ -48,6 +48,10 @@
     <string name="notifications_label">Notifications</string>
     <string name="privacy_label">Privacy</string>
     <string name="logout_label">Logout</string>
+    <string name="themes_selection_title">Theme Selection</string>
+    <string name="alarm_title">Alarm</string>
+    <string name="allow_notifications_label">Allow notifications</string>
+    <string name="nudge_label">Nudge</string>
 
     <!-- Used Theme Settings Fragment -->
     <string-array name="theme_options">
