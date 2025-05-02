@@ -88,6 +88,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/username_input"
                     android:inputType="text"
+                    android:text="@={settingsVM.loginUsername}"
                     android:textSize="16sp"/>
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -132,7 +133,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/password_input"
-                    android:inputType="text"
+                    android:inputType="textPassword"
+                    android:text="@={settingsVM.loginPassword}"
                     android:textSize="16sp"/>
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -242,6 +244,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/username_input"
                     android:inputType="text"
+                    android:text="@={settingsVM.signUpUsername}"
                     android:textSize="16sp"/>
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -287,6 +290,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/password_input"
                     android:inputType="textPassword"
+                    android:text="@={settingsVM.signUpPassword}"
                     android:textSize="16sp"/>
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -332,6 +336,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/confirm_password_input"
                     android:inputType="textPassword"
+                    android:text="@={settingsVM.signUpConfirmPassword}"
                     android:textSize="16sp"/>
             </com.google.android.material.textfield.TextInputLayout>
 
