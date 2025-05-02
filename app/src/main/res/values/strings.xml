@@ -44,6 +44,10 @@
     <string name="sign_in_label">Sign in</string>
     <string name="or_label">Or</string>
     <string name="google_title">Google</string>
+    <string name="edit_profile_label">Edit Profile</string>
+    <string name="notifications_label">Notifications</string>
+    <string name="privacy_label">Privacy</string>
+    <string name="logout_label">Logout</string>
 
     <!-- Used Theme Settings Fragment -->
     <string-array name="theme_options">

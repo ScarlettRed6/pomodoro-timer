@@ -13,6 +13,9 @@
     <color name="cropped_ellipse_color2">#F695F9</color>
     <color name="cropped_ellipse_color3">#ECE3FC</color>
 
+    <!-- Button colors -->
+    <color name="logout_btn_color">#80B54CAA</color>
+
     <!-- Icon colors -->
 
     <!-- Belongs to a linear gradient -->
