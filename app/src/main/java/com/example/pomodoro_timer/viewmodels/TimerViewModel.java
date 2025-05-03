@@ -33,6 +33,8 @@ public class TimerViewModel extends ViewModel {
     }
     public void setTotalTime(long totalTime) {
         this.totalTime = totalTime;
+        this.remainingTime = totalTime;
+        timerText.setValue(formatTime(totalTime));
     }
     public void setStartBtnIcon(ImageView startBtnIcon) {
         this.startBtnIcon = startBtnIcon;

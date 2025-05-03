@@ -2,6 +2,7 @@ package com.example.pomodoro_timer.viewmodels;
 
 import android.util.Log;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -25,6 +26,14 @@ public class SettingsViewModel extends ViewModel {
     private final MutableLiveData<String> selectedAlarm = new MutableLiveData<>("Alarm 1");
     private final MutableLiveData<Boolean> allowNotifications = new MutableLiveData<>(true);
     private final MutableLiveData<Boolean> allowNudge = new MutableLiveData<>(true);
+
+    //Timer Fields (Pomodoro, Short and Long break Timer values)
+    private final MutableLiveData<Integer> pomodoroMinutes= new MutableLiveData<>(25);
+    private final MutableLiveData<Integer> pomodoroSeconds= new MutableLiveData<>(0);
+    private final MutableLiveData<Integer> shortBreakMinutes= new MutableLiveData<>(5);
+    private final MutableLiveData<Integer> shortBreakSeconds= new MutableLiveData<>(0);
+    private final MutableLiveData<Integer> longBreakMinutes= new MutableLiveData<>(15);
+    private final MutableLiveData<Integer> longBreakSeconds= new MutableLiveData<>(0);
 
 
     //Getters and Setters
@@ -71,6 +80,44 @@ public class SettingsViewModel extends ViewModel {
 
     //Themes Getters and Setters
 
+
+    //Timer Getters and Setters
+    public LiveData<Integer> getPomodoroMinutes() {
+        return pomodoroMinutes;
+    }
+    public LiveData<Integer> getPomodoroSeconds() {
+        return pomodoroSeconds;
+    }
+    public LiveData<Integer> getShortBreakMinutes() {
+        return shortBreakMinutes;
+    }
+    public LiveData<Integer> getShortBreakSeconds() {
+        return shortBreakSeconds;
+        }
+    public LiveData<Integer> getLongBreakMinutes() {
+        return longBreakMinutes;
+    }
+    public LiveData<Integer> getLongBreakSeconds() {
+        return longBreakSeconds;
+    }
+    public void setPomodoroMinutes(int pomodoroMinutes) {
+        this.pomodoroMinutes.setValue(pomodoroMinutes);
+    }
+    public void setPomodoroSeconds(int pomodoroSeconds) {
+        this.pomodoroSeconds.setValue(pomodoroSeconds);
+    }
+    public void setShortBreakMinutes(int shortBreakMinutes) {
+        this.shortBreakMinutes.setValue(shortBreakMinutes);
+    }
+    public void setShortBreakSeconds(int shortBreakSeconds) {
+        this.shortBreakSeconds.setValue(shortBreakSeconds);
+    }
+    public void setLongBreakMinutes(int longBreakMinutes) {
+        this.longBreakMinutes.setValue(longBreakMinutes);
+    }
+    public void setLongBreakSeconds(int longBreakSeconds) {
+        this.longBreakSeconds.setValue(longBreakSeconds);
+    }
 
     //Constructor
     public SettingsViewModel(){

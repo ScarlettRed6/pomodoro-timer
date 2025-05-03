@@ -17,6 +17,7 @@ import com.example.pomodoro_timer.R;
 import com.example.pomodoro_timer.databinding.FragmentTimerBinding;
 import com.example.pomodoro_timer.model.TaskModel;
 import com.example.pomodoro_timer.ui.custom.TimerAnimationView;
+import com.example.pomodoro_timer.viewmodels.SettingsViewModel;
 import com.example.pomodoro_timer.viewmodels.TaskViewModel;
 import com.example.pomodoro_timer.viewmodels.TimerViewModel;
 
@@ -27,6 +28,7 @@ public class TimerFragment extends Fragment {
     private TimerAnimationView timerAnimView;
     private TaskViewModel taskVM;
     private FragmentTimerBinding binding;
+    private SettingsViewModel settingsVM;
 
     public TimerFragment(){
 
@@ -37,6 +39,8 @@ public class TimerFragment extends Fragment {
         binding = FragmentTimerBinding.inflate(inflater, container, false);
         timerVM = new ViewModelProvider(requireActivity()).get(TimerViewModel.class);
         taskVM = new ViewModelProvider(requireActivity()).get(TaskViewModel.class);
+        settingsVM = new ViewModelProvider(requireActivity()).get(SettingsViewModel.class);
+
         binding.setTimerVM(timerVM);
         binding.setLifecycleOwner(getViewLifecycleOwner());
 
@@ -44,14 +48,26 @@ public class TimerFragment extends Fragment {
         init();
 
         return binding.getRoot();
-    }
+    }//End of onCreateView method
 
     private void init(){
         taskVM.initializeTasks();
         taskVM.initializeCategories();
         setFirstPriorityTask();
         timerListener();
-    }
+        settingsVM.getPomodoroMinutes().observe(getViewLifecycleOwner(), minutes -> updateTimerTotalTime(settingsVM));
+        settingsVM.getPomodoroSeconds().observe(getViewLifecycleOwner(), seconds -> updateTimerTotalTime(settingsVM));
+    }//End of init method
+
+    private void updateTimerTotalTime(SettingsViewModel settingsVM) {
+        Integer minutes = settingsVM.getPomodoroMinutes().getValue();
+        Integer seconds = settingsVM.getPomodoroSeconds().getValue();
+
+        if (minutes != null && seconds != null) {
+            long totalTime = (minutes * 60L + seconds) * 1000L;
+            timerVM.setTotalTime(totalTime);
+        }
+    }//End of updateTimerTotalTime method
 
     private void timerListener(){
         timerAnimView = binding.timerAnimationViewId;

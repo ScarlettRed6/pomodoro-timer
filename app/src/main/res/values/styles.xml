@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Number picker custom style -->
+    <style name="NumberPickerTheme" parent="Theme.AppCompat.Light">
+        <item name="colorAccent">@color/icon_bg1</item>
+        <item name="colorControlNormal">@android:color/transparent</item>
+        <item name="android:textColorPrimary">@color/icon_bg2</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+</resources>
