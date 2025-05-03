@@ -9,4 +9,18 @@
         <item name="android:textSize">16sp</item>
     </style>
 
+    <!-- Custom dialog style -->
+    <style name="CustomDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <!-- Set your background here -->
+        <item name="android:windowBackground">@drawable/background_curved_white</item>
+        <!-- Other customizations (optional) -->
+        <item name="android:textColor">@color/count_down_color</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:windowTitleStyle">@style/CustomDialogTitleStyle</item>
+    </style>
+
+    <style name="CustomDialogTitleStyle" parent="TextAppearance.AppCompat.Title">
+        <item name="android:textColor">@color/count_down_color</item>
+    </style>
+
 </resources>

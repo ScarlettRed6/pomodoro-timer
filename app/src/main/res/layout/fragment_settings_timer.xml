@@ -30,9 +30,11 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Pomodoro"
-                    android:textSize="24sp"
-                    />
+                    android:text="@string/pomodoro_timer_picker_title"
+                    android:textSize="20sp"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:layout_margin="6dp"/>
 
                 <LinearLayout
                     android:id="@+id/pomodoro_minutes_seconds_picker_layout_id"
@@ -45,7 +47,7 @@
                         android:id="@+id/pomodoro_time_display_id"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="25:00"
+                        android:text="@string/pomodoro_timer_default_text"
                         android:textSize="20sp"
                         android:padding="10dp"
                         android:textAlignment="center"
@@ -56,6 +58,197 @@
                 </LinearLayout>
             </LinearLayout>
 
+            <!-- Short break timer picker -->
+            <LinearLayout
+                android:id="@+id/short_break_time_picker_layout_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/background_dim_curved_purple2"
+                app:layout_constraintTop_toBottomOf="@+id/pomodoro_time_picker_layout_id"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/short_break_timer_picker_title"
+                    android:textSize="20sp"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:layout_margin="6dp"/>
+
+                <LinearLayout
+                    android:id="@+id/short_break_minutes_seconds_picker_layout_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/background_curved_white"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/short_break_time_display_id"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/short_break_timer_default_text"
+                        android:textSize="20sp"
+                        android:padding="10dp"
+                        android:textAlignment="center"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:background="@drawable/background_curved_white" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Long break timer picker -->
+            <LinearLayout
+                android:id="@+id/long_break_time_picker_layout_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/background_dim_curved_purple2"
+                app:layout_constraintTop_toBottomOf="@+id/short_break_time_picker_layout_id"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/long_break_timer_picker_title"
+                    android:textSize="20sp"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:layout_margin="6dp"/>
+
+                <LinearLayout
+                    android:id="@+id/long_break_minutes_seconds_picker_layout_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/background_curved_white"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/long_break_time_display_id"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/long_break_timer_default_text"
+                        android:textSize="20sp"
+                        android:padding="10dp"
+                        android:textAlignment="center"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:background="@drawable/background_curved_white" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Long break interval control, Auto start pomodoro control, Auto start breaks control -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="16dp"
+                android:gravity="center_vertical"
+                android:layout_marginTop="34dp"
+                android:orientation="vertical"
+                android:background="@drawable/background_curved_white"
+                app:layout_constraintTop_toBottomOf="@+id/long_break_time_picker_layout_id"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <!-- Long break interval control -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:layout_margin="5dp">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/long_break_interval_label_id"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Long break interval"
+                        android:textColor="@color/icon_bg1"
+                        android:textStyle="bold"
+                        android:gravity="center|start"
+                        android:textSize="18sp"/>
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/pomodoro_count_id"
+                        android:layout_width="60dp"
+                        android:layout_height="50dp"
+                        android:inputType="number"
+                        android:background="@drawable/background_gradient_card"
+                        android:textAlignment="center"
+                        android:hint="@string/pomodoro_number_placeholder"
+                        android:autofillHints=""
+                        android:textColor="@color/white"
+                        android:textColorHint="@color/white"
+                        android:textStyle="bold"
+                        app:layout_constraintTop_toBottomOf="@id/priority_group"
+                        app:layout_constraintEnd_toEndOf="parent"/>
+                </LinearLayout>
+
+                <!-- Auto start pomodoro control -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:layout_margin="5dp">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/auto_start_pomodoro_label_id"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Auto start pomodoro"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/icon_bg1"
+                        android:gravity="center|start"/>
+
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/auto_start_pomodoro_switch_id"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:thumbTint="@color/cropped_ellipse_color3"
+                        app:trackTint="@color/icon_bg1"
+                        android:thumb="@drawable/custom_switch_thumb"
+                        app:track="@drawable/custom_switch_track"/>
+                </LinearLayout>
+
+                <!-- Auto start breaks control -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:layout_margin="5dp">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/auto_start_breaks_label_id"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Auto start breaks"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/icon_bg1"
+                        android:gravity="center|start"/>
+
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/auto_start_breaks_switch_id"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:thumbTint="@color/cropped_ellipse_color3"
+                        app:trackTint="@color/icon_bg1"
+                        android:thumb="@drawable/custom_switch_thumb"
+                        app:track="@drawable/custom_switch_track"/>
+                </LinearLayout>
+
+            </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

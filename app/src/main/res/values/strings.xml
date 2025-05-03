@@ -52,6 +52,9 @@
     <string name="alarm_title">Alarm</string>
     <string name="allow_notifications_label">Allow notifications</string>
     <string name="nudge_label">Nudge</string>
+    <string name="pomodoro_timer_picker_title">Pomodoro</string>
+    <string name="short_break_timer_picker_title">Short Break</string>
+    <string name="long_break_timer_picker_title">Long Break</string>
 
     <!-- Used Theme Settings Fragment -->
     <string-array name="theme_options">
@@ -85,5 +88,9 @@
     <string name="cancel_btn">Cancel</string>
     <string name="save_btn">Save</string>
     <string name="percent_placeholder">30%</string>
+    <string name="pomodoro_timer_default_text">25:00</string>
+    <string name="short_break_timer_default_text">05:00</string>
+    <string name="long_break_timer_default_text">15:00</string>
+    <string name="colon_text">:</string>
 
 </resources>
