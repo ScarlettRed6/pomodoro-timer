@@ -79,7 +79,30 @@ public class SettingsViewModel extends ViewModel {
     }
 
     //Themes Getters and Setters
-
+    public MutableLiveData<String> getSelectedTheme() {
+        return selectedTheme;
+    }
+    public MutableLiveData<String> getSelectedAlarm() {
+        return selectedAlarm;
+        }
+    public MutableLiveData<Boolean> getAllowNotifications() {
+        return allowNotifications;
+    }
+    public MutableLiveData<Boolean> getAllowNudge() {
+        return allowNudge;
+    }
+    public void setSelectedTheme(String selectedTheme) {
+        this.selectedTheme.setValue(selectedTheme);
+    }
+    public void setSelectedAlarm(String selectedAlarm) {
+        this.selectedAlarm.setValue(selectedAlarm);
+    }
+    public void setAllowNotifications(boolean allowNotifications) {
+        this.allowNotifications.setValue(allowNotifications);
+    }
+    public void setAllowNudge(boolean allowNudge) {
+        this.allowNudge.setValue(allowNudge);
+    }
 
     //Timer Getters and Setters
     public LiveData<Integer> getPomodoroMinutes() {
