@@ -20,6 +20,12 @@ public class SettingsViewModel extends ViewModel {
     private final MutableLiveData<String> signUpPassword = new MutableLiveData<>();
     private final MutableLiveData<String> signUpConfirmPassword = new MutableLiveData<>();
 
+    //Themes Fields
+    private final MutableLiveData<String> selectedTheme = new MutableLiveData<>("Theme 1");
+    private final MutableLiveData<String> selectedAlarm = new MutableLiveData<>("Alarm 1");
+    private final MutableLiveData<Boolean> allowNotifications = new MutableLiveData<>(true);
+    private final MutableLiveData<Boolean> allowNudge = new MutableLiveData<>(true);
+
 
     //Getters and Setters
     public MutableLiveData<Boolean> getIsLogin() {
@@ -62,6 +68,8 @@ public class SettingsViewModel extends ViewModel {
     public void setSignUpConfirmPassword(String signUpConfirmPassword) {
         this.signUpConfirmPassword.setValue(signUpConfirmPassword);
     }
+
+    //Themes Getters and Setters
 
 
     //Constructor
