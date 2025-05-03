@@ -50,13 +50,13 @@ public class ThemeSettingsFragment extends Fragment {
 
     private void themeSpinnerAdapter(){
         ArrayAdapter<String> themeAdapter = new ArrayAdapter<>(requireContext(), R.layout.item_theme_spinner, themeList);
-        themeAdapter.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
+        themeAdapter.setDropDownViewResource(R.layout.item_theme_spinner_dropdown);
         binding.themeSpinnerId.setAdapter(themeAdapter);
     }
 
     private void alarmSpinnerAdapter(){
-        ArrayAdapter<String> alarmAdapter = new ArrayAdapter<>(requireContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, alarmList);
-        alarmAdapter.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
+        ArrayAdapter<String> alarmAdapter = new ArrayAdapter<>(requireContext(), R.layout.item_theme_spinner, alarmList);
+        alarmAdapter.setDropDownViewResource(R.layout.item_theme_spinner_dropdown);
         binding.alarmSpinnerId.setAdapter(alarmAdapter);
     }
 
