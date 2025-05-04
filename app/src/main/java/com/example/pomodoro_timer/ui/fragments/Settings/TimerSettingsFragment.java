@@ -137,7 +137,7 @@ public class TimerSettingsFragment extends Fragment {
             int shortBreakSeconds = settingsVM.getShortBreakSeconds().getValue();
             minutePicker.setValue(shortBreakMinutes);
             secondPicker.setValue(shortBreakSeconds);
-            new androidx.appcompat.app.AlertDialog.Builder(requireContext(), R.style.CustomDialogTheme)
+             new androidx.appcompat.app.AlertDialog.Builder(requireContext(), R.style.CustomDialogTheme)
                     .setTitle("Set Short Break Timer")
                     .setView(dialogView)
                     .setPositiveButton("OK", (dialog, which) -> {

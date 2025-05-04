@@ -11,14 +11,26 @@
 
     <!-- Custom dialog style -->
     <style name="CustomDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <!-- Set your background here -->
         <item name="android:windowBackground">@drawable/background_curved_white</item>
-        <!-- Other customizations (optional) -->
         <item name="android:textColor">@color/count_down_color</item>
         <item name="android:textSize">16sp</item>
         <item name="android:windowTitleStyle">@style/CustomDialogTitleStyle</item>
+        <item name="colorAccent">@color/white</item> <!-- color of positive and negative buttons text.-->
+        <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
+        <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
     </style>
 
+    <!-- Custom positive button style -->
+    <style name="PositiveButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">@color/cropped_ellipse_color1</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <!-- Custom negative button style -->
+    <style name="NegativeButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">@color/cropped_ellipse_color2</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <!-- Custom dialog title style -->
     <style name="CustomDialogTitleStyle" parent="TextAppearance.AppCompat.Title">
         <item name="android:textColor">@color/count_down_color</item>
     </style>
