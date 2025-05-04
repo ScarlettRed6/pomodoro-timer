@@ -35,27 +35,20 @@
                     android:textColor="@color/white"
                     android:textStyle="bold"
                     android:layout_margin="6dp"/>
-
-                <LinearLayout
-                    android:id="@+id/pomodoro_minutes_seconds_picker_layout_id"
+                <!-- Pomodoro timer text display control -->
+                <TextView
+                    android:id="@+id/pomodoro_time_display_id"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/background_curved_white"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:id="@+id/pomodoro_time_display_id"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/pomodoro_timer_default_text"
-                        android:textSize="20sp"
-                        android:padding="10dp"
-                        android:textAlignment="center"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:background="@drawable/background_curved_white" />
-
-                </LinearLayout>
+                    android:text="@string/pomodoro_timer_default_text"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/icon_bg1"
+                    android:padding="10dp"
+                    android:textAlignment="center"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="@drawable/background_curved_white" />
             </LinearLayout>
 
             <!-- Short break timer picker -->
@@ -79,27 +72,20 @@
                     android:textColor="@color/white"
                     android:textStyle="bold"
                     android:layout_margin="6dp"/>
-
-                <LinearLayout
-                    android:id="@+id/short_break_minutes_seconds_picker_layout_id"
+                <!-- Short break timer text display control -->
+                <TextView
+                    android:id="@+id/short_break_time_display_id"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/background_curved_white"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:id="@+id/short_break_time_display_id"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/short_break_timer_default_text"
-                        android:textSize="20sp"
-                        android:padding="10dp"
-                        android:textAlignment="center"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:background="@drawable/background_curved_white" />
-
-                </LinearLayout>
+                    android:text="@string/short_break_timer_default_text"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/icon_bg1"
+                    android:padding="10dp"
+                    android:textAlignment="center"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="@drawable/background_curved_white" />
             </LinearLayout>
 
             <!-- Long break timer picker -->
@@ -123,27 +109,20 @@
                     android:textColor="@color/white"
                     android:textStyle="bold"
                     android:layout_margin="6dp"/>
-
-                <LinearLayout
-                    android:id="@+id/long_break_minutes_seconds_picker_layout_id"
+                <!-- Long break timer text display control -->
+                <TextView
+                    android:id="@+id/long_break_time_display_id"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/background_curved_white"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:id="@+id/long_break_time_display_id"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/long_break_timer_default_text"
-                        android:textSize="20sp"
-                        android:padding="10dp"
-                        android:textAlignment="center"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:background="@drawable/background_curved_white" />
-
-                </LinearLayout>
+                    android:text="@string/long_break_timer_default_text"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/icon_bg1"
+                    android:padding="10dp"
+                    android:textAlignment="center"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="@drawable/background_curved_white" />
             </LinearLayout>
 
             <!-- Long break interval control, Auto start pomodoro control, Auto start breaks control -->
@@ -170,7 +149,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Long break interval"
+                        android:text="@string/long_break_interval_label"
                         android:textColor="@color/icon_bg1"
                         android:textStyle="bold"
                         android:gravity="center|start"
@@ -204,7 +183,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Auto start pomodoro"
+                        android:text="@string/auto_start_pomodoro_label"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         android:textColor="@color/icon_bg1"
@@ -232,7 +211,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Auto start breaks"
+                        android:text="@string/auto_start_breaks_label"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         android:textColor="@color/icon_bg1"

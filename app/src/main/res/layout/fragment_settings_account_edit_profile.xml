@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="settingsVM"
+            type="com.example.pomodoro_timer.viewmodels.SettingsViewModel" />
+    </data>
+    
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- Guidelines -->
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintGuide_percent="0.07"
+            android:orientation="horizontal"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintGuide_percent="0.23"
+            android:orientation="horizontal"/>
+
+        <!-- End of  Guidelines -->
+
+        <ImageButton
+            android:id="@+id/back_btn_id"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_back_arrow"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/back_icon_arrow"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <!-- User profile picture -->
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/user_account_profile_pic_id"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/personal_pic_placeholder"
+            app:layout_constraintTop_toBottomOf="@+id/guideline1"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <!-- User name display -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/username_display_text_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/username_input"
+            android:textSize="20sp"
+            android:textColor="@color/white"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="20dp"
+            app:layout_constraintTop_toBottomOf="@+id/guideline1"
+            app:layout_constraintStart_toEndOf="@+id/user_account_profile_pic_id"/>
+
+        <!-- User email display -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/email_display_text_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/user_example_email"
+            android:textColor="@color/white"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="20dp"
+            app:layout_constraintTop_toBottomOf="@+id/username_display_text_id"
+            app:layout_constraintStart_toEndOf="@+id/user_account_profile_pic_id"/>
+
+        <!-- About me description -->
+        <LinearLayout
+            android:id="@+id/about_me_layout_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:padding="20dp"
+            android:background="@drawable/background_dim_curved_purple2"
+            app:layout_constraintTop_toBottomOf="@+id/guideline2">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/about_me_label_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/about_me_label"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/about_me_short_description_label_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/short_desc_label"
+                android:textSize="14sp"
+                android:textColor="@color/white"
+                android:layout_marginTop="10dp"/>
+
+        </LinearLayout>
+
+        <!-- Email display -->
+        <LinearLayout
+            android:id="@+id/user_email_layout_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:padding="20dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/background_dim_curved_purple2"
+            app:layout_constraintTop_toBottomOf="@+id/about_me_layout_id">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/user_email_label_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/email_label"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/user_email_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/user_example_email"
+                android:textSize="14sp"
+                android:textColor="@color/white"
+                android:layout_marginTop="10dp"/>
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

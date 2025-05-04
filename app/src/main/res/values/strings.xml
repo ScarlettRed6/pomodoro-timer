@@ -55,6 +55,9 @@
     <string name="pomodoro_timer_picker_title">Pomodoro</string>
     <string name="short_break_timer_picker_title">Short Break</string>
     <string name="long_break_timer_picker_title">Long Break</string>
+    <string name="user_example_email">user@example.com</string>
+    <string name="about_me_label">About Me</string>
+    <string name="email_label">Email</string>
 
     <!-- Used Theme Settings Fragment -->
     <string-array name="theme_options">
@@ -75,6 +78,7 @@
     <string name="category_icon">Category icon</string>
     <string name="dropdown_icon">Dropdown icon</string>
     <string name="google_icon">Google icon</string>
+    <string name="back_icon_arrow">Back arrow</string>
 
     <string name="selector_icon_laptop">Selected_laptop_icon</string>
     <string name="selector_icon_book">Selected_book_icon</string>
@@ -92,5 +96,8 @@
     <string name="short_break_timer_default_text">05:00</string>
     <string name="long_break_timer_default_text">15:00</string>
     <string name="colon_text">:</string>
+    <string name="long_break_interval_label">Long break interval</string>
+    <string name="auto_start_pomodoro_label">Auto start pomodoro</string>
+    <string name="auto_start_breaks_label">Auto start breaks</string>
 
 </resources>

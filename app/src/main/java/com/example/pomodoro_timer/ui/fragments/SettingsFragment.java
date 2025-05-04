@@ -1,6 +1,7 @@
 package com.example.pomodoro_timer.ui.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,14 +41,19 @@ public class SettingsFragment extends Fragment {
 //        binding.settingsTabLayoutId.addTab(binding.settingsTabLayoutId.newTab().setText("Appearance"));
 //        binding.settingsTabLayoutId.addTab(binding.settingsTabLayoutId.newTab().setText("Notifications"));
 
-        pagerAdapter();
-
+        initStuff();
 
         return binding.getRoot();
     }//End of onCreateView method
 
+    private void initStuff(){
+        isLogin = settingsVM.getIsLogin().getValue();//Sets isLogin to true or false
+        pagerAdapter();
+    }
+
     private void pagerAdapter(){
         SettingsPagerAdapter adapter = new SettingsPagerAdapter(this, isLogin);
+        Log.d("ACCOUNT STATUS", "IS LOGIN? " + isLogin);
         binding.settingsViewpager2Id.setAdapter(adapter);
 
         new TabLayoutMediator(binding.settingsTabLayoutId, binding.settingsViewpager2Id, (tab, position) -> {
