@@ -66,6 +66,7 @@ public class TimerFragment extends Fragment {
         if (minutes != null && seconds != null) {
             long totalTime = (minutes * 60L + seconds) * 1000L;
             timerVM.setTotalTime(totalTime);
+            timerVM.stopTimer();
         }
     }//End of updateTimerTotalTime method
 

@@ -12,7 +12,7 @@ public class SharedViewModel extends ViewModel {
     private final MutableLiveData<Boolean> inAddMode = new MutableLiveData<>(false);
 
     //User logged in fields
-    private final MutableLiveData<Boolean> isUserLoggedIn = new MutableLiveData<>(true); //Set true or false for testing purposes
+    private final MutableLiveData<Boolean> isUserLoggedIn = new MutableLiveData<>(false); //Set true or false for testing purposes
     private final MutableLiveData<String> currentUsername = new MutableLiveData<>("Username");
     private final MutableLiveData<Integer> currentUserId = new MutableLiveData<>(0);
 

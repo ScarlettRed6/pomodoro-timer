@@ -4,14 +4,210 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
+    <!-- Greetings text -->
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/greetings_user_text_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/fragment_ph_stats"
-        android:textSize="20sp"
+        android:text="Hi, User!"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Ego message text -->
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/ego_message_text_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="You're making excellent progress this week!"
+        app:layout_constraintTop_toBottomOf="@+id/greetings_user_text_id"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <!-- Week, Month and Year text -->
+    <RelativeLayout
+        android:id="@+id/theme_spinner_layout_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/background_dim_curved_purple2"
+        app:layout_constraintTop_toBottomOf="@+id/ego_message_text_id"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <Spinner
+            android:id="@+id/theme_spinner_id"
+            android:layout_width="160dp"
+            android:layout_height="20dp"
+            style="@style/Widget.App.Spinner"
+            android:layout_marginVertical="8dp"/>
+    </RelativeLayout>
+
+    <!-- Main stats -->
+    <RelativeLayout
+        android:id="@+id/main_stats_layout_id"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@drawable/background_curved_white"
+        android:layout_marginTop="10dp"
+        android:padding="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/theme_spinner_layout_id">
+
+        <LinearLayout
+            android:id="@+id/productivity_score_layout_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_gradient_purple2"
+            android:orientation="vertical">
+            <!-- Productivity Score -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:orientation="horizontal">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/productivity_text_id"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Productivity"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/productivity_percent_score_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="75%"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"/>
+
+            </LinearLayout>
+
+            <ProgressBar
+                android:id="@+id/category_progress"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:progress="75"
+                android:progressTint="@android:color/white"/>
+        </LinearLayout>
+
+        <!-- Total stats values -->
+        <LinearLayout
+            android:id="@+id/total_stats_values_layout_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="12dp"
+            android:layout_below="@+id/productivity_score_layout_id">
+
+            <!-- Total Pomodoro -->
+            <LinearLayout
+                android:id="@+id/total_pomodoros_layout_id"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:padding="6dp"
+                android:layout_marginEnd="6dp"
+                android:background="@drawable/background_gradient_purple2"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/pomodoro_image_icon_id"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_tomato"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/tomato_icon"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/pomodoro_count_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="20"
+                    android:layout_gravity="center"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/pomodoro_count_label_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/total_pomodoros_label"
+                    android:layout_gravity="center"/>
+
+            </LinearLayout>
+
+            <!-- Total focus -->
+            <LinearLayout
+                android:id="@+id/total_focus_layout_id"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:padding="6dp"
+                android:background="@drawable/background_gradient_purple2"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/focus_image_icon_id"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_tomato"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/tomato_icon"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/focus_count_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="14h"
+                    android:layout_gravity="center"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/focus_count_label_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/total_focus_label"
+                    android:layout_gravity="center"/>
+
+            </LinearLayout>
+
+            <!-- Total break times -->
+            <LinearLayout
+                android:id="@+id/break_time_layout_id"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:padding="6dp"
+                android:layout_marginStart="6dp"
+                android:background="@drawable/background_gradient_purple2"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/break_image_icon_id"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_tomato"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/tomato_icon"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/break_time_count_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="20"
+                    android:layout_gravity="center"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/break_time_count_label_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/total_break_times_label"
+                    android:layout_gravity="center"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

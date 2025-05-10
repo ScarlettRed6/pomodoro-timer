@@ -58,6 +58,9 @@
     <string name="user_example_email">user@example.com</string>
     <string name="about_me_label">About Me</string>
     <string name="email_label">Email</string>
+    <string name="total_pomodoros_label">Total pomodoros</string>
+    <string name="total_focus_label">Total focus</string>
+    <string name="total_break_times_label">Break time</string>
 
     <!-- Used Theme Settings Fragment -->
     <string-array name="theme_options">
@@ -79,6 +82,7 @@
     <string name="dropdown_icon">Dropdown icon</string>
     <string name="google_icon">Google icon</string>
     <string name="back_icon_arrow">Back arrow</string>
+    <string name="tomato_icon">Tomato icon</string>
 
     <string name="selector_icon_laptop">Selected_laptop_icon</string>
     <string name="selector_icon_book">Selected_book_icon</string>
