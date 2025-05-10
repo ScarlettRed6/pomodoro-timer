@@ -1,6 +1,16 @@
 package com.example.pomodoro_timer.model;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity(tableName = "tasks")
 public class TaskModel {
+
+    @PrimaryKey(autoGenerate = true)
+    private int id;
+
+    @ColumnInfo(name = "task_title")
     private String taskTitle;
     private int sessionCount;
     private int priorityLevel; //Levels: 1 = low, 2 = medium, 3 = high
@@ -16,8 +26,17 @@ public class TaskModel {
     }
 
     //Getters and Setters
-    public String getTitle(){
+    public int getId(){
+        return id;
+    }
+    public void setId(int id) {
+        this.id = id;
+    }
+    public String getTaskTitle(){
         return taskTitle;
+    }
+    public void setTaskTitle(String taskTitle){
+        this.taskTitle = taskTitle;
     }
     public int getSessionCount(){
         return sessionCount;
@@ -25,7 +44,7 @@ public class TaskModel {
     public int getPriorityLevel(){
         return priorityLevel;
     }
-    public String getCategory(){
+    public String getCategoryTitle(){
         return categoryTitle;
     }
     public String getTaskDescription(){

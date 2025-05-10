@@ -33,7 +33,7 @@
                 android:id="@+id/task_title_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{taskModel.title}"
+                android:text="@{taskModel.taskTitle}"
                 android:textSize="18sp"
                 app:layout_constraintStart_toEndOf="@+id/priority_level_dot_id"
                 app:layout_constraintEnd_toStartOf="@+id/session_count_id"
