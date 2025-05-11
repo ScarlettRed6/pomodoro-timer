@@ -150,6 +150,7 @@
             </LinearLayout>
 
             <!-- Adding existing tasks -->
+            <!--
             <LinearLayout
                 android:id="@+id/task_add_task_layout_id"
                 android:layout_width="match_parent"
@@ -186,7 +187,6 @@
                         android:scaleType="fitCenter" />
                 </LinearLayout>
 
-                <!-- RecyclerView for showing task list -->
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/task_recycler_view"
                     android:layout_width="match_parent"
@@ -197,7 +197,7 @@
                     android:overScrollMode="never"/>
 
             </LinearLayout>
-
+            -->
             <!-- Cancel and Save buttons -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/cancel_btn_id"
@@ -208,7 +208,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="16dp"
                 android:backgroundTint="@color/category_title_color3"
-                app:layout_constraintTop_toBottomOf="@+id/task_add_task_layout_id"
+                app:layout_constraintTop_toBottomOf="@+id/task_icon_selector_layout_id"
                 app:layout_constraintStart_toStartOf="parent"/>
 
             <com.google.android.material.button.MaterialButton
@@ -220,7 +220,7 @@
                 android:backgroundTint="@color/white"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="16dp"
-                app:layout_constraintTop_toBottomOf="@+id/task_add_task_layout_id"
+                app:layout_constraintTop_toBottomOf="@+id/task_icon_selector_layout_id"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

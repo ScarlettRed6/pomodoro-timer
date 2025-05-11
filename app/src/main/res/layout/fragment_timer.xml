@@ -10,7 +10,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:padding="16dp">
 
         <!-- Add guidelines/barriers here -->
         <androidx.constraintlayout.widget.Guideline
@@ -34,6 +35,7 @@
             android:layout_height="wrap_content"
             android:visibility="invisible"
             app:strokeWidth="0dp"
+            app:cardBackgroundColor="@android:color/transparent"
             app:layout_constraintBottom_toTopOf="@id/timer_animation_view_id"
             app:layout_constraintTop_toTopOf="parent">
 
