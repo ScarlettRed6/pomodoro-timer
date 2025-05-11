@@ -37,11 +37,11 @@ public class SharedViewModel extends ViewModel {
     }
 
     //User getters and Setters
-    public LiveData<Boolean> getIsUserLoggedIn() {
+    public MutableLiveData<Boolean> getIsUserLoggedIn() {
         return isUserLoggedIn;
     }
     public void setIsUserLoggedIn(boolean value) {
-        isUserLoggedIn.setValue(value);
+        this.isUserLoggedIn.postValue(value);
     }
     public LiveData<String> getCurrentUsername() {
         return currentUsername;

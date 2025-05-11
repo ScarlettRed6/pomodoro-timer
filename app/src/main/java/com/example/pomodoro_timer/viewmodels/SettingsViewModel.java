@@ -1,16 +1,26 @@
 package com.example.pomodoro_timer.viewmodels;
 
+import android.app.Application;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
-public class SettingsViewModel extends ViewModel {
+import com.example.pomodoro_timer.data.AppDatabase;
+import com.example.pomodoro_timer.model.UserModel;
+import com.example.pomodoro_timer.utils.SingleLiveEvent;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+public class SettingsViewModel extends AndroidViewModel {
 
     //Fields
-    private SharedViewModel sharedVM;
-    private final MutableLiveData<Boolean> isLogin = new MutableLiveData<>();
+    private final AppDatabase db;
+    private final ExecutorService executor;
+    private final SingleLiveEvent<Boolean> loginResult = new SingleLiveEvent<>();
 
     //Login Fields
     private final MutableLiveData<String> loginUsername = new MutableLiveData<>();
@@ -35,13 +45,9 @@ public class SettingsViewModel extends ViewModel {
     private final MutableLiveData<Integer> longBreakMinutes= new MutableLiveData<>(15);
     private final MutableLiveData<Integer> longBreakSeconds= new MutableLiveData<>(0);
 
-
     //Getters and Setters
-    public MutableLiveData<Boolean> getIsLogin() {
-        return isLogin;
-    }
-    private void setIsLogin(boolean isLogin) {
-        this.isLogin.setValue(isLogin);
+    public LiveData<Boolean> getLoginResult() {
+        return loginResult;
     }
 
     //Login getters and setters
@@ -143,13 +149,39 @@ public class SettingsViewModel extends ViewModel {
     }
 
     //Constructor
-    public SettingsViewModel(){
-        sharedVM = new SharedViewModel();
-        try{
-            setIsLogin(sharedVM.getIsUserLoggedIn().getValue());
-        }catch (NullPointerException e){
-            Log.d("SettingsViewModel", "AN EXCEPTION HAPPENED! SETTINGS VIEW MODEL!");
-        }
+    public SettingsViewModel(@NonNull Application application){
+        super(application);
+        db = AppDatabase.getInstance(application);
+        executor = Executors.newSingleThreadExecutor();
+    }//End of constructor
+
+    public void login(){
+        executor.execute(() -> {
+            UserModel user = db.userDao().getUserByUsernameNow(loginUsername.getValue());
+
+            if (user == null){
+                Log.d("SettingsViewModel", "User not found");
+                loginResult.postValue(false);
+                return;
+            }
+            if (user.getPassword().equals(loginPassword.getValue())){
+                Log.d("SettingsViewModel", "Login Successful");
+                loginResult.postValue(true);
+            } else {
+                Log.d("SettingsViewModel", "Login Failed");
+                loginResult.postValue(false);
+            }
+        });
+    }//End of login method
+
+    //For testing purposes
+    public void createTestUser(){
+        UserModel testUser = new UserModel("testuser", "1234", "test@example.com");
+        executor.execute(() -> {
+            if (db.userDao().getUserByUsername("testuser") == null) {
+                db.userDao().insert(testUser);
+            }
+        });
     }
 
 }

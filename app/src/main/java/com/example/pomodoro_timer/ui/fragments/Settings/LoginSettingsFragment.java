@@ -5,19 +5,25 @@ import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.pomodoro_timer.R;
 import com.example.pomodoro_timer.databinding.FragmentSettingsLoginAccountBinding;
 import com.example.pomodoro_timer.viewmodels.SettingsViewModel;
+import com.example.pomodoro_timer.viewmodels.SharedViewModel;
 
 public class LoginSettingsFragment extends Fragment {
 
     //Fields
     private FragmentSettingsLoginAccountBinding binding;
+    private SharedViewModel sharedVM;
     private SettingsViewModel settingsVM;
+    private NavController navController;
 
     public LoginSettingsFragment(){
 
@@ -27,6 +33,8 @@ public class LoginSettingsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         binding = FragmentSettingsLoginAccountBinding.inflate(inflater, container, false);
         settingsVM = new ViewModelProvider(requireActivity()).get(SettingsViewModel.class);
+        sharedVM = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
+        navController = NavHostFragment.findNavController(LoginSettingsFragment.this);
         binding.setSettingsVM(settingsVM);
         binding.setLifecycleOwner(getViewLifecycleOwner());
 
@@ -39,6 +47,7 @@ public class LoginSettingsFragment extends Fragment {
     private void initStuff(){
         onSignupClick();
         showTogglePassword();
+        onLoginClick();
     }//End of initStuff method
 
     private void onSignupClick(){
@@ -61,5 +70,17 @@ public class LoginSettingsFragment extends Fragment {
             binding.confirmPasswordInputId.setInputType(inputType);
         });
     }//End of showTogglePassword method
+
+    private void onLoginClick(){
+        binding.loginBtnId.setOnClickListener(v -> settingsVM.login());
+        settingsVM.getLoginResult().observe(getViewLifecycleOwner(), result -> {
+            if (result){
+                sharedVM.setIsUserLoggedIn(true);
+                navController.popBackStack(R.id.menu_timer, false);
+            }else{
+                Toast.makeText(getContext(), "Login Failed", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }//End of onLoginClick method
 
 }

@@ -8,11 +8,13 @@ import androidx.room.RoomDatabase;
 
 import com.example.pomodoro_timer.data.data_access_objects.CategoryDao;
 import com.example.pomodoro_timer.data.data_access_objects.TaskDao;
+import com.example.pomodoro_timer.data.data_access_objects.UserDao;
 import com.example.pomodoro_timer.model.CategoryModel;
 import com.example.pomodoro_timer.model.TaskModel;
+import com.example.pomodoro_timer.model.UserModel;
 
 @Database(
-        entities = { CategoryModel.class, TaskModel.class },
+        entities = { CategoryModel.class, TaskModel.class, UserModel.class },
         version = 1
 )
 public abstract class AppDatabase extends RoomDatabase {
@@ -20,6 +22,7 @@ public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase INSTANCE;
     public abstract CategoryDao categoryDao();
     public abstract TaskDao taskDao();
+    public abstract UserDao userDao();
 
     public static AppDatabase getInstance(final Context context) {
         if (INSTANCE == null) {
@@ -35,5 +38,5 @@ public abstract class AppDatabase extends RoomDatabase {
             }
         }
         return INSTANCE;
-    }
+    }//End of getInstance method
 }

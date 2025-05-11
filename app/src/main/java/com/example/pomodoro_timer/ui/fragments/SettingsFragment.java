@@ -16,12 +16,14 @@ import com.example.pomodoro_timer.databinding.FragmentSettingsBinding;
 import com.example.pomodoro_timer.ui.fragments.Settings.AccountSettingsFragment;
 import com.example.pomodoro_timer.utils.adapter.SettingsPagerAdapter;
 import com.example.pomodoro_timer.viewmodels.SettingsViewModel;
+import com.example.pomodoro_timer.viewmodels.SharedViewModel;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 public class SettingsFragment extends Fragment {
 
     //Fields
     private FragmentSettingsBinding binding;
+    private SharedViewModel sharedVM;
     private SettingsViewModel settingsVM;
     private boolean isLogin;
 
@@ -33,6 +35,7 @@ public class SettingsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         binding = FragmentSettingsBinding.inflate(inflater, container, false);
         settingsVM = new ViewModelProvider(requireActivity()).get(SettingsViewModel.class);
+        sharedVM = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
         binding.setSettingsVM(settingsVM);
         binding.setLifecycleOwner(getViewLifecycleOwner());
 
@@ -47,7 +50,7 @@ public class SettingsFragment extends Fragment {
     }//End of onCreateView method
 
     private void initStuff(){
-        isLogin = settingsVM.getIsLogin().getValue();//Sets isLogin to true or false
+        isLogin = sharedVM.getIsUserLoggedIn().getValue();//Sets isLogin to true or false
         pagerAdapter();
     }
 
