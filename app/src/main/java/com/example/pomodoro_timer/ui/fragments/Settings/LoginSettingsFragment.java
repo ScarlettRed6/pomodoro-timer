@@ -42,7 +42,7 @@ public class LoginSettingsFragment extends Fragment {
         initStuff();
 
         return binding.getRoot();
-    }
+    }//End of onCreateView
 
     private void initStuff(){
         onSignupClick();
@@ -89,9 +89,7 @@ public class LoginSettingsFragment extends Fragment {
     }//End of showTogglePassword method
 
     private void onSignUpClick(){
-        binding.signInBtnId.setOnClickListener(v -> {
-            settingsVM.signUp();
-        });
+        binding.signInBtnId.setOnClickListener(v -> settingsVM.signUp());
         settingsVM.getLoginResult().observe(getViewLifecycleOwner(), result -> {
             if (result){
                 sharedVM.setIsUserLoggedIn(true);
