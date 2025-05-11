@@ -48,8 +48,25 @@ public class LoginSettingsFragment extends Fragment {
         onSignupClick();
         showTogglePassword();
         onLoginClick();
+        onSignUpClick();
     }//End of initStuff method
 
+    //LOGIN FUNCTIONS
+    private void onLoginClick(){
+        binding.loginBtnId.setOnClickListener(v -> settingsVM.login());
+        settingsVM.getLoginResult().observe(getViewLifecycleOwner(), result -> {
+            if (result){
+                sharedVM.setIsUserLoggedIn(true);
+                sharedVM.setCurrentUsername(settingsVM.getLoginUsername().getValue());
+                navController.popBackStack(R.id.menu_timer, false);
+            }else{
+                String toastMessage = settingsVM.getToastLoginResultMessage().getValue();
+                Toast.makeText(getContext(), toastMessage, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }//End of onLoginClick method
+
+    //SIGNUP FUNCTIONS
     private void onSignupClick(){
         binding.signUpTextBtnId.setOnClickListener(v -> {
             //Set visibility to GONE
@@ -71,8 +88,10 @@ public class LoginSettingsFragment extends Fragment {
         });
     }//End of showTogglePassword method
 
-    private void onLoginClick(){
-        binding.loginBtnId.setOnClickListener(v -> settingsVM.login());
+    private void onSignUpClick(){
+        binding.signInBtnId.setOnClickListener(v -> {
+            settingsVM.signUp();
+        });
         settingsVM.getLoginResult().observe(getViewLifecycleOwner(), result -> {
             if (result){
                 sharedVM.setIsUserLoggedIn(true);
@@ -83,6 +102,6 @@ public class LoginSettingsFragment extends Fragment {
                 Toast.makeText(getContext(), toastMessage, Toast.LENGTH_SHORT).show();
             }
         });
-    }//End of onLoginClick method
+    }//End of onSignUpClick method
 
 }

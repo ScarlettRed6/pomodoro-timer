@@ -162,6 +162,7 @@ public class SettingsViewModel extends AndroidViewModel {
         executor = Executors.newSingleThreadExecutor();
     }//End of constructor
 
+    //LOGIN VIEWMODEL FUNCTIONS
     public void login(){
         executor.execute(() -> {
             UserModel user = db.userDao().getUserByUsernameNow(loginUsername.getValue());
@@ -173,9 +174,10 @@ public class SettingsViewModel extends AndroidViewModel {
                 return;
             }
             if (user.getPassword().equals(loginPassword.getValue())){
-                Log.d("SettingsViewModel", "Login Successful");
                 sessionManager.saveLoginSession(user.getId(), user.getUsername());
                 loginResult.postValue(true);
+                Log.d("SettingsViewModel", "Login Successful");
+                Log.d("USER INFO", "Username: " + user.getUsername() + " Password: " + user.getPassword() + " Email: " + user.getEmail() + " ID: " + user.getId());
             } else {
                 Log.d("SettingsViewModel", "Login Failed");
                 toastLoginResultMessage.postValue("Login Failed: Wrong password or username");
@@ -183,6 +185,29 @@ public class SettingsViewModel extends AndroidViewModel {
             }
         });
     }//End of login method
+
+    //SIGN UP VIEWMODEL FUNCTIONS
+    public void signUp(){
+        executor.execute(() -> {
+            if(signUpPassword.getValue().equals(signUpConfirmPassword.getValue())){
+                UserModel registerUser = new UserModel(signUpUsername.getValue(), signUpPassword.getValue(), "");
+                if (db.userDao().getUserByUsernameNow(registerUser.getUsername()) != null){
+                    toastLoginResultMessage.postValue("Username already exists");
+                    loginResult.postValue(false);
+                    return;
+                }
+                db.userDao().insert(registerUser);
+                sessionManager.saveLoginSession(registerUser.getId(), registerUser.getUsername());
+                loginUsername.postValue(signUpUsername.getValue());
+                loginResult.postValue(true);
+                Log.d("NEW USER INFO", "Username: " + signUpUsername.getValue() + " Password: " + signUpPassword.getValue());
+            }
+            else{
+                toastLoginResultMessage.postValue("Passwords do not match");
+                loginResult.postValue(false);
+            }
+        });
+    }//End of signUp method
 
     //For testing purposes
     public void createTestUser(){
