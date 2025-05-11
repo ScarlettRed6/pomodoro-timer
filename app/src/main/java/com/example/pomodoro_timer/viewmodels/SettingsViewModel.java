@@ -23,6 +23,7 @@ public class SettingsViewModel extends AndroidViewModel {
     private final ExecutorService executor;
     private final SessionManager sessionManager;
     private final SingleLiveEvent<Boolean> loginResult = new SingleLiveEvent<>();
+    private final MutableLiveData<String> toastLoginResultMessage = new MutableLiveData<>();
 
     //Login Fields
     private final MutableLiveData<String> loginUsername = new MutableLiveData<>();
@@ -50,6 +51,9 @@ public class SettingsViewModel extends AndroidViewModel {
     //Getters and Setters
     public LiveData<Boolean> getLoginResult() {
         return loginResult;
+    }
+    public LiveData<String> getToastLoginResultMessage() {
+        return toastLoginResultMessage;
     }
 
     //Login getters and setters
@@ -164,6 +168,7 @@ public class SettingsViewModel extends AndroidViewModel {
 
             if (user == null){
                 Log.d("SettingsViewModel", "User not found");
+                toastLoginResultMessage.postValue("User not found");
                 loginResult.postValue(false);
                 return;
             }
@@ -173,6 +178,7 @@ public class SettingsViewModel extends AndroidViewModel {
                 loginResult.postValue(true);
             } else {
                 Log.d("SettingsViewModel", "Login Failed");
+                toastLoginResultMessage.postValue("Login Failed: Wrong password or username");
                 loginResult.postValue(false);
             }
         });

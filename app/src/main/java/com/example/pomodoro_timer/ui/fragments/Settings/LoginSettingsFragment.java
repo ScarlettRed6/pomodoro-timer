@@ -79,7 +79,8 @@ public class LoginSettingsFragment extends Fragment {
                 sharedVM.setCurrentUsername(settingsVM.getLoginUsername().getValue());
                 navController.popBackStack(R.id.menu_timer, false);
             }else{
-                Toast.makeText(getContext(), "Login Failed", Toast.LENGTH_SHORT).show();
+                String toastMessage = settingsVM.getToastLoginResultMessage().getValue();
+                Toast.makeText(getContext(), toastMessage, Toast.LENGTH_SHORT).show();
             }
         });
     }//End of onLoginClick method
