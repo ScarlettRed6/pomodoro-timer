@@ -7,16 +7,22 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.pomodoro_timer.R;
 import com.example.pomodoro_timer.databinding.FragmentSettingsAccountControlsBinding;
+import com.example.pomodoro_timer.utils.shared_preferences.SessionManager;
 import com.example.pomodoro_timer.viewmodels.SettingsViewModel;
+import com.example.pomodoro_timer.viewmodels.SharedViewModel;
 
 public class AccountSettingsControl extends Fragment {
 
     //Fields
     private FragmentSettingsAccountControlsBinding binding;
     private SettingsViewModel settingsVM;
+    private SharedViewModel sharedVM;
+    private NavController navController;
 
     public AccountSettingsControl(){
 
@@ -26,18 +32,48 @@ public class AccountSettingsControl extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         binding = FragmentSettingsAccountControlsBinding.inflate(inflater, container, false);
         settingsVM = new ViewModelProvider(requireActivity()).get(SettingsViewModel.class);
+        sharedVM = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
+        navController = NavHostFragment.findNavController(AccountSettingsControl.this);
         binding.setSettingsVM(settingsVM);
         binding.setLifecycleOwner(getViewLifecycleOwner());
 
         //Context here
+        initStuff();
+
+        return binding.getRoot();
+    }//End of onCreateView
+
+    private void initStuff(){
+        setUsernameBySession();
+        onEditProfile();
+        onLogout();
+    }
+
+    private void setUsernameBySession(){
+        if (sharedVM.getIsUserLoggedIn().getValue()){
+            settingsVM.setLoginUsername(sharedVM.getCurrentUsername().getValue());
+        }
+    }//End of setUsernameBySession method
+
+    private void onLogout(){
+        SessionManager sessionManager = new SessionManager(requireContext());
+        binding.logoutBtnId.setOnClickListener(v -> {
+            sessionManager.clearLoginSession();
+            settingsVM.setLoginUsername(null);
+            settingsVM.setLoginPassword(null);
+            sharedVM.setIsUserLoggedIn(false);
+            sharedVM.setCurrentUsername("Username");
+            navController.popBackStack(R.id.menu_timer, false);
+        });
+    }//End of onLogout method
+
+    private void onEditProfile(){
         binding.editProfileLayoutId.setOnClickListener(v -> {
             requireActivity().getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragment_account_container_view_id, new AccountSettingsEditProfile())
                     .commit();
 
         });
-
-        return binding.getRoot();
-    }
+    }//End of onEditProfile method
 
 }

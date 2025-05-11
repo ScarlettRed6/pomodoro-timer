@@ -76,6 +76,7 @@ public class LoginSettingsFragment extends Fragment {
         settingsVM.getLoginResult().observe(getViewLifecycleOwner(), result -> {
             if (result){
                 sharedVM.setIsUserLoggedIn(true);
+                sharedVM.setCurrentUsername(settingsVM.getLoginUsername().getValue());
                 navController.popBackStack(R.id.menu_timer, false);
             }else{
                 Toast.makeText(getContext(), "Login Failed", Toast.LENGTH_SHORT).show();

@@ -19,6 +19,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.pomodoro_timer.R;
+import com.example.pomodoro_timer.utils.shared_preferences.SessionManager;
 import com.example.pomodoro_timer.viewmodels.SharedViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.textview.MaterialTextView;
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private View dropdownOverlay;
     private LinearLayout dropdownMenu;
     private MaterialTextView viewProfile;
+    private SharedViewModel sharedVM;
 
     //method for edge to edge(optional)
     protected void edge(){
@@ -59,6 +61,8 @@ public class MainActivity extends AppCompatActivity {
         mainLayout.setBackgroundResource(R.drawable.background_app1);
         profileContainer = findViewById(R.id.profile_container_id);
         viewProfile = findViewById(R.id.view_profile);
+        sharedVM = new ViewModelProvider(this).get(SharedViewModel.class);
+        restoreSession();
         setupNavigation();
         showFab();
         showProfileDropDown();
@@ -209,5 +213,13 @@ public class MainActivity extends AppCompatActivity {
         dropdownOverlay.setVisibility(View.GONE);
         dropdownMenu.setVisibility(View.GONE);
     }
+
+    private void restoreSession(){
+        SessionManager sessionManager = new SessionManager(this);
+        if(sessionManager.isLoggedIn()){
+            sharedVM.setIsUserLoggedIn(true);
+            sharedVM.setCurrentUsername(sessionManager.getUsername());
+        }
+    }//End of restoreSession method
 
 }

@@ -11,6 +11,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.pomodoro_timer.data.AppDatabase;
 import com.example.pomodoro_timer.model.UserModel;
 import com.example.pomodoro_timer.utils.SingleLiveEvent;
+import com.example.pomodoro_timer.utils.shared_preferences.SessionManager;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -20,6 +21,7 @@ public class SettingsViewModel extends AndroidViewModel {
     //Fields
     private final AppDatabase db;
     private final ExecutorService executor;
+    private final SessionManager sessionManager;
     private final SingleLiveEvent<Boolean> loginResult = new SingleLiveEvent<>();
 
     //Login Fields
@@ -151,6 +153,7 @@ public class SettingsViewModel extends AndroidViewModel {
     //Constructor
     public SettingsViewModel(@NonNull Application application){
         super(application);
+        sessionManager = new SessionManager(application);
         db = AppDatabase.getInstance(application);
         executor = Executors.newSingleThreadExecutor();
     }//End of constructor
@@ -166,6 +169,7 @@ public class SettingsViewModel extends AndroidViewModel {
             }
             if (user.getPassword().equals(loginPassword.getValue())){
                 Log.d("SettingsViewModel", "Login Successful");
+                sessionManager.saveLoginSession(user.getId(), user.getUsername());
                 loginResult.postValue(true);
             } else {
                 Log.d("SettingsViewModel", "Login Failed");
