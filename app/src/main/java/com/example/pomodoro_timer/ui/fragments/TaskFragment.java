@@ -23,7 +23,9 @@ import com.example.pomodoro_timer.utils.adapter.TaskAdapter;
 import com.example.pomodoro_timer.viewmodels.SharedViewModel;
 import com.example.pomodoro_timer.viewmodels.TaskViewModel;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class TaskFragment extends Fragment {
 
@@ -102,7 +104,12 @@ public class TaskFragment extends Fragment {
 
             @Override
             public void onDeleteTask(TaskModel task) {
-                Log.d("TaskAdapter", "DELETE TASK CLICKED!");
+                if (taskVM.getTaskList().getValue() != null) {
+                    List<TaskModel> currentList = new ArrayList<>(taskVM.getTaskList().getValue());
+                    currentList.remove(task);
+                    taskVM.setTaskList(currentList); // Notify observers
+                    Log.d("TaskAdapter", "DELETE TASK CLICKED!");
+                }
             }
         });
     }//End of taskAdapterHandle method

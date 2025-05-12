@@ -38,6 +38,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
    //This sets the list
    public void setTasks(List<TaskModel> tasks){
         this.taskList = tasks;
+        notifyDataSetChanged();
         //Log.d("TaskAdapter", "TEST SET TASKS!");
    }
    public List<TaskModel> getTaskList(){
