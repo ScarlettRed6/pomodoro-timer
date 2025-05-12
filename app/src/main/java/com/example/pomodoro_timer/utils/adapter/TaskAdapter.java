@@ -21,6 +21,19 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
 
     //Fields
    private List<TaskModel> taskList = new ArrayList<>();
+   private TaskItemMenuListener menuListener;
+
+   //Interface for callback
+    public interface TaskItemMenuListener{
+        void onEditTask(TaskModel task);
+        void onDeleteTask(TaskModel task);
+   }
+
+   //Constructor
+   public TaskAdapter(TaskItemMenuListener listener){
+        menuListener = listener;
+   }
+
 
    //This sets the list
    public void setTasks(List<TaskModel> tasks){
@@ -48,7 +61,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         return taskList.size();
     }
 
-    public static class TaskViewHolder extends RecyclerView.ViewHolder{
+    public class TaskViewHolder extends RecyclerView.ViewHolder{
        private ItemTaskBinding binding;
 
        public TaskViewHolder(ItemTaskBinding binding){
@@ -68,11 +81,13 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                     int itemId = item.getItemId();
                     if (itemId == R.id.edit_task) {
                         //ThisHandle edit task
-                        Log.d("TaskAdapter", "EDIT TASKED CLICKED!");
+                        menuListener.onEditTask(task);
+                        //Log.d("TaskAdapter", "EDIT TASKED CLICKED!");
                         return true;
                     } else if (itemId == R.id.delete_task) {
                         //This Handle delete task
-                        Log.d("TaskAdapter", "DELETE TASK CLICKED!");
+                        menuListener.onDeleteTask(task);
+                        //Log.d("TaskAdapter", "DELETE TASK CLICKED!");
                         return true;
                     }
                     return false;

@@ -84,9 +84,16 @@ public class AddTaskFragment extends Fragment {
             String newTitle = taskVM.getTaskTitle().getValue();
             int newSessionCount = 0;
             int newPriority = 1;
-            String newCategory = taskVM.getCategory().getValue().getCategoryTitle();
             String taskDescription = taskVM.getTaskDescription().getValue();
-            //Log.d("CHECK CATEGORY TITLE","CATEGORY TITLE: " + newCategory);
+            String newCategory = "";
+
+            try{
+                newCategory = taskVM.getCategory().getValue().getCategoryTitle();
+            }catch (NullPointerException e){
+                Log.d("AddTaskFragment", "NULL POINTER EXCEPTION ENCOUNTERED: category title");
+            }
+
+            Log.d("CHECK CATEGORY TITLE","CATEGORY TITLE: " + newCategory);
             //Log.d("CHECK TASK DESCRIPTION", "TASK DESCRIPTION: " + taskDescription);
 
             //Exception handlers

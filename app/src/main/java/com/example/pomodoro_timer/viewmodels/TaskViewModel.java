@@ -20,8 +20,8 @@ public class TaskViewModel extends ViewModel {
     //Fields
     private List<TaskModel> testTasks = new ArrayList<>();
     private List<CategoryModel> testCategories = new ArrayList<>();
-    private CategoryAdapter categoryAdapter = new CategoryAdapter();
-    private TaskAdapter adapter = new TaskAdapter();
+    //private CategoryAdapter categoryAdapter = new CategoryAdapter();
+    //private TaskAdapter adapter = new TaskAdapter();
 
     //Task list
     private MutableLiveData<List<TaskModel>> taskList = new MutableLiveData<>(new ArrayList<>());
@@ -41,21 +41,24 @@ public class TaskViewModel extends ViewModel {
     private MutableLiveData<CategoryModel> category = new MutableLiveData<>();
 
     //Getters and Setters
+    public List<TaskModel> getTestTasks(){
+        return testTasks;
+    }
     public LiveData<List<TaskModel>> getTaskList(){
         return taskList;
     }
     public LiveData<TaskModel> getFirstTask(){
         return firstTask;
     }
-    public TaskAdapter getAdapter(){
-        return adapter;
-    }
+//    public TaskAdapter getAdapter(){
+//        return adapter;
+//    }
     public LiveData<List<CategoryModel>> getCategoryList(){
         return categoryList;
     }
-    public CategoryAdapter getCategoryAdapter(){
-        return categoryAdapter;
-    }
+//    public CategoryAdapter getCategoryAdapter(){
+//        return categoryAdapter;
+//    }
     public void setTaskList(List<TaskModel> newList){
         taskList.setValue(newList);
         updateFirstTask();
@@ -111,7 +114,7 @@ public class TaskViewModel extends ViewModel {
         if (testTasks.isEmpty()) {
             testTasks.add(new TaskModel("Task 1", 4, 1, "", "eyo"));
             taskList.setValue(testTasks);
-            adapter.setTasks(testTasks);
+            //adapter.setTasks(testTasks);
         }
         //Log.d("TaskViewModel", "TEST INITIALIZE TASK!");
     }
@@ -119,7 +122,7 @@ public class TaskViewModel extends ViewModel {
         if (testCategories.isEmpty()) {
             testCategories.add(new CategoryModel("Work", R.drawable.ic_category_laptop));
             categoryList.setValue(testCategories);
-            categoryAdapter.setCategoryList(testCategories);
+            //categoryAdapter.setCategoryList(testCategories);
         }
     }
 
@@ -139,13 +142,13 @@ public class TaskViewModel extends ViewModel {
     public void addTask(String taskTitle, int sessionCount, int priorityLevel, String categoryTitle, String taskDescription){
         testTasks.add(new TaskModel(taskTitle, sessionCount, priorityLevel, categoryTitle, taskDescription));
         taskList.setValue(testTasks);
-        adapter.setTasks(testTasks);
+        //adapter.setTasks(testTasks);
     }
 
     public void addCategory(String categoryTitle, Integer icon){
         testCategories.add(new CategoryModel(categoryTitle, icon));
         categoryList.setValue(testCategories);
-        categoryAdapter.setCategoryList(testCategories);
+        //categoryAdapter.setCategoryList(testCategories);
     }
 
 }

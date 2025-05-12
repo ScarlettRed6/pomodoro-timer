@@ -1,6 +1,7 @@
 package com.example.pomodoro_timer.ui.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pomodoro_timer.R;
 import com.example.pomodoro_timer.databinding.FragmentTaskBinding;
+import com.example.pomodoro_timer.model.TaskModel;
+import com.example.pomodoro_timer.utils.adapter.CategoryAdapter;
+import com.example.pomodoro_timer.utils.adapter.TaskAdapter;
 import com.example.pomodoro_timer.viewmodels.SharedViewModel;
 import com.example.pomodoro_timer.viewmodels.TaskViewModel;
 
@@ -27,6 +31,8 @@ public class TaskFragment extends Fragment {
     private FragmentTaskBinding binding;
     private SharedViewModel sharedVM;
     private TaskViewModel taskVM;
+    private TaskAdapter taskAdapter;
+    private CategoryAdapter categoryAdapter;
 
     //Constructor
     public TaskFragment(){
@@ -37,37 +43,17 @@ public class TaskFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         binding = FragmentTaskBinding.inflate(inflater, container, false);
         taskVM = new ViewModelProvider(requireActivity()).get(TaskViewModel.class);
+        sharedVM = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
+
         binding.setTaskVM(taskVM);
         binding.setLifecycleOwner(getViewLifecycleOwner());
 
-        //Initialize tasks and categories, it populates the lists, this is just for testing my ass
-        taskVM.initializeTasks();
-        taskVM.initializeCategories();
+        //Context here
+        initStuff();
 
-        //For task recycler view
-        binding.taskRecyclerViewId.setLayoutManager(new LinearLayoutManager(getContext()));
-        binding.taskRecyclerViewId.setAdapter(taskVM.getAdapter());
-        //For category recycler view
-        binding.categoryRecyclerViewId.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        binding.categoryRecyclerViewId.setAdapter(taskVM.getCategoryAdapter());
-
-        featDraggableTask();
-        onAddBtnClick();
         sharedVM.setInAddMode(false);
         return binding.getRoot();
-    }
-
-    private void onAddBtnClick(){
-        sharedVM = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
-
-        sharedVM.getAddBtnClicked().observe(getViewLifecycleOwner(), clicked -> {
-            if(clicked){
-                NavHostFragment.findNavController(TaskFragment.this)
-                        .navigate(R.id.action_menu_task_to_addFragment);
-                sharedVM.getAddBtnClicked().setValue(false);
-            }
-        });
-    }
+    }//End of onCreateView
 
     @Override
     public void onResume() {
@@ -83,14 +69,71 @@ public class TaskFragment extends Fragment {
         });
     }
 
+    private void initStuff(){
+        taskAdapterHandle();
+        categoryAdapter = new CategoryAdapter();
+
+        taskVM.initializeTasks();
+        taskAdapter.setTasks(taskVM.getTaskList().getValue());
+        taskVM.initializeCategories();
+        categoryAdapter.setCategoryList(taskVM.getCategoryList().getValue());
+
+        //For task recycler view
+        binding.taskRecyclerViewId.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.taskRecyclerViewId.setAdapter(taskAdapter);
+        //For category recycler view
+        binding.categoryRecyclerViewId.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        binding.categoryRecyclerViewId.setAdapter(categoryAdapter);
+
+        featDraggableTask();
+        onAddBtnClick();
+        observeTaskAndCategory();
+    }//End of initStuff method
+
+    //Handle adapters
+    private void taskAdapterHandle(){
+        taskAdapter = new TaskAdapter(new TaskAdapter.TaskItemMenuListener(){
+
+            @Override
+            public void onEditTask(TaskModel task) {
+                //Later add functions for these call backs
+                Log.d("TaskAdapter", "EDIT TASKED CLICKED!");
+            }
+
+            @Override
+            public void onDeleteTask(TaskModel task) {
+                Log.d("TaskAdapter", "DELETE TASK CLICKED!");
+            }
+        });
+    }//End of taskAdapterHandle method
+
+    private void observeTaskAndCategory(){
+        taskVM.getTaskList().observe(getViewLifecycleOwner(), tasks -> {
+            taskAdapter.setTasks(tasks);
+        });
+        taskVM.getCategoryList().observe(getViewLifecycleOwner(), categories -> {
+            categoryAdapter.setCategoryList(categories);
+        });
+    }
+
+    private void onAddBtnClick(){
+        sharedVM.getAddBtnClicked().observe(getViewLifecycleOwner(), clicked -> {
+            if(clicked){
+                NavHostFragment.findNavController(TaskFragment.this)
+                        .navigate(R.id.action_menu_task_to_addFragment);
+                sharedVM.getAddBtnClicked().setValue(false);
+            }
+        });
+    }
+
     private void featDraggableTask(){
         ItemTouchHelper helper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, 0) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
                 int fromPosition = viewHolder.getAdapterPosition();
                 int toPosition = target.getAdapterPosition();
-                Collections.swap(taskVM.getAdapter().getTaskList(), fromPosition, toPosition);
-                taskVM.getAdapter().notifyItemMoved(fromPosition, toPosition);
+                Collections.swap(taskAdapter.getTaskList(), fromPosition, toPosition);
+                taskAdapter.notifyItemMoved(fromPosition, toPosition);
                 return true;
             }
 
