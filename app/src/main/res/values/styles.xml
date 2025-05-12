@@ -35,4 +35,17 @@
         <item name="android:textColor">@color/count_down_color</item>
     </style>
 
+    <!-- Custom popup menu style -->
+    <style name="PopupMenuStyle" parent="android:Theme.Holo.Light.DarkActionBar">
+        <item name="android:popupMenuStyle">@style/MyApp.PopupMenu</item>
+        <item name="android:textColor">@color/text_color</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="MyApp.PopupMenu" parent="android:Widget.Holo.Light.ListPopupWindow">
+        <item name="android:popupBackground">@drawable/background_curved_white</item>
+    </style>
+
+
+
 </resources>

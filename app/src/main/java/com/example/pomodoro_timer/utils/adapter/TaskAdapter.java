@@ -1,12 +1,16 @@
 package com.example.pomodoro_timer.utils.adapter;
 
+import android.content.Context;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.pomodoro_timer.R;
 import com.example.pomodoro_timer.databinding.ItemTaskBinding;
 import com.example.pomodoro_timer.model.TaskModel;
 
@@ -55,7 +59,27 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
        public void bind(TaskModel task){
             binding.setTaskModel(task);
             binding.executePendingBindings();
-       }
-   }
+
+            binding.taskOptionsMenuId.setOnClickListener(v -> {
+                Context wrapperTheme = new ContextThemeWrapper(v.getContext(), R.style.PopupMenuStyle);
+                PopupMenu popupMenu = new PopupMenu(wrapperTheme, v);
+                popupMenu.inflate(R.menu.task_item_options_menu);
+                popupMenu.setOnMenuItemClickListener(item -> {
+                    int itemId = item.getItemId();
+                    if (itemId == R.id.edit_task) {
+                        //ThisHandle edit task
+                        Log.d("TaskAdapter", "EDIT TASKED CLICKED!");
+                        return true;
+                    } else if (itemId == R.id.delete_task) {
+                        //This Handle delete task
+                        Log.d("TaskAdapter", "DELETE TASK CLICKED!");
+                        return true;
+                    }
+                    return false;
+                });//End of setOnMenuItemClickListener
+                popupMenu.show();
+            });
+       }//End of bind
+   }//End of TaskViewHolder
 
 }

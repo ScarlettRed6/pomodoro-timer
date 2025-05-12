@@ -16,6 +16,8 @@
     <!-- Button colors -->
     <color name="logout_btn_color">#80B54CAA</color>
 
+    <color name="text_color">#7356F3</color>
+
     <!-- Icon colors -->
 
     <!-- Belongs to a linear gradient -->
