@@ -1,6 +1,5 @@
 package com.example.pomodoro_timer.utils.adapter;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -15,12 +14,21 @@ import java.util.List;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
 
-    //Fields
-    private List<CategoryModel> categoryList = new ArrayList<>();
+    // Listener interface for category click
+    public interface CategoryClickListener {
+        void onCategoryClick();
+    }
 
-    public void setCategoryList(List<CategoryModel> categories){
+    private List<CategoryModel> categoryList = new ArrayList<>();
+    private final CategoryClickListener listener;
+
+    // Constructor with click listener
+    public CategoryAdapter(CategoryClickListener listener) {
+        this.listener = listener;
+    }
+
+    public void setCategoryList(List<CategoryModel> categories) {
         this.categoryList = categories;
-        //Log.d("CategoryAdapter", "TEST SET CATEGORY LIST!");
     }
 
     @NonNull
@@ -32,7 +40,15 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
     @Override
     public void onBindViewHolder(@NonNull CategoryViewHolder holder, int position) {
-        holder.bind(categoryList.get(position));
+        CategoryModel category = categoryList.get(position);
+        holder.bind(category);
+
+        // Make entire square clickable
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onCategoryClick();
+            }
+        });
     }
 
     @Override
@@ -40,18 +56,17 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         return categoryList == null ? 0 : categoryList.size();
     }
 
-    public static class CategoryViewHolder extends RecyclerView.ViewHolder{
-        private ItemCategoryBinding binding;
+    public static class CategoryViewHolder extends RecyclerView.ViewHolder {
+        private final ItemCategoryBinding binding;
 
-        public CategoryViewHolder(ItemCategoryBinding binding){
+        public CategoryViewHolder(ItemCategoryBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }
 
-        public void bind(CategoryModel category){
+        public void bind(CategoryModel category) {
             binding.setCategoryModel(category);
             binding.executePendingBindings();
         }
-    }//End of setCategoryList method
-
+    }
 }
