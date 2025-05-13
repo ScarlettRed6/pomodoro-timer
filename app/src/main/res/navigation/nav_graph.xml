@@ -86,4 +86,24 @@
             app:destination="@id/menu_task" />
     </fragment>
 
+    <fragment
+        android:id="@+id/editTaskFragment"
+        android:name="com.example.pomodoro_timer.ui.fragments.Tasks.EditTaskFragment"
+        android:label="EditTaskFragment"
+        tools:layout="@layout/fragment_edit_task">
+        <action
+            android:id="@+id/action_editTaskFragment_to_menu_task"
+            app:destination="@id/menu_task" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/editCategoryFragment"
+        android:name="com.example.pomodoro_timer.ui.fragments.Tasks.EditCategoryFragment"
+        android:label="EditCategoryFragment"
+        tools:layout="@layout/fragment_edit_category">
+        <action
+            android:id="@+id/action_editCategoryFragment_to_menu_task"
+            app:destination="@id/menu_task" />
+    </fragment>
+
 </navigation>

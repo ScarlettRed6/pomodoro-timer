@@ -37,6 +37,7 @@ public class TaskFragment extends Fragment {
     private TaskViewModel taskVM;
     private TaskAdapter taskAdapter;
     private CategoryAdapter categoryAdapter;
+    private NavController navController;
 
     //Constructor
     public TaskFragment(){
@@ -48,6 +49,7 @@ public class TaskFragment extends Fragment {
         binding = FragmentTaskBinding.inflate(inflater, container, false);
         taskVM = new ViewModelProvider(requireActivity()).get(TaskViewModel.class);
         sharedVM = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
+        navController = NavHostFragment.findNavController(this);
 
         binding.setTaskVM(taskVM);
         binding.setLifecycleOwner(getViewLifecycleOwner());
@@ -100,14 +102,7 @@ public class TaskFragment extends Fragment {
             @Override
             public void onEditTask(TaskModel task) {
                 Log.d("TaskAdapter", "EDIT TASK CLICKED!");
-
-                Fragment editTaskFragment = new EditTaskFragment();
-                requireActivity()
-                        .getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(((ViewGroup)getView().getParent()).getId(), editTaskFragment)
-                        .addToBackStack(null)
-                        .commit();
+                navController.navigate(R.id.editTaskFragment);
             }
 
             @Override
@@ -123,13 +118,7 @@ public class TaskFragment extends Fragment {
 
     private void categoryAdapterHandle(){
         categoryAdapter = new CategoryAdapter(() -> {
-            Fragment editCategoryFragment = new EditCategoryFragment();
-            requireActivity()
-                    .getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(((ViewGroup) getView().getParent()).getId(), editCategoryFragment)
-                    .addToBackStack(null)
-                    .commit();
+            navController.navigate(R.id.editCategoryFragment);
         });
     }//End of categoryAdapterHandle method
 
