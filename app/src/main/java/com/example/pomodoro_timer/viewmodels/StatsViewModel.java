@@ -5,6 +5,7 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.example.pomodoro_timer.data.AppDatabase;
 import com.example.pomodoro_timer.model.StatsModel;
@@ -16,10 +17,32 @@ import java.util.concurrent.Executors;
 
 public class StatsViewModel extends AndroidViewModel {
 
-
+    //Fields
     private final AppDatabase database;
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
+    private final MutableLiveData<Integer> productivityScore = new MutableLiveData<>();
+    private final MutableLiveData<Long> totalFocus = new MutableLiveData<>();
+    private final MutableLiveData<Long> breakTime = new MutableLiveData<>();
+    private final MutableLiveData<Integer> pomodoroSessions = new MutableLiveData<>();
+    private final MutableLiveData<Integer> taskID = new MutableLiveData<>();
+
+    //Getters and setters
+    public MutableLiveData<Integer> getProductivityScore() {
+        return productivityScore;
+    }
+    public MutableLiveData<Long> getTotalFocus() {
+        return totalFocus;
+    }
+    public MutableLiveData<Long> getBreakTime() {
+        return breakTime;
+    }
+    public MutableLiveData<Integer> getPomodoroSessions() {
+        return pomodoroSessions;
+    }
+    public MutableLiveData<Integer> getTaskID() {
+        return taskID;
+    }
 
     public StatsViewModel(@NonNull Application application) {
         super(application);

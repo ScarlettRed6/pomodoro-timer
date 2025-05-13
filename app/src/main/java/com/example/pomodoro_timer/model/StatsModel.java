@@ -20,7 +20,7 @@ public class StatsModel {
     public int breakTime;
 
     @ColumnInfo(name = "pomodoroSessions")
-    public int pomodoroSessions;
+    public int totalPomodoroSessions;
 
     @ColumnInfo(name = "taskID")
     public int taskID; // Foreign Key (assume related constraint handled elsewhere)

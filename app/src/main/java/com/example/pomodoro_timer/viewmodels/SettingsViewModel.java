@@ -200,6 +200,7 @@ public class SettingsViewModel extends AndroidViewModel {
                 sessionManager.saveLoginSession(registerUser.getId(), registerUser.getUsername());
                 loginUsername.postValue(signUpUsername.getValue());
                 loginResult.postValue(true);
+                clearSignUpFields();
                 Log.d("NEW USER INFO", "Username: " + signUpUsername.getValue() + " Password: " + signUpPassword.getValue());
             }
             else{
@@ -208,6 +209,12 @@ public class SettingsViewModel extends AndroidViewModel {
             }
         });
     }//End of signUp method
+
+    private void clearSignUpFields(){
+        signUpUsername.postValue("");
+        signUpPassword.postValue("");
+        signUpConfirmPassword.postValue("");
+    }//End of clearSignUpFields method
 
     //For testing purposes
     public void createTestUser(){

@@ -17,7 +17,7 @@ import com.example.pomodoro_timer.model.UserModel;
 
 @Database(
         entities = { CategoryModel.class, TaskModel.class, UserModel.class, StatsModel.class },
-        version = 1
+        version = 2
 )
 public abstract class AppDatabase extends RoomDatabase {
     private static final String DB_NAME = "pomodoro_timer_db";
@@ -36,10 +36,11 @@ public abstract class AppDatabase extends RoomDatabase {
                                     AppDatabase.class,
                                     DB_NAME
                             )
+                            .fallbackToDestructiveMigration()
                             .build();
                 }
             }
         }
         return INSTANCE;
-    }//End of getInstance method
+    }
 }
