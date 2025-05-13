@@ -40,10 +40,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
     @Override
     public void onBindViewHolder(@NonNull CategoryViewHolder holder, int position) {
-        CategoryModel category = categoryList.get(position);
-        holder.bind(category);
-
-        // Make entire square clickable
+        holder.bind(categoryList.get(position));
+        //Make entire square clickable
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) {
                 listener.onCategoryClick();

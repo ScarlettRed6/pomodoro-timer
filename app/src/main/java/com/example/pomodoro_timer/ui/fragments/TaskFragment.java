@@ -71,23 +71,11 @@ public class TaskFragment extends Fragment {
                 navController.popBackStack(R.id.menu_task, false);
             }
         });
-    }
+    }//End of onResume
 
     private void initStuff(){
         taskAdapterHandle();
-        categoryAdapter = new CategoryAdapter(new CategoryAdapter.CategoryClickListener() {
-            @Override
-            public void onCategoryClick() {
-                Fragment editCategoryFragment = new EditCategoryFragment();
-                requireActivity()
-                        .getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(((ViewGroup) getView().getParent()).getId(), editCategoryFragment)
-                        .addToBackStack(null)
-                        .commit();
-            }
-        });
-
+        categoryAdapterHandle();
         taskVM.initializeTasks();
         taskAdapter.setTasks(taskVM.getTaskList().getValue());
         taskVM.initializeCategories();
@@ -133,6 +121,17 @@ public class TaskFragment extends Fragment {
         });
     }//End of taskAdapterHandle method
 
+    private void categoryAdapterHandle(){
+        categoryAdapter = new CategoryAdapter(() -> {
+            Fragment editCategoryFragment = new EditCategoryFragment();
+            requireActivity()
+                    .getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(((ViewGroup) getView().getParent()).getId(), editCategoryFragment)
+                    .addToBackStack(null)
+                    .commit();
+        });
+    }//End of categoryAdapterHandle method
 
     private void observeTaskAndCategory(){
         taskVM.getTaskList().observe(getViewLifecycleOwner(), tasks -> {
