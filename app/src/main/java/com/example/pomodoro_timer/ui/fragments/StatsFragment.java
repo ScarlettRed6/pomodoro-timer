@@ -1,5 +1,6 @@
 package com.example.pomodoro_timer.ui.fragments;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -155,6 +156,9 @@ public class StatsFragment extends Fragment {
 
         barChart.getAxisRight().setEnabled(false);
         barChart.invalidate();
+
+        //Other styles for the bar graph
+        dataSet.setGradientColor(Color.parseColor("#7356F3"), Color.parseColor("#F790FA"));
 
     }//End of setupBarGraph method
 
