@@ -1,7 +1,6 @@
 package com.example.pomodoro_timer.utils.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -21,7 +20,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
 
     //Fields
    private List<TaskModel> taskList = new ArrayList<>();
-   private TaskItemMenuListener menuListener;
+   private final TaskItemMenuListener menuListener;
 
    //Interface for callback
     public interface TaskItemMenuListener{
@@ -63,7 +62,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     }
 
     public class TaskViewHolder extends RecyclerView.ViewHolder{
-       private ItemTaskBinding binding;
+       private final ItemTaskBinding binding;
 
        public TaskViewHolder(ItemTaskBinding binding){
            super(binding.getRoot());

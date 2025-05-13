@@ -105,9 +105,8 @@ public class TaskFragment extends Fragment {
             @Override
             public void onDeleteTask(TaskModel task) {
                 if (taskVM.getTaskList().getValue() != null) {
-                    List<TaskModel> currentList = new ArrayList<>(taskVM.getTaskList().getValue());
-                    currentList.remove(task);
-                    taskVM.setTaskList(currentList); // Notify observers
+                    taskVM.getTestTasks().remove(task);
+                    taskVM.setTaskList(taskVM.getTestTasks()); // Notify observers
                     Log.d("TaskAdapter", "DELETE TASK CLICKED!");
                 }
             }

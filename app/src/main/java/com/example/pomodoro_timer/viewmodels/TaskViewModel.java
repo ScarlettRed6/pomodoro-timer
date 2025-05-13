@@ -1,7 +1,6 @@
 package com.example.pomodoro_timer.viewmodels;
 
 import android.util.Log;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -9,8 +8,6 @@ import androidx.lifecycle.ViewModel;
 import com.example.pomodoro_timer.R;
 import com.example.pomodoro_timer.model.CategoryModel;
 import com.example.pomodoro_timer.model.TaskModel;
-import com.example.pomodoro_timer.utils.adapter.CategoryAdapter;
-import com.example.pomodoro_timer.utils.adapter.TaskAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,15 +15,15 @@ import java.util.List;
 public class TaskViewModel extends ViewModel {
 
     //Fields
-    private List<TaskModel> testTasks = new ArrayList<>();
-    private List<CategoryModel> testCategories = new ArrayList<>();
+    private final List<TaskModel> testTasks = new ArrayList<>();
+    private final List<CategoryModel> testCategories = new ArrayList<>();
     //private CategoryAdapter categoryAdapter = new CategoryAdapter();
     //private TaskAdapter adapter = new TaskAdapter();
 
     //Task list
-    private MutableLiveData<List<TaskModel>> taskList = new MutableLiveData<>(new ArrayList<>());
-    private MutableLiveData<TaskModel> firstTask = new MutableLiveData<>();
-    private MutableLiveData<List<CategoryModel>> categoryList = new MutableLiveData<>(new ArrayList<>());
+    private final MutableLiveData<List<TaskModel>> taskList = new MutableLiveData<>(new ArrayList<>());
+    private final MutableLiveData<TaskModel> firstTask = new MutableLiveData<>();
+    private final MutableLiveData<List<CategoryModel>> categoryList = new MutableLiveData<>(new ArrayList<>());
 
     //Task fields
     private final MutableLiveData<String> taskTitle = new MutableLiveData<>("");
@@ -142,6 +139,8 @@ public class TaskViewModel extends ViewModel {
     public void addTask(String taskTitle, int sessionCount, int priorityLevel, String categoryTitle, String taskDescription){
         testTasks.add(new TaskModel(taskTitle, sessionCount, priorityLevel, categoryTitle, taskDescription));
         taskList.setValue(testTasks);
+        Log.d("ALL TEST TASKS", testTasks.toString());
+        Log.d("ALL TaskList", taskList.getValue().toString());
         //adapter.setTasks(testTasks);
     }
 
