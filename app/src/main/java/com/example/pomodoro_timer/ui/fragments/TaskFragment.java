@@ -18,6 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.pomodoro_timer.R;
 import com.example.pomodoro_timer.databinding.FragmentTaskBinding;
 import com.example.pomodoro_timer.model.TaskModel;
+import com.example.pomodoro_timer.ui.fragments.Tasks.EditCategoryFragment;
+import com.example.pomodoro_timer.ui.fragments.Tasks.EditTaskFragment;
 import com.example.pomodoro_timer.utils.adapter.CategoryAdapter;
 import com.example.pomodoro_timer.utils.adapter.TaskAdapter;
 import com.example.pomodoro_timer.viewmodels.SharedViewModel;
@@ -73,7 +75,18 @@ public class TaskFragment extends Fragment {
 
     private void initStuff(){
         taskAdapterHandle();
-        categoryAdapter = new CategoryAdapter();
+        categoryAdapter = new CategoryAdapter(new CategoryAdapter.CategoryClickListener() {
+            @Override
+            public void onCategoryClick() {
+                Fragment editCategoryFragment = new EditCategoryFragment();
+                requireActivity()
+                        .getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(((ViewGroup) getView().getParent()).getId(), editCategoryFragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
 
         taskVM.initializeTasks();
         taskAdapter.setTasks(taskVM.getTaskList().getValue());
@@ -98,8 +111,15 @@ public class TaskFragment extends Fragment {
 
             @Override
             public void onEditTask(TaskModel task) {
-                //Later add functions for these call backs
-                Log.d("TaskAdapter", "EDIT TASKED CLICKED!");
+                Log.d("TaskAdapter", "EDIT TASK CLICKED!");
+
+                Fragment editTaskFragment = new EditTaskFragment();
+                requireActivity()
+                        .getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(((ViewGroup)getView().getParent()).getId(), editTaskFragment)
+                        .addToBackStack(null)
+                        .commit();
             }
 
             @Override
@@ -112,6 +132,7 @@ public class TaskFragment extends Fragment {
             }
         });
     }//End of taskAdapterHandle method
+
 
     private void observeTaskAndCategory(){
         taskVM.getTaskList().observe(getViewLifecycleOwner(), tasks -> {
