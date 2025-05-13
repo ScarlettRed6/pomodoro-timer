@@ -79,6 +79,9 @@ dependencies {
     implementation("androidx.navigation:navigation-fragment-ktx:$navVersion")
     implementation("androidx.navigation:navigation-ui-ktx:$navVersion")
 
+    //MPAndroidChart dependency
+    implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
+
     // Feature module support for Fragments
     implementation("androidx.navigation:navigation-dynamic-features-fragment:$navVersion")
 

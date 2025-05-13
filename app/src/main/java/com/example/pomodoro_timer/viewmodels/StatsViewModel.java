@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.pomodoro_timer.data.AppDatabase;
+import com.example.pomodoro_timer.model.PomodoroLogModel;
 import com.example.pomodoro_timer.model.StatsModel;
 
 import java.util.List;
@@ -26,6 +27,7 @@ public class StatsViewModel extends AndroidViewModel {
     private final MutableLiveData<Long> breakTime = new MutableLiveData<>();
     private final MutableLiveData<Integer> pomodoroSessions = new MutableLiveData<>();
     private final MutableLiveData<Integer> taskID = new MutableLiveData<>();
+    private final MutableLiveData<List<PomodoroLogModel>> pomodoroLogs = new MutableLiveData<>();
 
     //Getters and setters
     public MutableLiveData<Integer> getProductivityScore() {
@@ -43,11 +45,25 @@ public class StatsViewModel extends AndroidViewModel {
     public MutableLiveData<Integer> getTaskID() {
         return taskID;
     }
+    public LiveData<StatsModel> getStatsById(int id) {
+        return database.statsDao().getStatsById(id);
+    }
+    public LiveData<List<StatsModel>> getStatsByTask(int taskId) {
+        return database.statsDao().getStatsByTask(taskId);
+    }
 
+    public LiveData<List<StatsModel>> getAllStats() {
+        return database.statsDao().getAllStats();
+    }
+    public LiveData<List<PomodoroLogModel>> getPomodoroLogs(int userId, long start, long end) {
+        return database.pomodoroLogDao().getLogsBetween(userId, start, end);
+    }
+
+    //Constructor
     public StatsViewModel(@NonNull Application application) {
         super(application);
         database = AppDatabase.getInstance(application);
-    }
+    }//End of constructor
 
     public void insert(StatsModel stats) {
         executor.execute(() -> database.statsDao().insert(stats));
@@ -61,15 +77,4 @@ public class StatsViewModel extends AndroidViewModel {
         executor.execute(() -> database.statsDao().delete(stats));
     }
 
-    public LiveData<StatsModel> getStatsById(int id) {
-        return database.statsDao().getStatsById(id);
-    }
-
-    public LiveData<List<StatsModel>> getStatsByTask(int taskId) {
-        return database.statsDao().getStatsByTask(taskId);
-    }
-
-    public LiveData<List<StatsModel>> getAllStats() {
-        return database.statsDao().getAllStats();
-    }
 }

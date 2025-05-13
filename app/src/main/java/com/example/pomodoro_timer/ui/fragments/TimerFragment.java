@@ -15,9 +15,11 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.pomodoro_timer.R;
 import com.example.pomodoro_timer.databinding.FragmentTimerBinding;
+import com.example.pomodoro_timer.model.PomodoroLogModel;
 import com.example.pomodoro_timer.model.TaskModel;
 import com.example.pomodoro_timer.ui.custom.TimerAnimationView;
 import com.example.pomodoro_timer.viewmodels.SettingsViewModel;
+import com.example.pomodoro_timer.viewmodels.SharedViewModel;
 import com.example.pomodoro_timer.viewmodels.TaskViewModel;
 import com.example.pomodoro_timer.viewmodels.TimerViewModel;
 
@@ -29,6 +31,7 @@ public class TimerFragment extends Fragment {
     private TaskViewModel taskVM;
     private FragmentTimerBinding binding;
     private SettingsViewModel settingsVM;
+    private SharedViewModel sharedVM;
 
     public TimerFragment(){
 
@@ -40,6 +43,7 @@ public class TimerFragment extends Fragment {
         timerVM = new ViewModelProvider(requireActivity()).get(TimerViewModel.class);
         taskVM = new ViewModelProvider(requireActivity()).get(TaskViewModel.class);
         settingsVM = new ViewModelProvider(requireActivity()).get(SettingsViewModel.class);
+        sharedVM = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
 
         binding.setTimerVM(timerVM);
         binding.setLifecycleOwner(getViewLifecycleOwner());
@@ -57,6 +61,7 @@ public class TimerFragment extends Fragment {
         timerListener();
         settingsVM.getPomodoroMinutes().observe(getViewLifecycleOwner(), minutes -> updateTimerTotalTime(settingsVM));
         settingsVM.getPomodoroSeconds().observe(getViewLifecycleOwner(), seconds -> updateTimerTotalTime(settingsVM));
+        listenSession();
     }//End of init method
 
     private void updateTimerTotalTime(SettingsViewModel settingsVM) {
@@ -137,5 +142,28 @@ public class TimerFragment extends Fragment {
 
         });
     }//End of setFirstPriorityTask method
+
+    private void listenSession(){
+        timerVM.getSessionFinished().observe(getViewLifecycleOwner(), finished -> {
+            if(finished != null && finished){
+                recordSession();
+                timerVM.clearSessionFinished();
+            }
+        });
+    }//End of listenSession method
+
+    private void recordSession(){
+        Integer userId = sharedVM.getCurrentUserId().getValue();
+        if (userId == null) {
+            Log.e("TimerFragment", "User ID is null! Cannot log session.");
+            return;
+        }
+
+        long timestamp = System.currentTimeMillis();
+        int sessionCount = 1; // Each Pomodoro session = 1
+
+        PomodoroLogModel log = new PomodoroLogModel(userId, timestamp, sessionCount);
+        timerVM.insert(log);
+    }//End of recordSession method
 
 }

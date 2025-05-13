@@ -219,6 +219,7 @@ public class MainActivity extends AppCompatActivity {
         if(sessionManager.isLoggedIn()){
             sharedVM.setIsUserLoggedIn(true);
             sharedVM.setCurrentUsername(sessionManager.getUsername());
+            sharedVM.setCurrentUserId(sessionManager.getUserId());
         }
     }//End of restoreSession method
 

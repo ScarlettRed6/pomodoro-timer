@@ -197,7 +197,7 @@ public class SettingsViewModel extends AndroidViewModel {
                     return;
                 }
                 db.userDao().insert(registerUser);
-                sessionManager.saveLoginSession(registerUser.getId(), registerUser.getUsername());
+                sessionManager.saveLoginSession(registerUser.getId(), registerUser.getUsername()); //Remind me to modify sessionManager instance in SettingsViewModel or other ViewModel, Reason: Tightly coupled
                 loginUsername.postValue(signUpUsername.getValue());
                 loginResult.postValue(true);
                 clearSignUpFields();

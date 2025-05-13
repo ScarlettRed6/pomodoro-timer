@@ -222,6 +222,14 @@
 
             </LinearLayout>
 
+            <!-- Pomodoro count per week bar graph -->
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/pomodoro_count_per_week_bar_graph_id"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_margin="16dp"
+                android:layout_below="@+id/total_stats_values_layout_id"/>
+
         </RelativeLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

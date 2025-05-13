@@ -1,22 +1,34 @@
 package com.example.pomodoro_timer.viewmodels;
 
+import android.app.Application;
 import android.os.CountDownTimer;
 import android.util.Log;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.pomodoro_timer.R;
+import com.example.pomodoro_timer.data.AppDatabase;
+import com.example.pomodoro_timer.model.PomodoroLogModel;
 
-public class TimerViewModel extends ViewModel {
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+public class TimerViewModel extends AndroidViewModel {
 
     //Fields
+    private final AppDatabase database;
+    private final ExecutorService executor = Executors.newSingleThreadExecutor();
     private CountDownTimer countDownTimer;
     private long totalTime = 10 * 1000; // 25 * 60 * 1000 for 25 minutes
     private long remainingTime = totalTime;
     private boolean isRunning = false;
     private ImageView startBtnIcon;
+    private final MutableLiveData<Boolean> sessionFinished = new MutableLiveData<>(false);
 
     //Getters and setters
     public long getTotalTime() {
@@ -45,10 +57,12 @@ public class TimerViewModel extends ViewModel {
     public MutableLiveData<Float> getProgressAngle() {
         return progressAngle;
     }
-
     private final MutableLiveData<String> timerText = new MutableLiveData<>(formatTime(totalTime));
     public MutableLiveData<String> getTimerText() {
         return timerText;
+    }
+    public LiveData<Boolean> getSessionFinished() {
+        return sessionFinished;
     }
 
     //Format the time to display
@@ -76,10 +90,16 @@ public class TimerViewModel extends ViewModel {
                 progressAngle.setValue(360f);
                 timerText.setValue(formatTime(remainingTime));
                 startBtnIcon.setImageResource(R.drawable.ic_start);
+                sessionFinished.setValue(true);
             }
         };
         countDownTimer.start();
     }//End of startTimer method
+
+    public TimerViewModel(@NonNull Application application) {
+        super(application);
+        database = AppDatabase.getInstance(application);
+    }
 
     //Timer functions
     public void startOrResumeTimer(){
@@ -104,5 +124,23 @@ public class TimerViewModel extends ViewModel {
             isRunning = false;
         }
     }
+
+    public void clearSessionFinished() {
+        sessionFinished.setValue(false);
+    }
+
+    //Database functions
+    public void insert(PomodoroLogModel newLog) {
+        executor.execute(() -> {
+            PomodoroLogModel existingLog = database.pomodoroLogDao().getLogForUserAndDate(newLog.getUserId(), newLog.getTimestamp());
+
+            if (existingLog != null) {
+                existingLog.setSessionCount(existingLog.getSessionCount() + 1);
+                database.pomodoroLogDao().update(existingLog);
+            }else {
+                database.pomodoroLogDao().insert(newLog);
+            }
+        });
+    }//End of insert method
 
 }
