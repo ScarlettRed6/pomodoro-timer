@@ -32,6 +32,8 @@ public class TimerFragment extends Fragment {
     private FragmentTimerBinding binding;
     private SettingsViewModel settingsVM;
     private SharedViewModel sharedVM;
+    private Integer userId;
+    private boolean isUserLoggedIn = false;
 
     public TimerFragment(){
 
@@ -55,14 +57,24 @@ public class TimerFragment extends Fragment {
     }//End of onCreateView method
 
     private void init(){
+        checkUser();
+        timerVM.setUserLoggedIn(isUserLoggedIn);
         taskVM.initializeTasks();
         taskVM.initializeCategories();
         setFirstPriorityTask();
         timerListener();
         settingsVM.getPomodoroMinutes().observe(getViewLifecycleOwner(), minutes -> updateTimerTotalTime(settingsVM));
         settingsVM.getPomodoroSeconds().observe(getViewLifecycleOwner(), seconds -> updateTimerTotalTime(settingsVM));
-        listenSession();
+
+        if (isUserLoggedIn){
+            listenSession();
+        }
     }//End of init method
+
+    private void checkUser(){
+        userId = sharedVM.getCurrentUserId().getValue();
+        isUserLoggedIn = sharedVM.getIsUserLoggedIn().getValue();
+    }//End of checkUser method
 
     private void updateTimerTotalTime(SettingsViewModel settingsVM) {
         Integer minutes = settingsVM.getPomodoroMinutes().getValue();
@@ -81,7 +93,7 @@ public class TimerFragment extends Fragment {
         timerVM.getProgressAngle().observe(getViewLifecycleOwner(), angle -> {
             if(angle != null){
                 timerAnimView.setProgress(angle);
-                Log.d("ANGLE", "GOHDAYUM");
+                //Log.d("ANGLE", "THIS THANG IS BEING CALLED: TIMERFRAGMENT");
             }
         });
 
@@ -145,15 +157,18 @@ public class TimerFragment extends Fragment {
 
     private void listenSession(){
         timerVM.getSessionFinished().observe(getViewLifecycleOwner(), finished -> {
-            if(finished != null && finished){
-                recordSession();
+            if (finished != null && finished) {
+                // Only record the session if the user was logged in when the session started
+                if (isUserLoggedIn && timerVM.wasSessionStartedWhileLoggedIn()) {
+                    recordSession();
+                    timerVM.saveTotalFocus(userId, timerVM.getTotalTime());
+                }
                 timerVM.clearSessionFinished();
             }
         });
     }//End of listenSession method
 
     private void recordSession(){
-        Integer userId = sharedVM.getCurrentUserId().getValue();
         if (userId == null) {
             Log.e("TimerFragment", "User ID is null! Cannot log session.");
             return;

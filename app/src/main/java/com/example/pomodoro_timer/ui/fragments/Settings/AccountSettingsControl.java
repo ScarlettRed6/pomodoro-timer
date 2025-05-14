@@ -63,6 +63,7 @@ public class AccountSettingsControl extends Fragment {
             settingsVM.setLoginPassword(null);
             sharedVM.setIsUserLoggedIn(false);
             sharedVM.setCurrentUsername("Username");
+            sharedVM.setCurrentUserId(-1);  //Set to invalid user ID
             navController.popBackStack(R.id.menu_timer, false);
         });
     }//End of onLogout method

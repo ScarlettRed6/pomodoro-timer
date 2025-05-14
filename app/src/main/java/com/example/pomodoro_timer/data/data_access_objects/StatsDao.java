@@ -24,6 +24,9 @@ public interface StatsDao {
     int delete(StatsModel stats);
 
     @Query("SELECT * FROM stats WHERE userId = :userId LIMIT 1")
+    StatsModel getStatsByUserRaw(int userId);
+
+    @Query("SELECT * FROM stats WHERE userId = :userId LIMIT 1")
     LiveData<StatsModel> getStatsByUser(int userId);
 
     @Query("SELECT * FROM stats WHERE id = :id")

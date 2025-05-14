@@ -14,7 +14,11 @@ import androidx.lifecycle.ViewModel;
 import com.example.pomodoro_timer.R;
 import com.example.pomodoro_timer.data.AppDatabase;
 import com.example.pomodoro_timer.model.PomodoroLogModel;
+import com.example.pomodoro_timer.model.StatsModel;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -28,6 +32,8 @@ public class TimerViewModel extends AndroidViewModel {
     private long remainingTime = totalTime;
     private boolean isRunning = false;
     private ImageView startBtnIcon;
+    private boolean isUserLoggedIn = false;
+    private boolean sessionStartedWhileLoggedIn = false;
     private final MutableLiveData<Boolean> sessionFinished = new MutableLiveData<>(false);
 
     //Getters and setters
@@ -50,6 +56,13 @@ public class TimerViewModel extends AndroidViewModel {
     }
     public void setStartBtnIcon(ImageView startBtnIcon) {
         this.startBtnIcon = startBtnIcon;
+    }
+    public void setUserLoggedIn(boolean loggedIn) {
+        this.isUserLoggedIn = loggedIn;
+        // Reset session tracking state when login state changes
+        if (!loggedIn) {
+            sessionStartedWhileLoggedIn = false;
+        }
     }
 
     //Getters and setters for live data
@@ -105,6 +118,7 @@ public class TimerViewModel extends AndroidViewModel {
     public void startOrResumeTimer(){
         if(isRunning) return;
         isRunning = true;
+        sessionStartedWhileLoggedIn = isUserLoggedIn;
         startTimer();
     }
 
@@ -129,6 +143,10 @@ public class TimerViewModel extends AndroidViewModel {
         sessionFinished.setValue(false);
     }
 
+    public boolean wasSessionStartedWhileLoggedIn() {
+        return sessionStartedWhileLoggedIn;
+    }
+
     //Database functions
     public void insert(PomodoroLogModel newLog) {
         executor.execute(() -> {
@@ -142,5 +160,37 @@ public class TimerViewModel extends AndroidViewModel {
             }
         });
     }//End of insert method
+
+    public void saveTotalFocus(int userId, long sessionDuration) {
+        if (userId <= 0) return;
+
+        double hours = (double) sessionDuration / (1000 * 60 * 60);
+
+        executor.execute(() -> {
+            StatsModel stats = database.statsDao().getStatsByUserRaw(userId);
+            if (stats != null) {
+                double newTotalFocus = stats.getTotalFocus() + hours;
+                stats.setTotalFocus(newTotalFocus);
+                database.statsDao().update(stats);
+
+                Log.d("CHECK TOTAL FOCUS", "TOTAL FOCUS: " + newTotalFocus);
+            } else {
+                Log.w("saveTotalFocus", "No StatsModel found for userId: " + userId);
+            }
+        });
+    }//End of saveTotalFocus method
+
+    public long getTodayMidnightMillis() {
+        // Set time to 00:00:00.000 of today
+        Date now = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        String formattedDate = sdf.format(now);
+        try {
+            Date date = sdf.parse(formattedDate);
+            return date != null ? date.getTime() : System.currentTimeMillis();
+        } catch (Exception e) {
+            return System.currentTimeMillis();
+        }
+    }
 
 }

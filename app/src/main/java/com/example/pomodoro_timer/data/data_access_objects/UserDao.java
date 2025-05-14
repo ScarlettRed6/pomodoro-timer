@@ -21,6 +21,9 @@ public interface UserDao {
     @Delete
     int delete(UserModel user);
 
+    @Query("SELECT * FROM users")
+    UserModel getAllUsers();
+
     @Query("SELECT * FROM users WHERE username = :username")
     LiveData<UserModel> getUserByUsername(String username); //for observing
 

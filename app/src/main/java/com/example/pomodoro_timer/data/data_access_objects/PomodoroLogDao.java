@@ -21,6 +21,9 @@ public interface PomodoroLogDao {
     @Update
     void update(PomodoroLogModel pomodoroLog);
 
+    @Query("SELECT SUM(session_count) FROM pomodoro_logs WHERE user_id = :userId")
+    int getTotalPomodoroSessions(int userId);
+
     @Query("SELECT * FROM pomodoro_logs WHERE user_id = :userId AND timestamp = :timestamp LIMIT 1")
     LiveData<PomodoroLogModel> getLogForDate(int userId, long timestamp);
 
@@ -30,7 +33,6 @@ public interface PomodoroLogDao {
     @Query("SELECT * FROM pomodoro_logs WHERE user_id = :userId AND timestamp BETWEEN :start AND :end")
     LiveData<List<PomodoroLogModel>> getLogsBetween(int userId, long start, long end);
 
-    @Query("SELECT * FROM pomodoro_logs WHERE user_id = :userId AND date(timestamp / 1000, 'unixepoch') = date(:timestamp / 1000, 'unixepoch') LIMIT 1")
+    @Query("SELECT * FROM pomodoro_logs WHERE user_id = :userId AND strftime('%Y-%m-%d', timestamp / 1000, 'unixepoch', 'localtime') = strftime('%Y-%m-%d', :timestamp / 1000, 'unixepoch', 'localtime') LIMIT 1")
     PomodoroLogModel getLogForUserAndDate(int userId, long timestamp);
-
 }

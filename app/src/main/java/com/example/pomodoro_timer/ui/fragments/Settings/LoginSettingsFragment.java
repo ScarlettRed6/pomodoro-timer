@@ -2,6 +2,7 @@ package com.example.pomodoro_timer.ui.fragments.Settings;
 
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,8 +57,13 @@ public class LoginSettingsFragment extends Fragment {
         binding.loginBtnId.setOnClickListener(v -> settingsVM.login());
         settingsVM.getLoginResult().observe(getViewLifecycleOwner(), result -> {
             if (result){
+                //Update shared view model with user info
                 sharedVM.setIsUserLoggedIn(true);
                 sharedVM.setCurrentUsername(settingsVM.getLoginUsername().getValue());
+
+                int userId = settingsVM.getUserId().getValue();
+                sharedVM.setCurrentUserId(userId);
+                Log.d("USER ID - LOGIN", "User ID: " + userId);
                 navController.popBackStack(R.id.menu_timer, false);
             }else{
                 String toastMessage = settingsVM.getToastLoginResultMessage().getValue();
@@ -94,6 +100,10 @@ public class LoginSettingsFragment extends Fragment {
             if (result){
                 sharedVM.setIsUserLoggedIn(true);
                 sharedVM.setCurrentUsername(settingsVM.getLoginUsername().getValue());
+
+                int userId = settingsVM.getUserId().getValue();
+                sharedVM.setCurrentUserId(userId);
+                Log.d("USER ID - SIGNUP", "User ID: " + userId);
                 navController.popBackStack(R.id.menu_timer, false);
             }else{
                 String toastMessage = settingsVM.getToastLoginResultMessage().getValue();

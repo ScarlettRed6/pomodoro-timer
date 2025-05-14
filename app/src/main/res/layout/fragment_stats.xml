@@ -136,7 +136,7 @@
                         android:id="@+id/pomodoro_count_id"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="20"
+                        android:text="@{String.valueOf(statsVM.pomodoroSessions)}"
                         android:layout_gravity="center"/>
 
                     <com.google.android.material.textview.MaterialTextView
@@ -171,7 +171,7 @@
                         android:id="@+id/focus_count_id"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="14h"
+                        android:text='@{String.valueOf(statsVM.totalFocus)+ "h"}'
                         android:layout_gravity="center"/>
 
                     <com.google.android.material.textview.MaterialTextView
@@ -207,7 +207,7 @@
                         android:id="@+id/break_time_count_id"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="20"
+                        android:text="@{String.valueOf(statsVM.productivityScore)}"
                         android:layout_gravity="center"/>
 
                     <com.google.android.material.textview.MaterialTextView

@@ -24,6 +24,7 @@ public class SettingsViewModel extends AndroidViewModel {
     private final SessionManager sessionManager;
     private final SingleLiveEvent<Boolean> loginResult = new SingleLiveEvent<>();
     private final MutableLiveData<String> toastLoginResultMessage = new MutableLiveData<>();
+    private final MutableLiveData<Integer> userIdHolder = new MutableLiveData<>(0);
 
     //Login Fields
     private final MutableLiveData<String> loginUsername = new MutableLiveData<>();
@@ -54,6 +55,12 @@ public class SettingsViewModel extends AndroidViewModel {
     }
     public LiveData<String> getToastLoginResultMessage() {
         return toastLoginResultMessage;
+    }
+    public LiveData<Integer> getUserId() {
+        return userIdHolder;
+    }
+    public void setUserId(Integer userId) {
+        this.userIdHolder.setValue(userId);
     }
 
     //Login getters and setters
@@ -175,6 +182,7 @@ public class SettingsViewModel extends AndroidViewModel {
             }
             if (user.getPassword().equals(loginPassword.getValue())){
                 sessionManager.saveLoginSession(user.getId(), user.getUsername());
+                userIdHolder.postValue(sessionManager.getUserId());
                 loginResult.postValue(true);
                 Log.d("SettingsViewModel", "Login Successful");
                 Log.d("USER INFO", "Username: " + user.getUsername() + " Password: " + user.getPassword() + " Email: " + user.getEmail() + " ID: " + user.getId());
@@ -196,8 +204,9 @@ public class SettingsViewModel extends AndroidViewModel {
                     loginResult.postValue(false);
                     return;
                 }
-                db.userDao().insert(registerUser);
-                sessionManager.saveLoginSession(registerUser.getId(), registerUser.getUsername()); //Remind me to modify sessionManager instance in SettingsViewModel or other ViewModel, Reason: Tightly coupled
+                long userId = db.userDao().insert(registerUser); // This returns the auto-generated ID
+                sessionManager.saveLoginSession((int) userId, registerUser.getUsername()); //Remind me to modify sessionManager instance in SettingsViewModel or other ViewModel, Reason: Tightly coupled
+                userIdHolder.postValue(sessionManager.getUserId());
                 loginUsername.postValue(signUpUsername.getValue());
                 loginResult.postValue(true);
                 clearSignUpFields();

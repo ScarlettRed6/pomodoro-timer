@@ -14,7 +14,7 @@ public class StatsModel {
     public int productivityScore;
 
     @ColumnInfo(name = "totalFocus")
-    public int totalFocus;
+    public double totalFocus;
 
     @ColumnInfo(name = "breakTime")
     public int breakTime;
@@ -26,12 +26,15 @@ public class StatsModel {
     public int userID;
 
     //Constructor
-    public StatsModel(int productivityScore, int totalFocus, int breakTime, int totalPomodoroSessions) {
+    public StatsModel(int productivityScore, double totalFocus, int breakTime, int totalPomodoroSessions, int userID) {
         this.productivityScore = productivityScore;
         this.totalFocus = totalFocus;
         this.breakTime = breakTime;
         this.totalPomodoroSessions = totalPomodoroSessions;
+        this.userID = userID;
     }
+
+    public StatsModel() {}
 
     //Getters and Setters
     public int getId() {
@@ -46,10 +49,10 @@ public class StatsModel {
     public void setProductivityScore(int productivityScore) {
         this.productivityScore = productivityScore;
     }
-    public int getTotalFocus() {
+    public double getTotalFocus() {
         return totalFocus;
     }
-    public void setTotalFocus(int totalFocus) {
+    public void setTotalFocus(double totalFocus) {
         this.totalFocus = totalFocus;
     }
     public int getBreakTime() {

@@ -2,6 +2,7 @@ package com.example.pomodoro_timer.ui.fragments;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,17 +59,31 @@ public class StatsFragment extends Fragment {
 
         //Context here
         initStuff();
+        Log.d("Log_user_id", "User ID: " + sharedVM.getCurrentUserId().getValue() + "Username: " + sharedVM.getCurrentUsername().getValue());
 
         return binding.getRoot();
     }//End of onCreateView method
 
     private void initStuff(){
         barChart = binding.pomodoroCountPerWeekBarGraphId;
-        userId = sharedVM.getCurrentUserId().getValue();
+        listenSessionUserId();
         dateFilter = Arrays.asList("Week", "Month", "Year");
         dateSpinnerAdapter();
-        handleBarGraph();
+        checkUserLoggedIn();
     }//End of initStuff method
+
+    private void checkUserLoggedIn(){
+        boolean isUserLoggedIn = sharedVM.getIsUserLoggedIn().getValue();
+        if (isUserLoggedIn){
+            statsVM.resetStats();
+            userId = sharedVM.getCurrentUserId().getValue();
+            handleBarGraph();
+            updateFirstStats();
+        } else {
+            barChart.clear();
+            statsVM.resetStats();
+        }
+    }//End of checkUserLoggedIn method
 
     private void dateSpinnerAdapter(){
         ArrayAdapter<String> dateAdapter = new ArrayAdapter<>(requireContext(), R.layout.item_theme_spinner, dateFilter);
@@ -94,38 +109,54 @@ public class StatsFragment extends Fragment {
         });
     }//End of handleBarGraph method
 
-    private void setupBarGraph(List<PomodoroLogModel> logs){
-        List<BarEntry> entries = new ArrayList<>();
-        Map<String, Integer> dailySessions = new TreeMap<>();
+    private void listenSessionUserId(){
+        sharedVM.getCurrentUserId().observe(getViewLifecycleOwner(), id -> {
+            if (this.userId != id) {  // Only update if ID has changed
+                this.userId = id;
+                // Important: Force reload stats when user ID changes
+                if (sharedVM.getIsUserLoggedIn().getValue()) {
+                    handleBarGraph();
+                    updateFirstStats();
+                }
+            }
+        });
+    }
 
-        //Create map for last 7 days with 0 by default
-        SimpleDateFormat sdf = new SimpleDateFormat("EEE", Locale.getDefault()); //"Mon", "Tue", etc.
-        List<String> last7Days = new ArrayList<>();
+    private void setupBarGraph(List<PomodoroLogModel> logs){
+        Log.d("DATE TODAYS", "DATE: " + System.currentTimeMillis());
+        List<BarEntry> entries = new ArrayList<>();
+
+        SimpleDateFormat keyFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        SimpleDateFormat labelFormat = new SimpleDateFormat("EEE", Locale.getDefault());
+        List<String> labels = new ArrayList<>();
+        Map<String, Integer> dailySessions = new TreeMap<>();
 
         long now = System.currentTimeMillis();
         long oneDayMillis = 24 * 60 * 60 * 1000;
 
         for (int i = 6; i >= 0; i--) {
             Date date = new Date(now - i * oneDayMillis);
-            String dayName = sdf.format(date);
-            last7Days.add(dayName);
-            dailySessions.put(dayName, 0); //Fill 0 by default
+            String key = keyFormat.format(date);     // Unique key
+            String label = labelFormat.format(date); // "Mon", "Tue", etc.
+            dailySessions.put(key, 0); // Initialize with 0
+            labels.add(label);         // Add label for X-axis
         }
 
         //Aggregate logs into the map
         for (PomodoroLogModel log : logs) {
-            String dayName = sdf.format(new Date(log.getTimestamp()));
-            if (dailySessions.containsKey(dayName)) {
-                int current = dailySessions.get(dayName);
-                dailySessions.put(dayName, current + log.getSessionCount());
+            String key = keyFormat.format(new Date(log.getTimestamp()));
+            if (dailySessions.containsKey(key)) {
+                int current = dailySessions.get(key);
+                dailySessions.put(key, current + log.getSessionCount());
             }
         }
 
         //This Build entries using correct X index
-        for (int i = 0; i < last7Days.size(); i++) {
-            String day = last7Days.get(i);
-            int count = dailySessions.get(day);
-            entries.add(new BarEntry(i, count));
+        int index = 0;
+        for (String key : dailySessions.keySet()) {
+            int count = dailySessions.get(key);
+            entries.add(new BarEntry(index, count));
+            index++;
         }
 
         //The Chart setup
@@ -138,7 +169,7 @@ public class StatsFragment extends Fragment {
         barChart.getDescription().setEnabled(false);
 
         XAxis xAxis = barChart.getXAxis();
-        xAxis.setValueFormatter(new IndexAxisValueFormatter(last7Days));
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(labels));
         xAxis.setGranularity(1f);
         xAxis.setGranularityEnabled(true);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
@@ -161,5 +192,9 @@ public class StatsFragment extends Fragment {
         dataSet.setGradientColor(Color.parseColor("#7356F3"), Color.parseColor("#F790FA"));
 
     }//End of setupBarGraph method
+
+    private void updateFirstStats(){
+        statsVM.updateStats(userId);
+    }
 
 }

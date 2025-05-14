@@ -3,6 +3,7 @@ package com.example.pomodoro_timer.ui.activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 
@@ -50,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
 
         //Put context here
         angInit();
@@ -220,6 +222,7 @@ public class MainActivity extends AppCompatActivity {
             sharedVM.setIsUserLoggedIn(true);
             sharedVM.setCurrentUsername(sessionManager.getUsername());
             sharedVM.setCurrentUserId(sessionManager.getUserId());
+            Log.d("LOG_RESTORE_SESSION", "Session restored CALLED");
         }
     }//End of restoreSession method
 
