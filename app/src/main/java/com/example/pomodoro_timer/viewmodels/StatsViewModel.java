@@ -48,9 +48,6 @@ public class StatsViewModel extends AndroidViewModel {
     public LiveData<StatsModel> getStatsById(int id) {
         return database.statsDao().getStatsById(id);
     }
-    public LiveData<List<StatsModel>> getStatsByTask(int taskId) {
-        return database.statsDao().getStatsByTask(taskId);
-    }
 
     public LiveData<List<StatsModel>> getAllStats() {
         return database.statsDao().getAllStats();

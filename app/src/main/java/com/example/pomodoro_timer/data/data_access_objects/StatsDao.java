@@ -23,11 +23,11 @@ public interface StatsDao {
     @Delete
     int delete(StatsModel stats);
 
+    @Query("SELECT * FROM stats WHERE userId = :userId LIMIT 1")
+    LiveData<StatsModel> getStatsByUser(int userId);
+
     @Query("SELECT * FROM stats WHERE id = :id")
     LiveData<StatsModel> getStatsById(int id);
-
-    @Query("SELECT * FROM stats WHERE taskID = :taskId")
-    LiveData<List<StatsModel>> getStatsByTask(int taskId);
 
     @Query("SELECT * FROM stats")
     LiveData<List<StatsModel>> getAllStats();

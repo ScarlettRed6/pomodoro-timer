@@ -81,7 +81,7 @@ public class TimerFragment extends Fragment {
         timerVM.getProgressAngle().observe(getViewLifecycleOwner(), angle -> {
             if(angle != null){
                 timerAnimView.setProgress(angle);
-                //Log.d("ANGLE", "GOHDAYUM");
+                Log.d("ANGLE", "GOHDAYUM");
             }
         });
 

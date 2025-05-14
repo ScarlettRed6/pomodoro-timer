@@ -99,7 +99,7 @@ public class StatsFragment extends Fragment {
         Map<String, Integer> dailySessions = new TreeMap<>();
 
         //Create map for last 7 days with 0 by default
-        SimpleDateFormat sdf = new SimpleDateFormat("EEE", Locale.getDefault()); // "Mon", "Tue", etc.
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE", Locale.getDefault()); //"Mon", "Tue", etc.
         List<String> last7Days = new ArrayList<>();
 
         long now = System.currentTimeMillis();
@@ -109,7 +109,7 @@ public class StatsFragment extends Fragment {
             Date date = new Date(now - i * oneDayMillis);
             String dayName = sdf.format(date);
             last7Days.add(dayName);
-            dailySessions.put(dayName, 0); // Fill 0 by default
+            dailySessions.put(dayName, 0); //Fill 0 by default
         }
 
         //Aggregate logs into the map
