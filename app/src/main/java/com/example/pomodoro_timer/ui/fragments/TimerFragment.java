@@ -33,6 +33,8 @@ public class TimerFragment extends Fragment {
     private SettingsViewModel settingsVM;
     private SharedViewModel sharedVM;
     private Integer userId;
+    private Integer pMinutes, sMinutes, lMinutes;
+    private Integer pSeconds, sSeconds, lSeconds;
     private boolean isUserLoggedIn = false;
 
     public TimerFragment(){
@@ -63,8 +65,9 @@ public class TimerFragment extends Fragment {
         taskVM.initializeCategories();
         setFirstPriorityTask();
         timerListener();
-        settingsVM.getPomodoroMinutes().observe(getViewLifecycleOwner(), minutes -> updateTimerTotalTime(settingsVM));
-        settingsVM.getPomodoroSeconds().observe(getViewLifecycleOwner(), seconds -> updateTimerTotalTime(settingsVM));
+        initializeTimers();
+        settingsVM.getPomodoroMinutes().observe(getViewLifecycleOwner(), minutes -> updateTimerTotalTime());
+        settingsVM.getPomodoroSeconds().observe(getViewLifecycleOwner(), seconds -> updateTimerTotalTime());
 
         if (isUserLoggedIn){
             listenSession();
@@ -76,15 +79,19 @@ public class TimerFragment extends Fragment {
         isUserLoggedIn = sharedVM.getIsUserLoggedIn().getValue();
     }//End of checkUser method
 
-    private void updateTimerTotalTime(SettingsViewModel settingsVM) {
-        Integer minutes = settingsVM.getPomodoroMinutes().getValue();
-        Integer seconds = settingsVM.getPomodoroSeconds().getValue();
+    private void initializeTimers(){
+        //For pomodoro timer
+        pMinutes = settingsVM.getPomodoroMinutes().getValue();
+        pSeconds = settingsVM.getPomodoroSeconds().getValue();
+    }
 
-        if (minutes != null && seconds != null) {
-            long totalTime = (minutes * 60L + seconds) * 1000L;
+    private void updateTimerTotalTime() {
+        if (pMinutes != null && pSeconds != null) {
+            long totalTime = (pMinutes * 60L + pSeconds) * 1000L;
             timerVM.setTotalTime(totalTime);
             timerVM.stopTimer();
-        }
+        }//End of pomodoro timer condition statement
+
     }//End of updateTimerTotalTime method
 
     private void timerListener(){
@@ -157,8 +164,8 @@ public class TimerFragment extends Fragment {
 
     private void listenSession(){
         timerVM.getSessionFinished().observe(getViewLifecycleOwner(), finished -> {
-            if (finished != null && finished) {
-                // Only record the session if the user was logged in when the session started
+            if (finished != null && finished) {//If session is finished
+
                 if (isUserLoggedIn && timerVM.wasSessionStartedWhileLoggedIn()) {
                     recordSession();
                     timerVM.saveTotalFocus(userId, timerVM.getTotalTime());
@@ -170,7 +177,7 @@ public class TimerFragment extends Fragment {
 
     private void recordSession(){
         if (userId == null) {
-            Log.e("TimerFragment", "User ID is null! Cannot log session.");
+            Log.e("LOG_USER_ID_TIMER_FRAGMENT", "User ID is null! Cannot log session.");
             return;
         }
 

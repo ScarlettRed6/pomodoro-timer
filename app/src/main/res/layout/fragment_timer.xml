@@ -156,5 +156,18 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
 
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/session_type_text_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{timerVM.timerTypeText}"
+            android:textSize="18sp"
+            android:textStyle="italic"
+            android:layout_margin="10dp"
+            android:textColor="@color/count_down_color"
+            app:layout_constraintBottom_toTopOf="@+id/timer_text_id"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

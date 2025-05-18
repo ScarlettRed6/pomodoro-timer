@@ -31,10 +31,15 @@ public class TimerViewModel extends AndroidViewModel {
     private long totalTime = 10 * 1000; // 25 * 60 * 1000 for 25 minutes
     private long remainingTime = totalTime;
     private boolean isRunning = false;
-    private ImageView startBtnIcon;
+    private ImageView startBtnIcon; //Fix this later
     private boolean isUserLoggedIn = false;
     private boolean sessionStartedWhileLoggedIn = false;
+    private final MutableLiveData<Integer> defaultLBInterval = new MutableLiveData<>(1);
+    private final MutableLiveData<Integer> currentLongBreakInterval = new MutableLiveData<>(defaultLBInterval.getValue());
     private final MutableLiveData<Boolean> sessionFinished = new MutableLiveData<>(false);
+    private final MutableLiveData<Float> progressAngle = new MutableLiveData<>(360f);
+    private final MutableLiveData<String> timerText = new MutableLiveData<>(formatTime(totalTime));
+    private final MutableLiveData<String> timerTypeText = new MutableLiveData<>("Pomodoro");
 
     //Getters and setters
     public long getTotalTime() {
@@ -59,23 +64,36 @@ public class TimerViewModel extends AndroidViewModel {
     }
     public void setUserLoggedIn(boolean loggedIn) {
         this.isUserLoggedIn = loggedIn;
-        // Reset session tracking state when login state changes
+        //Reset session tracking state when login state changes
         if (!loggedIn) {
             sessionStartedWhileLoggedIn = false;
         }
     }
 
     //Getters and setters for live data
-    private final MutableLiveData<Float> progressAngle = new MutableLiveData<>(360f);
     public MutableLiveData<Float> getProgressAngle() {
         return progressAngle;
     }
-    private final MutableLiveData<String> timerText = new MutableLiveData<>(formatTime(totalTime));
     public MutableLiveData<String> getTimerText() {
         return timerText;
     }
     public LiveData<Boolean> getSessionFinished() {
         return sessionFinished;
+    }
+    public LiveData<String> getTimerTypeText(){
+        return timerTypeText;
+    }
+    public LiveData<Integer> getDefaultLBInterval(){
+        return defaultLBInterval;
+    }
+    public void setDefaultLBInterval(int defInterval){
+        this.defaultLBInterval.setValue(defInterval);
+    }
+    public LiveData<Integer> getLongBreakInterval(){
+        return currentLongBreakInterval;
+    }
+    public void setLongBreakInterval(int interval){
+        this.currentLongBreakInterval.setValue(interval);
     }
 
     //Format the time to display
@@ -104,6 +122,7 @@ public class TimerViewModel extends AndroidViewModel {
                 timerText.setValue(formatTime(remainingTime));
                 startBtnIcon.setImageResource(R.drawable.ic_start);
                 sessionFinished.setValue(true);
+                setTimerType();
             }
         };
         countDownTimer.start();
@@ -180,8 +199,25 @@ public class TimerViewModel extends AndroidViewModel {
         });
     }//End of saveTotalFocus method
 
+    private void setTimerType(){
+        String titleText = timerTypeText.getValue();
+        int currentInterval = currentLongBreakInterval.getValue();
+        Log.d("LOG_CUR_INTERVAL_TIMERVM","CurrentInterval" + currentInterval);
+
+        if(titleText.equals("Long Break") && currentInterval == defaultLBInterval.getValue()){
+            timerTypeText.setValue("Pomodoro");
+        }else if(titleText.equals("Pomodoro") && currentInterval != 0){
+            timerTypeText.setValue("Short Break");
+            currentLongBreakInterval.setValue(currentInterval - 1);
+        }else if(titleText.equals("Short Break") && currentInterval != 0){
+            timerTypeText.setValue("Pomodoro");
+        }else if(currentInterval == 0){
+            timerTypeText.setValue("Long Break");
+            currentLongBreakInterval.setValue(defaultLBInterval.getValue());
+        }
+    }//End of setTimerType method
+
     public long getTodayMidnightMillis() {
-        // Set time to 00:00:00.000 of today
         Date now = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         String formattedDate = sdf.format(now);
