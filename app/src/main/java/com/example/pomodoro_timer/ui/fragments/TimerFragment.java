@@ -68,6 +68,10 @@ public class TimerFragment extends Fragment {
         initializeTimers();
         settingsVM.getPomodoroMinutes().observe(getViewLifecycleOwner(), minutes -> updateTimerTotalTime());
         settingsVM.getPomodoroSeconds().observe(getViewLifecycleOwner(), seconds -> updateTimerTotalTime());
+        settingsVM.getShortBreakMinutes().observe(getViewLifecycleOwner(), minutes -> updateTimerTotalTime());
+        settingsVM.getShortBreakSeconds().observe(getViewLifecycleOwner(), seconds -> updateTimerTotalTime());
+        settingsVM.getLongBreakMinutes().observe(getViewLifecycleOwner(), minutes -> updateTimerTotalTime());
+        settingsVM.getLongBreakSeconds().observe(getViewLifecycleOwner(), seconds -> updateTimerTotalTime());
 
         if (isUserLoggedIn){
             listenSession();
@@ -83,15 +87,33 @@ public class TimerFragment extends Fragment {
         //For pomodoro timer
         pMinutes = settingsVM.getPomodoroMinutes().getValue();
         pSeconds = settingsVM.getPomodoroSeconds().getValue();
-    }
+        //For short break timer
+        sMinutes = settingsVM.getShortBreakMinutes().getValue();
+        sSeconds = settingsVM.getShortBreakSeconds().getValue();
+        //For long break timer
+        lMinutes = settingsVM.getLongBreakMinutes().getValue();
+        lSeconds = settingsVM.getLongBreakSeconds().getValue();
+    }//End of initializeTimers method
 
     private void updateTimerTotalTime() {
-        if (pMinutes != null && pSeconds != null) {
+        String currentType = timerVM.getTimerTypeText().getValue();
+
+        if ("Pomodoro".equals(currentType) && pMinutes != null && pSeconds != null) {
             long totalTime = (pMinutes * 60L + pSeconds) * 1000L;
             timerVM.setTotalTime(totalTime);
             timerVM.stopTimer();
-        }//End of pomodoro timer condition statement
-
+            Log.d("LOG_CHECK_POMODORO", "TIMER TOTAL TIME: " + totalTime);
+        } else if ("Short Break".equals(currentType) && sMinutes != null && sSeconds != null) {
+            long totalTime = (sMinutes * 60L + sSeconds) * 1000L;
+            timerVM.setTotalTime(totalTime);
+            //timerVM.stopTimer();
+            Log.d("LOG_CHECK_SHORT_BREAK", "TIMER TOTAL TIME: " + totalTime);
+        } else if ("Long Break".equals(currentType) && lMinutes != null && lSeconds != null) {
+            long totalTime = (lMinutes * 60L + lSeconds) * 1000L;
+            timerVM.setTotalTime(totalTime);
+            timerVM.stopTimer();
+            Log.d("LOG_CHECK_LONG_BREAK", "TIMER TOTAL TIME: " + totalTime);
+        }
     }//End of updateTimerTotalTime method
 
     private void timerListener(){
@@ -165,7 +187,7 @@ public class TimerFragment extends Fragment {
     private void listenSession(){
         timerVM.getSessionFinished().observe(getViewLifecycleOwner(), finished -> {
             if (finished != null && finished) {//If session is finished
-
+                updateTimerTotalTime();
                 if (isUserLoggedIn && timerVM.wasSessionStartedWhileLoggedIn()) {
                     recordSession();
                     timerVM.saveTotalFocus(userId, timerVM.getTotalTime());

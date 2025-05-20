@@ -28,7 +28,7 @@ public class TimerViewModel extends AndroidViewModel {
     private final AppDatabase database;
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
     private CountDownTimer countDownTimer;
-    private long totalTime = 10 * 1000; // 25 * 60 * 1000 for 25 minutes
+    private long totalTime = 10 * 1000; // 25 * 60 * 1000 for 25 minutes // this is also for the pomodoro default
     private long remainingTime = totalTime;
     private boolean isRunning = false;
     private ImageView startBtnIcon; //Fix this later
@@ -117,12 +117,12 @@ public class TimerViewModel extends AndroidViewModel {
             @Override
             public void onFinish() {
                 isRunning = false;
+                setTimerType();
                 remainingTime = totalTime;
                 progressAngle.setValue(360f);
-                timerText.setValue(formatTime(remainingTime));
+                timerText.setValue(formatTime(totalTime));
                 startBtnIcon.setImageResource(R.drawable.ic_start);
                 sessionFinished.setValue(true);
-                setTimerType();
             }
         };
         countDownTimer.start();
@@ -199,22 +199,23 @@ public class TimerViewModel extends AndroidViewModel {
         });
     }//End of saveTotalFocus method
 
-    private void setTimerType(){
-        String titleText = timerTypeText.getValue();
+    public void setTimerType(){
+        String type = timerTypeText.getValue();
         int currentInterval = currentLongBreakInterval.getValue();
-        Log.d("LOG_CUR_INTERVAL_TIMERVM","CurrentInterval" + currentInterval);
+        int defaultInterval = defaultLBInterval.getValue();
 
-        if(titleText.equals("Long Break") && currentInterval == defaultLBInterval.getValue()){
+        if ("Pomodoro".equals(type)) {
+            if (currentInterval > 0) {
+                timerTypeText.setValue("Short Break");
+                currentLongBreakInterval.setValue(currentInterval - 1);
+            } else {
+                timerTypeText.setValue("Long Break");
+                currentLongBreakInterval.setValue(defaultInterval);
+            }
+        } else {
             timerTypeText.setValue("Pomodoro");
-        }else if(titleText.equals("Pomodoro") && currentInterval != 0){
-            timerTypeText.setValue("Short Break");
-            currentLongBreakInterval.setValue(currentInterval - 1);
-        }else if(titleText.equals("Short Break") && currentInterval != 0){
-            timerTypeText.setValue("Pomodoro");
-        }else if(currentInterval == 0){
-            timerTypeText.setValue("Long Break");
-            currentLongBreakInterval.setValue(defaultLBInterval.getValue());
         }
+
     }//End of setTimerType method
 
     public long getTodayMidnightMillis() {
