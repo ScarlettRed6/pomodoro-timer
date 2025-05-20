@@ -171,8 +171,8 @@
                         android:id="@+id/focus_count_id"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text='@{String.valueOf(statsVM.totalFocus)+ "h"}'
-                        android:layout_gravity="center"/>
+                        android:layout_gravity="center"
+                        android:text='@{String.valueOf(statsVM.totalFocus)+ "h"}' />
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/focus_count_label_id"
@@ -207,7 +207,7 @@
                         android:id="@+id/break_time_count_id"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{String.valueOf(statsVM.productivityScore)}"
+                        android:text="@{String.valueOf(statsVM.breakTime)}"
                         android:layout_gravity="center"/>
 
                     <com.google.android.material.textview.MaterialTextView

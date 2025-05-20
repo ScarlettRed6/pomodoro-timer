@@ -199,6 +199,23 @@ public class TimerViewModel extends AndroidViewModel {
         });
     }//End of saveTotalFocus method
 
+    public void saveTotalBreakTime(int userId, long breakDuration){
+        if (userId <= 0) return;
+        double hours = (double) breakDuration / (1000 * 60 * 60);
+
+        executor.execute(() -> {
+            StatsModel stats = database.statsDao().getStatsByUserRaw(userId);
+            if (stats != null) {
+                double newBreakTime = stats.getBreakTime() + hours;
+                stats.setBreakTime(newBreakTime);
+                database.statsDao().update(stats);
+                Log.d("LOG_CHECK_BREAK_TIME", "BREAK TIME: " + newBreakTime);
+            }else {
+                Log.w("LOG_CHECK_BREAK_TIME_NO_USER", "No StatsModel found for userId: " + userId);
+            }
+        });
+    }//End of saveTotalBreakTime method
+
     public void setTimerType(){
         String type = timerTypeText.getValue();
         int currentInterval = currentLongBreakInterval.getValue();

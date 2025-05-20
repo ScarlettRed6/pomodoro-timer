@@ -26,7 +26,7 @@ public class StatsViewModel extends AndroidViewModel {
 
     private final MutableLiveData<Integer> productivityScore = new MutableLiveData<>(0);
     private final MutableLiveData<Double> totalFocus = new MutableLiveData<>();
-    private final MutableLiveData<Long> breakTime = new MutableLiveData<>();
+    private final MutableLiveData<Double> breakTime = new MutableLiveData<>();
     private final MutableLiveData<Integer> pomodoroSessions = new MutableLiveData<>();
     private final MutableLiveData<Integer> taskID = new MutableLiveData<>();
     private final MutableLiveData<List<PomodoroLogModel>> pomodoroLogs = new MutableLiveData<>();
@@ -40,7 +40,9 @@ public class StatsViewModel extends AndroidViewModel {
         totalFocus.setValue(Double.parseDouble(decimalFormat.format(totalFocus.getValue())));
         return totalFocus;
     }
-    public MutableLiveData<Long> getBreakTime() {
+    public MutableLiveData<Double> getBreakTime() {
+        DecimalFormat decimalFormat = new DecimalFormat("#.##");
+        breakTime.setValue(Double.parseDouble(decimalFormat.format(breakTime.getValue())));
         return breakTime;
     }
     public LiveData<Integer> getPomodoroSessions() {
@@ -102,6 +104,7 @@ public class StatsViewModel extends AndroidViewModel {
 
             //Also update the LiveData
             totalFocus.postValue(stats.getTotalFocus());
+            breakTime.postValue(stats.getBreakTime());
             pomodoroSessions.postValue(totalPomodoros);
             Log.d("CHECK POMODOROS","POMODOROS SESSIONS: " + pomodoroSessions.getValue());
         });
@@ -111,7 +114,7 @@ public class StatsViewModel extends AndroidViewModel {
         totalFocus.setValue(0.0);
         pomodoroSessions.setValue(0);
         productivityScore.setValue(0);
-        breakTime.setValue(0L);
+        breakTime.setValue(0.0);
     }//End of resetStats method
 
     private void calculateProductivityScore(int totalPomodoros) {

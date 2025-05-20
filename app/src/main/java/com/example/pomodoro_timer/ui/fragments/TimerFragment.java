@@ -35,6 +35,7 @@ public class TimerFragment extends Fragment {
     private Integer userId;
     private Integer pMinutes, sMinutes, lMinutes;
     private Integer pSeconds, sSeconds, lSeconds;
+    private String currentType = "Pomodoro";
     private boolean isUserLoggedIn = false;
 
     public TimerFragment(){
@@ -96,7 +97,7 @@ public class TimerFragment extends Fragment {
     }//End of initializeTimers method
 
     private void updateTimerTotalTime() {
-        String currentType = timerVM.getTimerTypeText().getValue();
+        currentType = timerVM.getTimerTypeText().getValue();
 
         if ("Pomodoro".equals(currentType) && pMinutes != null && pSeconds != null) {
             long totalTime = (pMinutes * 60L + pSeconds) * 1000L;
@@ -187,11 +188,17 @@ public class TimerFragment extends Fragment {
     private void listenSession(){
         timerVM.getSessionFinished().observe(getViewLifecycleOwner(), finished -> {
             if (finished != null && finished) {//If session is finished
-                updateTimerTotalTime();
                 if (isUserLoggedIn && timerVM.wasSessionStartedWhileLoggedIn()) {
-                    recordSession();
-                    timerVM.saveTotalFocus(userId, timerVM.getTotalTime());
+                    if("Pomodoro".equals(currentType)){
+                        recordSession();
+                        timerVM.saveTotalFocus(userId, timerVM.getTotalTime());
+                        Log.d("LOG_RECORD_SESSION_AND_FOCUS","FOCUS SAVED");
+                    }else {
+                        timerVM.saveTotalBreakTime(userId, timerVM.getTotalTime());
+                        Log.d("LOG_RECORD_SESSION_AND_BREAK","BREAK SAVED");
+                    }
                 }
+                updateTimerTotalTime();
                 timerVM.clearSessionFinished();
             }
         });
