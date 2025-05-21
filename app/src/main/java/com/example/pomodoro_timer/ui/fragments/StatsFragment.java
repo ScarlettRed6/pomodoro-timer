@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
 import androidx.core.content.ContextCompat;
@@ -29,6 +30,7 @@ import com.github.mikephil.charting.formatter.ValueFormatter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -67,7 +69,7 @@ public class StatsFragment extends Fragment {
     private void initStuff(){
         barChart = binding.pomodoroCountPerWeekBarGraphId;
         listenSessionUserId();
-        dateFilter = Arrays.asList("Week", "Month", "Year");
+        dateFilter = Arrays.asList("All","Week", "Month", "Year");
         dateSpinnerAdapter();
         checkUserLoggedIn();
     }//End of initStuff method
@@ -77,7 +79,7 @@ public class StatsFragment extends Fragment {
         if (isUserLoggedIn){
             statsVM.resetStats();
             userId = sharedVM.getCurrentUserId().getValue();
-            handleBarGraph();
+            handleBarGraph("All");
             updateFirstStats();
         } else {
             barChart.clear();
@@ -89,82 +91,173 @@ public class StatsFragment extends Fragment {
         ArrayAdapter<String> dateAdapter = new ArrayAdapter<>(requireContext(), R.layout.item_theme_spinner, dateFilter);
         dateAdapter.setDropDownViewResource(R.layout.item_theme_spinner_dropdown);
         binding.dateSpinnerId.setAdapter(dateAdapter);
+
+        binding.dateSpinnerId.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedFilter = dateFilter.get(position);
+                handleBarGraph(selectedFilter);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
     }
 
-    private void handleBarGraph(){
+    private void handleBarGraph(String filterType){
         long now = System.currentTimeMillis();
-        long oneWeekAgo = now - (7 * 24 * 60 * 60 * 1000);
+        long start = now;
 
-        boolean isUserLoggedIn = sharedVM.getIsUserLoggedIn().getValue();
+        switch (filterType) {
+            case "Week":
+                start = now - (7L * 24 * 60 * 60 * 1000); //7 days
+                break;
+            case "Month":
+                start = now - (30L * 24 * 60 * 60 * 1000); //30 days
+                break;
+            case "Year":
+                start = now - (365L * 24 * 60 * 60 * 1000); //1 year
+                break;
+            case "All":
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(Calendar.MONTH, 0);
+                calendar.set(Calendar.DAY_OF_MONTH, 1);
+                calendar.set(Calendar.HOUR_OF_DAY, 0);
+                calendar.set(Calendar.MINUTE, 0);
+                calendar.set(Calendar.SECOND, 0);
+                calendar.set(Calendar.MILLISECOND, 0);
 
-        if (!isUserLoggedIn){
-            barChart.clear();
-            return;
+                start = calendar.getTimeInMillis();
+                break;
         }
 
-        statsVM.getPomodoroLogs(userId, oneWeekAgo, now).observe(getViewLifecycleOwner(), pomodoroLogs -> {
-            if(pomodoroLogs != null){
-                setupBarGraph(pomodoroLogs);
+        statsVM.getPomodoroLogs(userId, start, now).observe(getViewLifecycleOwner(), pomodoroLogs -> {
+            if (pomodoroLogs != null) {
+                setupBarGraph(pomodoroLogs, filterType);
             }
         });
     }//End of handleBarGraph method
 
     private void listenSessionUserId(){
         sharedVM.getCurrentUserId().observe(getViewLifecycleOwner(), id -> {
-            if (this.userId != id) {  // Only update if ID has changed
+            if (this.userId != id) {  //Only update if ID has changed
                 this.userId = id;
-                // Important: Force reload stats when user ID changes
+                //Important: Force reload stats when user ID changes
                 if (sharedVM.getIsUserLoggedIn().getValue()) {
-                    handleBarGraph();
+                    handleBarGraph("All");
                     updateFirstStats();
                 }
             }
         });
     }
 
-    private void setupBarGraph(List<PomodoroLogModel> logs){
-        Log.d("DATE TODAYS", "DATE: " + System.currentTimeMillis());
+    private void setupBarGraph(List<PomodoroLogModel> logs, String filterType) {
         List<BarEntry> entries = new ArrayList<>();
-
-        SimpleDateFormat keyFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        SimpleDateFormat labelFormat = new SimpleDateFormat("EEE", Locale.getDefault());
         List<String> labels = new ArrayList<>();
-        Map<String, Integer> dailySessions = new TreeMap<>();
+        Map<String, Integer> groupedSessions = new TreeMap<>();
 
+        SimpleDateFormat keyFormat = null;
+        SimpleDateFormat labelFormat = null;
         long now = System.currentTimeMillis();
-        long oneDayMillis = 24 * 60 * 60 * 1000;
 
-        for (int i = 6; i >= 0; i--) {
-            Date date = new Date(now - i * oneDayMillis);
-            String key = keyFormat.format(date);     // Unique key
-            String label = labelFormat.format(date); // "Mon", "Tue", etc.
-            dailySessions.put(key, 0); // Initialize with 0
-            labels.add(label);         // Add label for X-axis
+        long unitMillis = 1L * 24 * 60 * 60 * 1000;
+        int count;
+        float barWidth = 0.5f;
+
+        switch (filterType) {
+            case "Year":
+                unitMillis = 30L * 24 * 60 * 60 * 1000;
+                count = 12;
+                keyFormat = new SimpleDateFormat("yyyy-MM", Locale.getDefault());
+                labelFormat = new SimpleDateFormat("MMM", Locale.getDefault());
+                barWidth = 0.5f;
+                break;
+            case "Month":
+                unitMillis = 1L * 24 * 60 * 60 * 1000;
+                count = 30;
+                keyFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                labelFormat = new SimpleDateFormat("dd", Locale.getDefault());
+                barWidth = 0.4f;
+                break;
+            case "All":
+                unitMillis = 3L * 30 * 24 * 60 * 60 * 1000;
+                count = 4;
+                barWidth = 0.6f;
+
+                //Initialize quarters
+                Calendar cal = Calendar.getInstance();
+                int currentYear = cal.get(Calendar.YEAR);
+                for (int quarter = 1; quarter <= 4; quarter++) {
+                    String key = currentYear + "-Q" + quarter;
+                    String label = "Q" + quarter;
+                    groupedSessions.put(key, 0);
+                    labels.add(label);
+                }
+
+                //Map each log to its quarter
+                for (PomodoroLogModel log : logs) {
+                    Calendar logCal = Calendar.getInstance();
+                    logCal.setTimeInMillis(log.getTimestamp());
+                    int logYear = logCal.get(Calendar.YEAR);
+                    int quarter = (logCal.get(Calendar.MONTH) / 3) + 1;
+
+                    if (logYear == currentYear) {
+                        String key = currentYear + "-Q" + quarter;
+                        groupedSessions.put(key, groupedSessions.getOrDefault(key, 0) + log.getSessionCount());
+                    }
+                }
+
+                int index = 0;
+                for (String key : groupedSessions.keySet()) {
+                    entries.add(new BarEntry(index++, groupedSessions.get(key)));
+                }
+                break;
+
+            case "Week":
+            default:
+                unitMillis = 1L * 24 * 60 * 60 * 1000;
+                count = 7;
+                keyFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                labelFormat = new SimpleDateFormat("EEE", Locale.getDefault());
+                barWidth = 0.7f;
+                break;
         }
 
-        //Aggregate logs into the map
-        for (PomodoroLogModel log : logs) {
-            String key = keyFormat.format(new Date(log.getTimestamp()));
-            if (dailySessions.containsKey(key)) {
-                int current = dailySessions.get(key);
-                dailySessions.put(key, current + log.getSessionCount());
+        if (!filterType.equals("All")) {
+            for (int i = count - 1; i >= 0; i--) {
+                long time = now - (i * unitMillis);
+                String key = keyFormat.format(new Date(time));
+                String label = labelFormat.format(new Date(time));
+                groupedSessions.put(key, 0);
+                labels.add(label);
+            }
+
+            for (PomodoroLogModel log : logs) {
+                String key = keyFormat.format(new Date(log.getTimestamp()));
+                if (groupedSessions.containsKey(key)) {
+                    groupedSessions.put(key, groupedSessions.get(key) + log.getSessionCount());
+                }
+            }
+
+            int index = 0;
+            for (String key : groupedSessions.keySet()) {
+                entries.add(new BarEntry(index++, groupedSessions.get(key)));
             }
         }
 
-        //This Build entries using correct X index
-        int index = 0;
-        for (String key : dailySessions.keySet()) {
-            int count = dailySessions.get(key);
-            entries.add(new BarEntry(index, count));
-            index++;
-        }
-
-        //The Chart setup
         BarDataSet dataSet = new BarDataSet(entries, "Pomodoro Sessions");
         dataSet.setColor(ContextCompat.getColor(requireContext(), R.color.text_color));
         dataSet.setValueTextSize(12F);
+        dataSet.setGradientColor(Color.parseColor("#7356F3"), Color.parseColor("#F790FA"));
 
         BarData barData = new BarData(dataSet);
+        barData.setBarWidth(barWidth);
+        barData.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                return String.valueOf((int) value);
+            }
+        });
         barChart.setData(barData);
         barChart.getDescription().setEnabled(false);
 
@@ -174,6 +267,22 @@ public class StatsFragment extends Fragment {
         xAxis.setGranularityEnabled(true);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawGridLines(false);
+        xAxis.setLabelRotationAngle(filterType.equals("Month") ? -45f : 0f);
+
+        //Add more space between labels and axis for better readability
+        xAxis.setYOffset(10f);
+
+        //Set text size based on filter type for better readability
+        float textSize = 10f;
+        switch (filterType) {
+            case "Month":
+                textSize = 8f;
+                break;
+            case "Year":
+                textSize = 9f;
+                break;
+        }
+        xAxis.setTextSize(textSize);
 
         YAxis leftAxis = barChart.getAxisLeft();
         leftAxis.setGranularity(1f);
@@ -186,15 +295,34 @@ public class StatsFragment extends Fragment {
         });
 
         barChart.getAxisRight().setEnabled(false);
+        barChart.setExtraBottomOffset(10f);
+        barChart.setVisibleXRangeMaximum(count > 15 ? 15 : count);
+        barChart.setDragEnabled(true);
+        barChart.setPinchZoom(true);
+        barChart.setScaleEnabled(true);
+
+        barChart.animateY(500);
+
+        if (!entries.isEmpty()) {
+            int firstNonZeroIndex = 0;
+            for (int i = 0; i < entries.size(); i++) {
+                if (entries.get(i).getY() > 0) {
+                    firstNonZeroIndex = i;
+                    break;
+                }
+            }
+
+            //If there are bars with data, scroll to that position
+            if (firstNonZeroIndex > 0) {
+                int scrollToIndex = Math.max(0, firstNonZeroIndex - 1);
+                barChart.moveViewToX(scrollToIndex);
+            }
+        }
+
         barChart.invalidate();
-
-        //Other styles for the bar graph
-        dataSet.setGradientColor(Color.parseColor("#7356F3"), Color.parseColor("#F790FA"));
-
     }//End of setupBarGraph method
 
     private void updateFirstStats(){
         statsVM.updateStats(userId);
     }
-
 }

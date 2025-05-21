@@ -136,8 +136,8 @@
                         android:id="@+id/pomodoro_count_id"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{String.valueOf(statsVM.pomodoroSessions)}"
-                        android:layout_gravity="center"/>
+                        android:layout_gravity="center"
+                        android:text="@{String.valueOf(statsVM.pomodoroSessions)}" />
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/pomodoro_count_label_id"

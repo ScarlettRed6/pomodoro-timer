@@ -167,18 +167,36 @@ public class TimerViewModel extends AndroidViewModel {
     }
 
     //Database functions
-    public void insert(PomodoroLogModel newLog) {
+    public void insertOrUpdate(PomodoroLogModel newLog) {
         executor.execute(() -> {
             PomodoroLogModel existingLog = database.pomodoroLogDao().getLogForUserAndDate(newLog.getUserId(), newLog.getTimestamp());
 
             if (existingLog != null) {
-                existingLog.setSessionCount(existingLog.getSessionCount() + 1);
+                if (newLog.getSessionCount() > 0) {
+                    existingLog.setSessionCount(existingLog.getSessionCount() + newLog.getSessionCount());
+                }
+
+                //Optionally, also accumulate focus/break time here if needed
+                existingLog.setFocusTime(existingLog.getFocusTime() + newLog.getFocusTime());
+
                 database.pomodoroLogDao().update(existingLog);
-            }else {
+            } else {
                 database.pomodoroLogDao().insert(newLog);
             }
         });
     }//End of insert method
+
+    public void recordPomodoroSession(int userId, long focusTimeMillis) {
+        long timestamp = System.currentTimeMillis();
+        PomodoroLogModel log = new PomodoroLogModel(userId, timestamp, 1, focusTimeMillis);
+        insertOrUpdate(log);
+    }
+
+    public void recordBreakSession(int userId, long breakTimeMillis) {
+        long timestamp = System.currentTimeMillis();
+        PomodoroLogModel log = new PomodoroLogModel(userId, timestamp, breakTimeMillis);
+        insertOrUpdate(log);
+    }
 
     public void saveTotalFocus(int userId, long sessionDuration) {
         if (userId <= 0) return;

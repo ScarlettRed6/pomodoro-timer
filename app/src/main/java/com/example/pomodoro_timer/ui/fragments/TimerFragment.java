@@ -190,10 +190,11 @@ public class TimerFragment extends Fragment {
             if (finished != null && finished) {//If session is finished
                 if (isUserLoggedIn && timerVM.wasSessionStartedWhileLoggedIn()) {
                     if("Pomodoro".equals(currentType)){
-                        recordSession();
+                        timerVM.recordPomodoroSession(userId, timerVM.getTotalTime());
                         timerVM.saveTotalFocus(userId, timerVM.getTotalTime());
                         Log.d("LOG_RECORD_SESSION_AND_FOCUS","FOCUS SAVED");
                     }else {
+                        timerVM.recordBreakSession(userId, timerVM.getTotalTime());
                         timerVM.saveTotalBreakTime(userId, timerVM.getTotalTime());
                         Log.d("LOG_RECORD_SESSION_AND_BREAK","BREAK SAVED");
                     }
@@ -204,17 +205,17 @@ public class TimerFragment extends Fragment {
         });
     }//End of listenSession method
 
-    private void recordSession(){
-        if (userId == null) {
-            Log.e("LOG_USER_ID_TIMER_FRAGMENT", "User ID is null! Cannot log session.");
-            return;
-        }
-
-        long timestamp = System.currentTimeMillis();
-        int sessionCount = 1; // Each Pomodoro session = 1
-
-        PomodoroLogModel log = new PomodoroLogModel(userId, timestamp, sessionCount);
-        timerVM.insert(log);
-    }//End of recordSession method
+//    private void recordSession(){
+//        if (userId == null) {
+//            Log.e("LOG_USER_ID_TIMER_FRAGMENT", "User ID is null! Cannot log session.");
+//            return;
+//        }
+//
+//        long timestamp = System.currentTimeMillis();
+//        int sessionCount = 1; //Each Pomodoro session = 1
+//
+//        PomodoroLogModel log = new PomodoroLogModel(userId, timestamp, sessionCount);
+//        timerVM.insert(log);
+//    }//End of recordSession method
 
 }

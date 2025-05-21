@@ -15,7 +15,7 @@ import java.util.List;
 public interface PomodoroLogDao {
 
     //Fields
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(PomodoroLogModel pomodoroLog);
 
     @Update
@@ -33,6 +33,20 @@ public interface PomodoroLogDao {
     @Query("SELECT * FROM pomodoro_logs WHERE user_id = :userId AND timestamp BETWEEN :start AND :end")
     LiveData<List<PomodoroLogModel>> getLogsBetween(int userId, long start, long end);
 
+    @Query("SELECT * FROM pomodoro_logs WHERE user_id = :userId AND timestamp BETWEEN :start AND :end")
+    List<PomodoroLogModel> getLogsBetweenSync(int userId, long start, long end);
+
     @Query("SELECT * FROM pomodoro_logs WHERE user_id = :userId AND strftime('%Y-%m-%d', timestamp / 1000, 'unixepoch', 'localtime') = strftime('%Y-%m-%d', :timestamp / 1000, 'unixepoch', 'localtime') LIMIT 1")
     PomodoroLogModel getLogForUserAndDate(int userId, long timestamp);
+
+    @Query("SELECT SUM(session_count) FROM pomodoro_logs WHERE user_id = :userId AND timestamp BETWEEN :start AND :end")
+    int getTotalPomodoroSessionsBetween(int userId, long start, long end);
+
+    @Query("SELECT SUM(focus_time) FROM pomodoro_logs WHERE user_id = :userId AND timestamp BETWEEN :start AND :end")
+    long getTotalFocusTimeBetween(int userId, long start, long end);
+
+    @Query("SELECT SUM(break_time) FROM pomodoro_logs WHERE user_id = :userId AND timestamp BETWEEN :start AND :end")
+    long getTotalBreakTimeBetween(int userId, long start, long end);
+
+
 }
