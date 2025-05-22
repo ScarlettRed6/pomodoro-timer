@@ -37,9 +37,32 @@ public class EditTaskFragment extends Fragment {
         binding.setLifecycleOwner(getViewLifecycleOwner());
 
         //Context here
+        initializeStuff();
 
         return binding.getRoot();
     }//End of onCreateView
+
+    private void initializeStuff(){
+        observeCategory();
+    }
+
+    private void observeCategory(){
+        taskVM.getCategory().observe(getViewLifecycleOwner(), category -> {
+            if (category != null) {
+                binding.addTaskCategoryBtnId.setVisibility(View.GONE);
+                binding.taskCategoryIconId.setVisibility(View.VISIBLE);
+                binding.taskCategoryTitleId.setVisibility(View.VISIBLE);
+                binding.removePickedCategoryBtnId.setVisibility(View.VISIBLE);
+                binding.taskCategoryIconId.setImageResource(category.getIcon());
+                binding.taskCategoryTitleId.setText(category.getCategoryTitle());
+            }else{
+                binding.addTaskCategoryBtnId.setVisibility(View.VISIBLE);
+                binding.removePickedCategoryBtnId.setVisibility(View.GONE);
+                binding.taskCategoryIconId.setVisibility(View.GONE);
+                binding.taskCategoryTitleId.setVisibility(View.GONE);
+            }
+        });
+    }//End of observeCategory method
 
 }
 

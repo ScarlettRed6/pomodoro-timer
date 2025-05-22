@@ -30,6 +30,8 @@ public class AddCategoryFragment extends Fragment {
     private FragmentTaskAddCategoryBinding binding;
     private NavController navController;
     private ImageView[] icons;
+    private Integer userId;
+    private boolean isUserLoggedIn = false;
 
     public AddCategoryFragment(){
 
@@ -51,13 +53,19 @@ public class AddCategoryFragment extends Fragment {
         init();
 
         return binding.getRoot();
-    }
+    }//End of onCreateView
 
     private void init(){
+        checkUser();
         setIconSelector();
         onCancelBtnClick();
         onSaveBtnClick();
     }
+
+    private void checkUser(){
+        userId = sharedVM.getCurrentUserId().getValue();
+        isUserLoggedIn = sharedVM.getIsUserLoggedIn().getValue();
+    }//End of checkUser method
 
     private void setIconSelector(){
         icons = new ImageView[]{
@@ -74,21 +82,16 @@ public class AddCategoryFragment extends Fragment {
 
     }//End of setIconSelector method
 
-    private void setIconSelection(View selectedIcon, int iconDrawableId){
-        for(ImageView notSelected: icons){
+    private void setIconSelection(View selectedIcon, int iconDrawableId) {
+        for (ImageView notSelected : icons) {
             notSelected.setSelected(false);
             notSelected.setAlpha(0.5f);
         }
         selectedIcon.setSelected(true);
         selectedIcon.setAlpha(1f);
 
-        if(selectedIcon.getId() == R.id.icon1){
-            taskVM.setCategoryIcon(R.drawable.ic_category_laptop);
-        }else {
-            taskVM.setCategoryIcon(R.drawable.ic_category_book);
-        }
-
-    }
+        taskVM.setCategoryIcon(iconDrawableId);
+    }//End of setIconSelection method
 
     private void onCancelBtnClick(){
         binding.cancelBtnId.setOnClickListener(v -> {
@@ -104,12 +107,12 @@ public class AddCategoryFragment extends Fragment {
             int newCategoryIcon = taskVM.getCategoryIcon().getValue(); //Just test to get icon from content description,
             //Implement later the actual fetching of the icon and display it
 
-            taskVM.addCategory(newCategoryTitle, newCategoryIcon);
+            taskVM.addCategory(userId, newCategoryTitle, newCategoryIcon);
             taskVM.clearCategoryFields();
             navController.popBackStack(R.id.menu_task, false);
             sharedVM.setInAddMode(false);
 
         });
-    }
+    }//End of onSaveBtnClick method
 
 }

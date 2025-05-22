@@ -1,55 +1,271 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
         <variable
             name="taskVM"
             type="com.example.pomodoro_timer.viewmodels.TaskViewModel" />
     </data>
-    
-    <androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/edit_task_layout"
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="24dp"
-        android:gravity="center"
-        android:background="#FFFFFF">
+        android:layout_height="match_parent">
 
-        <Button
-            android:id="@+id/btn_edit_description"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Edit Description"
-            tools:layout_editor_absoluteX="24dp"
-            tools:layout_editor_absoluteY="102dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            android:layout_height="wrap_content">
 
-        <Button
-            android:id="@+id/btn_edit_priority"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Edit Priority Level"
-            tools:layout_editor_absoluteX="24dp"
-            tools:layout_editor_absoluteY="156dp"
-            app:layout_constraintTop_toBottomOf="@+id/btn_edit_description"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            <!-- Title card -->
+            <LinearLayout
+                android:id="@+id/task_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/background_gradient_card"
+                android:padding="16dp"
+                android:layout_margin="16dp"
+                app:layout_constraintTop_toTopOf="parent">
 
-        <Button
-            android:id="@+id/btn_edit_pomodoros"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Edit Number of Pomodoro's"
-            tools:layout_editor_absoluteX="24dp"
-            tools:layout_editor_absoluteY="219dp"
-            app:layout_constraintTop_toBottomOf="@+id/btn_edit_priority"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_label"
+                    android:textColor="@android:color/white"
+                    android:textSize="20sp" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:boxBackgroundMode="none"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="30">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/short_desc_label"
+                        android:inputType="text"
+                        android:text="@={taskVM.taskTitle}"
+                        android:textSize="16sp"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <!-- Priority level label -->
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/priority_level_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/priority_level"
+                android:textColor="@android:color/white"
+                android:textSize="25sp"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="30dp"
+                app:layout_constraintTop_toBottomOf="@+id/task_layout"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <!-- Priority levels radio group -->
+            <RadioGroup
+                android:id="@+id/priority_group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:checkedButton="@={taskVM.selectedPriority}"
+                app:layout_constraintTop_toBottomOf="@+id/priority_level_label"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <RadioButton
+                    android:id="@+id/priority_high"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/priority_high"
+                    android:onClick="@{() -> taskVM.setPriority(1, priorityHigh.getId())}"/>
+
+                <RadioButton
+                    android:id="@+id/priority_medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/priority_medium"
+                    android:onClick="@{() -> taskVM.setPriority(2, priorityMedium.getId())}"/>
+
+                <RadioButton
+                    android:id="@+id/priority_low"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/priority_low"
+                    android:onClick="@{() -> taskVM.setPriority(3, priorityLow.getId())}"/>
+
+            </RadioGroup>
+
+            <!-- Pomodoro count label -->
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/pomodoro_count_label_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/pomodoro_count"
+                android:textColor="@android:color/white"
+                android:textSize="25sp"
+                android:layout_marginTop="15dp"
+                android:layout_marginStart="30dp"
+                app:layout_constraintTop_toBottomOf="@+id/priority_group"
+                app:layout_constraintStart_toStartOf="parent"/>
+            <!-- Pomodoro count -->
+            <EditText
+                android:id="@+id/pomodoro_count_id"
+                android:layout_width="60dp"
+                android:layout_height="50dp"
+                android:inputType="number"
+                android:text="@={taskVM.sessionCount}"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="30dp"
+                android:background="@drawable/background_gradient_card"
+                android:textAlignment="center"
+                android:hint="@string/pomodoro_number_placeholder"
+                android:autofillHints=""
+                app:layout_constraintTop_toBottomOf="@id/priority_group"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <LinearLayout
+                android:id="@+id/task_desc_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/background_gradient_card"
+                android:padding="16dp"
+                android:layout_margin="16dp"
+                app:layout_constraintTop_toBottomOf="@+id/pomodoro_count_id">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/desc_label"
+                    android:textColor="@android:color/white"
+                    android:textSize="20sp" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:boxBackgroundMode="none">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/desc_placeholder"
+                        android:text="@={taskVM.taskDescription}"
+                        android:textSize="16sp"
+                        android:maxLines="5"
+                        android:gravity="top|start"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <!-- Category picker -->
+            <LinearLayout
+                android:id="@+id/task_category_picker_layout_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/background_curved_white"
+                android:padding="16dp"
+                android:layout_margin="16dp"
+                app:layout_constraintTop_toBottomOf="@+id/task_desc_layout">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/add_task_category_label"
+                        android:textColor="@color/count_down_color"
+                        android:textSize="20sp"
+                        android:layout_weight="1"/>
+
+                    <ImageButton
+                        android:id="@+id/remove_picked_category_btn_id"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:src="@drawable/ic_delete"
+                        android:contentDescription="@string/add_category_btn"
+                        android:background="@android:color/transparent"
+                        android:visibility="gone"
+                        android:elevation="10dp"
+                        android:scaleType="fitCenter"
+                        android:layout_gravity="end"
+                        android:layout_weight="0"/>
+
+                </LinearLayout>
+
+                <!-- This plus icon disappears if a category is picked -->
+                <ImageButton
+                    android:id="@+id/add_task_category_btn_id"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_add2"
+                    android:contentDescription="@string/add_category_btn"
+                    android:background="@android:color/transparent"
+                    android:elevation="10dp"
+                    android:scaleType="fitCenter"
+                    android:layout_gravity="center"/>
+
+                <!-- APPEARS -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+                    <ImageView
+                        android:id="@+id/task_category_icon_id"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:contentDescription="@string/category_icon"
+                        android:scaleType="fitCenter"
+                        android:visibility="gone"/>
+                    <TextView
+                        android:id="@+id/task_category_title_id"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{taskVM.categoryTitle}"
+                        android:textColor="@color/count_down_color"
+                        android:textSize="18sp"
+                        android:visibility="gone"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="8dp"/>
+                </LinearLayout>
+            </LinearLayout>
+            <!-- Cancel and Save buttons -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/cancel_btn_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/cancel_btn"
+                android:textColor="@color/white"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="16dp"
+                android:backgroundTint="@color/category_title_color3"
+                app:layout_constraintTop_toBottomOf="@+id/task_category_picker_layout_id"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/save_btn_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/save_btn"
+                android:textColor="@color/icon_bg1"
+                android:backgroundTint="@color/white"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintTop_toBottomOf="@+id/task_category_picker_layout_id"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </layout>

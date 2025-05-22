@@ -81,9 +81,11 @@ public class StatsFragment extends Fragment {
             userId = sharedVM.getCurrentUserId().getValue();
             handleBarGraph("All");
             updateFirstStats();
+            Log.d("LOG_CHECK_USER_LOGGED_IN", "User logged in: " + isUserLoggedIn);
         } else {
             barChart.clear();
             statsVM.resetStats();
+            Log.d("LOG_CHECK_USER_LOGGED_IN", "User not logged in");
         }
     }//End of checkUserLoggedIn method
 

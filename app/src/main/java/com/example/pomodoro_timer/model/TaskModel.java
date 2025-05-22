@@ -10,33 +10,49 @@ public class TaskModel {
     @PrimaryKey(autoGenerate = true)
     private int id;
 
+    @ColumnInfo(name = "user_id")
+    private int userId;
+
     @ColumnInfo(name = "task_title")
     private String taskTitle;
+
+    @ColumnInfo(name = "session_count")
     private int sessionCount;
+
+    @ColumnInfo(name = "priority_level")
     private int priorityLevel; //Levels: 1 = low, 2 = medium, 3 = high
-    private String categoryTitle;
+
+    @ColumnInfo(name = "category_id")
+    private int categoryId;
+
+    @ColumnInfo(name = "task_description")
     private String taskDescription;
 
-    public TaskModel(String taskTitle, int sessionCount, int priorityLevel, String categoryTitle, String taskDescription){
+    @ColumnInfo(name = "time_stamp")
+    private long timeStamp;
+
+    @ColumnInfo(name = "position")
+    private int position;
+
+    public TaskModel(int userId, String taskTitle, int sessionCount, int priorityLevel, int categoryId, String taskDescription, long timeStamp){
+        this.userId = userId;
         this.taskTitle = taskTitle;
         this.sessionCount = sessionCount;
         this.priorityLevel = priorityLevel;
-        this.categoryTitle = categoryTitle;
+        this.categoryId = categoryId;
         this.taskDescription = taskDescription;
+        this.timeStamp = timeStamp;
     }
 
     //Getters and Setters
     public int getId(){
         return id;
     }
-    public void setId(int id) {
-        this.id = id;
+    public int getUserId(){
+        return userId;
     }
     public String getTaskTitle(){
         return taskTitle;
-    }
-    public void setTaskTitle(String taskTitle){
-        this.taskTitle = taskTitle;
     }
     public int getSessionCount(){
         return sessionCount;
@@ -44,11 +60,46 @@ public class TaskModel {
     public int getPriorityLevel(){
         return priorityLevel;
     }
-    public String getCategoryTitle(){
-        return categoryTitle;
+    public int getCategoryId(){
+        return categoryId;
     }
     public String getTaskDescription(){
         return taskDescription;
+    }
+    public long getTimeStamp(){
+        return timeStamp;
+    }
+    public int getPosition(){
+        return position;
+    }
+
+
+    public void setTaskTitle(String taskTitle){
+        this.taskTitle = taskTitle;
+    }
+    public void setUserId(int userId){
+        this.userId = userId;
+    }
+    public void setSessionCount(int sessionCount){
+        this.sessionCount = sessionCount;
+    }
+    public void setId(int id) {
+        this.id = id;
+    }
+    public void setPriorityLevel(int priorityLevel){
+        this.priorityLevel = priorityLevel;
+    }
+    public void setCategoryId(int categoryId){
+        this.categoryId = categoryId;
+    }
+    public void setTaskDescription(String taskDescription){
+        this.taskDescription = taskDescription;
+    }
+    public void setTimeStamp(long timeStamp){
+        this.timeStamp = timeStamp;
+    }
+    public void setPosition(int position) {
+        this.position = position;
     }
 
     @Override

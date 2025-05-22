@@ -11,17 +11,30 @@ public class CategoryModel {
     @PrimaryKey(autoGenerate = true)
     private int id;
 
+    @ColumnInfo(name = "user_Id")
+    private int userId;
+
     @ColumnInfo(name = "category_title")
     private String categoryTitle;
+
+    @ColumnInfo(name = "icon")
     private Integer icon;
 
     //Constructor
-    public CategoryModel(String categoryTitle, Integer icon){
+    public CategoryModel(int userId, String categoryTitle, Integer icon){
+        this.userId = userId;
         this.categoryTitle = categoryTitle;
         this.icon = icon;
     }
 
     //Getters and Setters
+    public int getUserId(){
+        return userId;
+    }
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
     public int getId(){
         return id;
     }

@@ -24,6 +24,8 @@ public class AddTaskFragment extends Fragment {
     private SharedViewModel sharedVM;
     private TaskViewModel taskVM;
     private NavController navController;
+    private Integer userId;
+    private boolean isUserLoggedIn = false;
 
     public AddTaskFragment(){
 
@@ -48,12 +50,18 @@ public class AddTaskFragment extends Fragment {
     }//End of onCreateView method
 
     private void initializeThings(){
+        checkUser();
         onCancelBtnClick();
         onSaveBtnClick();
         onCategoryPickBtn();
         onRemoveCategoryBtn();
         observeCategory();
     }//End of initializeThings method
+
+    private void checkUser(){
+        userId = sharedVM.getCurrentUserId().getValue();
+        isUserLoggedIn = sharedVM.getIsUserLoggedIn().getValue();
+    }//End of checkUser method
 
     private void clearCredentials(){
         binding.priorityGroup.clearCheck();
@@ -85,10 +93,12 @@ public class AddTaskFragment extends Fragment {
             int newSessionCount = 0;
             int newPriority = 1;
             String taskDescription = taskVM.getTaskDescription().getValue();
-            String newCategory = "";
+            int newCategory = 0;
+            long timestamp = System.currentTimeMillis();
+
 
             try{
-                newCategory = taskVM.getCategory().getValue().getCategoryTitle();
+                newCategory = taskVM.getCategory().getValue().getId();
             }catch (NullPointerException e){
                 Log.d("AddTaskFragment", "NULL POINTER EXCEPTION ENCOUNTERED: category title");
             }
@@ -104,13 +114,18 @@ public class AddTaskFragment extends Fragment {
             }
             try {
                 newPriority = taskVM.getPriorityLevel().getValue();
+                Log.d("LOG_CHECK_PRIORITY", "newPriority: " + newPriority);
             } catch (NumberFormatException e) {
                 Log.d("AddTaskFragment", "NUMBER FORMAT EXCEPTION ENCOUNTERED: newPriority");
             } catch (NullPointerException e){
                 Log.d("AddTaskFragment", "NULL POINTER EXCEPTION ENCOUNTERED: newPriority");
             }
 
-            taskVM.addTask(newTitle, newSessionCount, newPriority, newCategory, taskDescription);
+            if (isUserLoggedIn){
+                taskVM.addTask(userId, newTitle, newSessionCount, newPriority, newCategory, taskDescription, timestamp);
+            }else{
+                taskVM.addTask(newTitle, newSessionCount, newPriority, taskDescription, timestamp);
+            }
             clearCredentials();
             navController.popBackStack(R.id.menu_task, false);
             sharedVM.setInAddMode(false);

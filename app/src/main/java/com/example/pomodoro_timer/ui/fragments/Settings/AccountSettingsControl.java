@@ -15,12 +15,14 @@ import com.example.pomodoro_timer.databinding.FragmentSettingsAccountControlsBin
 import com.example.pomodoro_timer.utils.shared_preferences.SessionManager;
 import com.example.pomodoro_timer.viewmodels.SettingsViewModel;
 import com.example.pomodoro_timer.viewmodels.SharedViewModel;
+import com.example.pomodoro_timer.viewmodels.TaskViewModel;
 
 public class AccountSettingsControl extends Fragment {
 
     //Fields
     private FragmentSettingsAccountControlsBinding binding;
     private SettingsViewModel settingsVM;
+    private TaskViewModel taskVM;
     private SharedViewModel sharedVM;
     private NavController navController;
 
@@ -32,6 +34,7 @@ public class AccountSettingsControl extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         binding = FragmentSettingsAccountControlsBinding.inflate(inflater, container, false);
         settingsVM = new ViewModelProvider(requireActivity()).get(SettingsViewModel.class);
+        taskVM = new ViewModelProvider(requireActivity()).get(TaskViewModel.class);
         sharedVM = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
         navController = NavHostFragment.findNavController(AccountSettingsControl.this);
         binding.setSettingsVM(settingsVM);
@@ -59,6 +62,7 @@ public class AccountSettingsControl extends Fragment {
         SessionManager sessionManager = new SessionManager(requireContext());
         binding.logoutBtnId.setOnClickListener(v -> {
             sessionManager.clearLoginSession();
+            taskVM.resetToTestData();
             settingsVM.setLoginUsername(null);
             settingsVM.setLoginPassword(null);
             sharedVM.setIsUserLoggedIn(false);

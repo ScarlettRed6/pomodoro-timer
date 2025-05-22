@@ -38,6 +38,8 @@ public class TaskFragment extends Fragment {
     private TaskAdapter taskAdapter;
     private CategoryAdapter categoryAdapter;
     private NavController navController;
+    private Integer userId;
+    private boolean isUserLoggedIn = false;
 
     //Constructor
     public TaskFragment(){
@@ -76,12 +78,10 @@ public class TaskFragment extends Fragment {
     }//End of onResume
 
     private void initStuff(){
+        checkUser();
+        displayTasks();
         taskAdapterHandle();
         categoryAdapterHandle();
-        taskVM.initializeTasks();
-        taskAdapter.setTasks(taskVM.getTaskList().getValue());
-        taskVM.initializeCategories();
-        categoryAdapter.setCategoryList(taskVM.getCategoryList().getValue());
 
         //For task recycler view
         binding.taskRecyclerViewId.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -95,6 +95,18 @@ public class TaskFragment extends Fragment {
         observeTaskAndCategory();
     }//End of initStuff method
 
+    private void checkUser(){
+        userId = sharedVM.getCurrentUserId().getValue();
+        isUserLoggedIn = sharedVM.getIsUserLoggedIn().getValue();
+    }
+
+    private void displayTasks(){
+        if(isUserLoggedIn){
+            taskVM.displayTask(userId);
+            taskVM.displayCategory(userId);
+        }
+    }//End of displayTasks method
+
     //Handle adapters
     private void taskAdapterHandle(){
         taskAdapter = new TaskAdapter(new TaskAdapter.TaskItemMenuListener(){
@@ -102,15 +114,14 @@ public class TaskFragment extends Fragment {
             @Override
             public void onEditTask(TaskModel task) {
                 Log.d("TaskAdapter", "EDIT TASK CLICKED!");
+                taskVM.loadEditTask(task);
                 navController.navigate(R.id.editTaskFragment);
             }
 
             @Override
             public void onDeleteTask(TaskModel task) {
                 if (taskVM.getTaskList().getValue() != null) {
-                    taskVM.getTestTasks().remove(task);
-                    taskVM.setTaskList(taskVM.getTestTasks()); // Notify observers
-                    Log.d("TaskAdapter", "DELETE TASK CLICKED!");
+                    taskVM.deleteTask(task);
                 }
             }
         });
@@ -147,8 +158,17 @@ public class TaskFragment extends Fragment {
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
                 int fromPosition = viewHolder.getAdapterPosition();
                 int toPosition = target.getAdapterPosition();
-                Collections.swap(taskAdapter.getTaskList(), fromPosition, toPosition);
+
+                List<TaskModel> tasks = taskAdapter.getTaskList();
+                Collections.swap(tasks, fromPosition, toPosition);
                 taskAdapter.notifyItemMoved(fromPosition, toPosition);
+
+                // Update positions
+                for (int i = 0; i < tasks.size(); i++) {
+                    tasks.get(i).setPosition(i);
+                }
+
+                taskVM.updateTaskOrder(tasks);
                 return true;
             }
 

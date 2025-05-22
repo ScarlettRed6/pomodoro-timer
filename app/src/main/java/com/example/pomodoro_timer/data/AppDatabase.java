@@ -19,7 +19,7 @@ import com.example.pomodoro_timer.model.UserModel;
 
 @Database(
         entities = { CategoryModel.class, TaskModel.class, UserModel.class, StatsModel.class, PomodoroLogModel.class },
-        version = 9
+        version = 14
 )
 public abstract class AppDatabase extends RoomDatabase {
     private static final String DB_NAME = "pomodoro_timer_db";

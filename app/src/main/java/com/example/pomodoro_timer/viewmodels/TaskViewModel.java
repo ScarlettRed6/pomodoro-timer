@@ -1,20 +1,28 @@
 package com.example.pomodoro_timer.viewmodels;
 
+import android.app.Application;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
 import com.example.pomodoro_timer.R;
+import com.example.pomodoro_timer.data.AppDatabase;
 import com.example.pomodoro_timer.model.CategoryModel;
 import com.example.pomodoro_timer.model.TaskModel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-public class TaskViewModel extends ViewModel {
+public class TaskViewModel extends AndroidViewModel {
 
     //Fields
+    private final AppDatabase db;
+    private final ExecutorService executor;
     private final List<TaskModel> testTasks = new ArrayList<>();
     private final List<CategoryModel> testCategories = new ArrayList<>();
     //private CategoryAdapter categoryAdapter = new CategoryAdapter();
@@ -105,11 +113,19 @@ public class TaskViewModel extends ViewModel {
         this.category.setValue(category);
     }
 
+    //Constructor
+    public TaskViewModel(@NonNull Application application) {
+        super(application);
+        db = AppDatabase.getInstance(application);
+        executor = Executors.newSingleThreadExecutor();
+    }
+
     //THIS IS FOR TESTING PURPOSES ONLY
     //LATER USE FOR ACTUAL DATA FROM DATABASE FIREBASE
     public void initializeTasks(){
+        long timestamp = System.currentTimeMillis();
         if (testTasks.isEmpty()) {
-            testTasks.add(new TaskModel("Task 1", 4, 1, "", "eyo"));
+            testTasks.add(new TaskModel(10,"Task 1", 4, 1, 0, "eyo", timestamp));
             taskList.setValue(testTasks);
             //adapter.setTasks(testTasks);
         }
@@ -117,10 +133,17 @@ public class TaskViewModel extends ViewModel {
     }
     public void initializeCategories(){
         if (testCategories.isEmpty()) {
-            testCategories.add(new CategoryModel("Work", R.drawable.ic_category_laptop));
+            testCategories.add(new CategoryModel(10,"Work", R.drawable.ic_category_laptop));
             categoryList.setValue(testCategories);
             //categoryAdapter.setCategoryList(testCategories);
         }
+    }
+
+    public void resetToTestData() {
+        testTasks.clear();
+        testCategories.clear();
+        initializeTasks();
+        initializeCategories();
     }
 
     public void clearTaskFields(){
@@ -136,18 +159,88 @@ public class TaskViewModel extends ViewModel {
         categoryIcon.setValue(0);
     }
 
-    public void addTask(String taskTitle, int sessionCount, int priorityLevel, String categoryTitle, String taskDescription){
-        testTasks.add(new TaskModel(taskTitle, sessionCount, priorityLevel, categoryTitle, taskDescription));
+    public void addTask(String taskTitle, int sessionCount, int priorityLevel, String taskDescription, long timestamp){
+        TaskModel newTask = new TaskModel(10, taskTitle, sessionCount, priorityLevel, 0, taskDescription, timestamp);
+        testTasks.add(newTask);
         taskList.setValue(testTasks);
-        Log.d("ALL TEST TASKS", testTasks.toString());
-        Log.d("ALL TaskList", taskList.getValue().toString());
-        //adapter.setTasks(testTasks);
+    }//End of addTask for non-logged in user method
+
+    public void addTask(int userId, String taskTitle, int sessionCount, int priorityLevel, int categoryId, String taskDescription, long timestamp){
+
+        executor.execute(() -> {
+            List<TaskModel> currentTasks = db.taskDao().getAll(userId);
+            int newPosition = currentTasks.size();
+
+            TaskModel newTask = new TaskModel(userId, taskTitle, sessionCount, priorityLevel, categoryId, taskDescription, timestamp);
+            newTask.setPosition(newPosition);
+
+            db.taskDao().insert(newTask);
+            taskList.postValue(db.taskDao().getAll(userId));
+        });
+    }//End of addTask for logged in user method
+
+    public void deleteTask(TaskModel task){
+        executor.execute(() -> {
+            db.taskDao().delete(task);
+            List<TaskModel> allTasks = db.taskDao().getAll(task.getUserId());
+            Log.d("LOG_CHECK_TASK_FROM_DB", allTasks != null ? allTasks.toString() : "No tasks found");
+            taskList.postValue(allTasks);
+        });
+    }//End of deleteTask method
+
+    public void updateTaskOrder(List<TaskModel> tasks) {
+        executor.execute(() -> {
+            db.taskDao().updateTasks(tasks);
+        });
     }
 
-    public void addCategory(String categoryTitle, Integer icon){
-        testCategories.add(new CategoryModel(categoryTitle, icon));
-        categoryList.setValue(testCategories);
-        //categoryAdapter.setCategoryList(testCategories);
+    public void loadEditTask(TaskModel task){
+        taskTitle.setValue(task.getTaskTitle());
+        taskDescription.setValue(task.getTaskDescription());
+        sessionCount.setValue(String.valueOf(task.getSessionCount()));
+        priorityLevel.setValue(task.getPriorityLevel()); //Set initial priority
+        selectedPriority.setValue(getRadioButtonIdForPriority(task.getPriorityLevel()));
+    }
+
+    private int getRadioButtonIdForPriority(int priority) {
+        switch (priority) {
+            case 1:
+                return R.id.priority_high;
+            case 2:
+                return R.id.priority_medium;
+            case 3:
+                return R.id.priority_low;
+            default:
+                return -1;
+        }
+    }
+
+    public void displayTask(int userId){
+        executor.execute(() -> {
+            List<TaskModel> allTasks = db.taskDao().getAll(userId);
+            Log.d("LOG_CHECK_TASK_FROM_DB", allTasks != null ? allTasks.toString() : "No tasks found");
+            taskList.postValue(allTasks);
+        });
+    }//End of displayTask method
+
+    public void displayCategory(int userId){
+        executor.execute(() -> {
+            List<CategoryModel> allCategories = db.categoryDao().getAllCategories(userId);
+            Log.d("LOG_CHECK_CATEGORY_FROM_DB", allCategories != null ? allCategories.toString() : "No categories found");
+            categoryList.postValue(allCategories);
+        });
+    }
+
+    public void addCategory(int userId, String categoryTitle, Integer icon){
+        executor.execute(() -> {
+            CategoryModel newCategory = new CategoryModel(userId, categoryTitle, icon);
+            db.categoryDao().insert(newCategory);
+            categoryList.postValue(db.categoryDao().getAllCategories(userId)); //Refresh category list after insert
+        });
+    }
+
+    public void deleteCategory(CategoryModel category) {
+
     }
 
 }
