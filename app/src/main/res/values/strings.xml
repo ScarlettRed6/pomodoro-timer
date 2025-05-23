@@ -103,5 +103,7 @@
     <string name="long_break_interval_label">Long break interval</string>
     <string name="auto_start_pomodoro_label">Auto start pomodoro</string>
     <string name="auto_start_breaks_label">Auto start breaks</string>
+    <string name="you_have_no_tasks">You have no tasks</string>
+    <string name="you_have_no_categories">You have no categories</string>
 
 </resources>
