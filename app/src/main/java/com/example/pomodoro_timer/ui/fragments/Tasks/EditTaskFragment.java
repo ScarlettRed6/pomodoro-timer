@@ -46,6 +46,17 @@ public class EditTaskFragment extends Fragment {
         observeCategory();
     }
 
+    private void onSaveBtnClick(){
+        binding.saveBtnId.setOnClickListener(v -> {
+            String taskTitle = taskVM.getTaskTitle().getValue();
+            int sessionCount = Integer.parseInt(taskVM.getSessionCount().getValue());
+            int priorityLevel = taskVM.getPriorityLevel().getValue();
+            String taskDescription = taskVM.getTaskDescription().getValue();
+            int categoryId = taskVM.getCategory().getValue() != null ? taskVM.getCategory().getValue().getId() : 0;
+
+        });
+    }
+
     private void observeCategory(){
         taskVM.getCategory().observe(getViewLifecycleOwner(), category -> {
             if (category != null) {

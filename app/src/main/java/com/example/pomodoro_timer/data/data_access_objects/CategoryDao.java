@@ -25,6 +25,9 @@ public interface CategoryDao {
     @Query("SELECT * FROM categories WHERE user_Id = :userId")
     List<CategoryModel> getAllCategories(int userId);
 
+    @Query("SELECT * FROM categories WHERE id = :categoryId")
+    CategoryModel getCategoryById(int categoryId);
+
     //@Query("SELECT * FROM CategoryModel")
     //public CategoryModel[] loadAllUsers();
 }

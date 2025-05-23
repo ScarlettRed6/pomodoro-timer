@@ -95,8 +95,6 @@ public class AddTaskFragment extends Fragment {
             int newPriority = 1;
             String taskDescription = taskVM.getTaskDescription().getValue();
             int newCategory = 0;
-            long timestamp = System.currentTimeMillis();
-
 
             try{
                 newCategory = taskVM.getCategory().getValue().getId();
@@ -123,9 +121,9 @@ public class AddTaskFragment extends Fragment {
             }
 
             if (isUserLoggedIn){
-                taskVM.addTask(userId, newTitle, newSessionCount, newPriority, newCategory, taskDescription, timestamp);
+                taskVM.addTask(userId, newTitle, newSessionCount, newPriority, newCategory, taskDescription);
             }else{
-                taskVM.addTask(newTitle, newSessionCount, newPriority, taskDescription, timestamp);
+                taskVM.addTask(newTitle, newSessionCount, newPriority, taskDescription);
             }
             clearCredentials();
             navController.popBackStack(R.id.menu_task, false);

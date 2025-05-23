@@ -28,20 +28,19 @@ public class TaskModel {
     @ColumnInfo(name = "task_description")
     private String taskDescription;
 
-    @ColumnInfo(name = "time_stamp")
-    private long timeStamp;
+    @ColumnInfo(name = "time_finished")
+    private long timeFinished;
 
     @ColumnInfo(name = "position")
     private int position;
 
-    public TaskModel(int userId, String taskTitle, int sessionCount, int priorityLevel, int categoryId, String taskDescription, long timeStamp){
+    public TaskModel(int userId, String taskTitle, int sessionCount, int priorityLevel, int categoryId, String taskDescription){
         this.userId = userId;
         this.taskTitle = taskTitle;
         this.sessionCount = sessionCount;
         this.priorityLevel = priorityLevel;
         this.categoryId = categoryId;
         this.taskDescription = taskDescription;
-        this.timeStamp = timeStamp;
     }
 
     //Getters and Setters
@@ -66,8 +65,8 @@ public class TaskModel {
     public String getTaskDescription(){
         return taskDescription;
     }
-    public long getTimeStamp(){
-        return timeStamp;
+    public long getTimeFinished(){
+        return timeFinished;
     }
     public int getPosition(){
         return position;
@@ -95,8 +94,8 @@ public class TaskModel {
     public void setTaskDescription(String taskDescription){
         this.taskDescription = taskDescription;
     }
-    public void setTimeStamp(long timeStamp){
-        this.timeStamp = timeStamp;
+    public void setTimeFinished(long timeStamp){
+        this.timeFinished = timeStamp;
     }
     public void setPosition(int position) {
         this.position = position;
