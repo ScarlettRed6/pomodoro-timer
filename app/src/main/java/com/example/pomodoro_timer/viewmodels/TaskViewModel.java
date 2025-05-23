@@ -39,6 +39,7 @@ public class TaskViewModel extends AndroidViewModel {
     private final MutableLiveData<Integer> priorityLevel = new MutableLiveData<>(1);
     private final MutableLiveData<Integer> selectedPriority = new MutableLiveData<>();
     private final MutableLiveData<String> taskDescription = new MutableLiveData<>("");
+    private final MutableLiveData<Integer> taskId = new MutableLiveData<>();
 
     //Category fields
     private MutableLiveData<String> categoryTitle = new MutableLiveData<>("");
@@ -95,6 +96,9 @@ public class TaskViewModel extends AndroidViewModel {
     public MutableLiveData<String> getTaskDescription(){
         return taskDescription;
     }
+    public MutableLiveData<Integer> getTaskId(){
+        return taskId;
+    }
 
     //Category getters and setters
     public MutableLiveData<String> getCategoryTitle(){
@@ -123,7 +127,6 @@ public class TaskViewModel extends AndroidViewModel {
     //THIS IS FOR TESTING PURPOSES ONLY
     //LATER USE FOR ACTUAL DATA FROM DATABASE FIREBASE
     public void initializeTasks(){
-        long timestamp = System.currentTimeMillis();
         if (testTasks.isEmpty()) {
             testTasks.add(new TaskModel(10,"Task 1", 4, 1, 0, "eyo"));
             taskList.setValue(testTasks);
@@ -160,7 +163,9 @@ public class TaskViewModel extends AndroidViewModel {
     }
 
     public void addTask(String taskTitle, int sessionCount, int priorityLevel, String taskDescription){
+        int taskId = taskList.getValue().size();
         TaskModel newTask = new TaskModel(10, taskTitle, sessionCount, priorityLevel, 0, taskDescription);
+        newTask.setId(taskId + 1);
         testTasks.add(newTask);
         taskList.setValue(testTasks);
     }//End of addTask for non-logged in user method
@@ -178,10 +183,21 @@ public class TaskViewModel extends AndroidViewModel {
         });
     }//End of addTask for logged in user method\
 
-    public void updateTask(TaskModel task){
+    public void updateTask(int userId, int taskId, String taskTitle, int sessionCount, int priorityLevel, int categoryId, String taskDescription){
         executor.execute(() -> {
+            TaskModel task = db.taskDao().getTaskById(userId, taskId);
+            task.setTaskTitle(taskTitle);
+            task.setSessionCount(sessionCount);
+            task.setPriorityLevel(priorityLevel);
+            task.setCategoryId(categoryId);
+            task.setTaskDescription(taskDescription);
             db.taskDao().update(task);
         });
+    }
+
+    //No user logged in update task
+    public void updateTask(int taskId, String taskTitle, int sessionCount, int priorityLevel, String taskDescription){
+
     }
 
     public void deleteTask(TaskModel task){
@@ -205,6 +221,7 @@ public class TaskViewModel extends AndroidViewModel {
         sessionCount.setValue(String.valueOf(task.getSessionCount()));
         priorityLevel.setValue(task.getPriorityLevel()); //Set initial priority
         selectedPriority.setValue(getRadioButtonIdForPriority(task.getPriorityLevel()));
+        taskId.setValue(task.getId());
         matchCategory(task.getCategoryId());
     }//End of loadEditTask method
 

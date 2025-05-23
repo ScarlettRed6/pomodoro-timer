@@ -28,6 +28,9 @@ public interface TaskDao {
     @Update
     void updateTasks(List<TaskModel> tasks);
 
+    @Query("SELECT * FROM tasks WHERE user_Id = :userId AND id = :taskId")
+    TaskModel getTaskById(int userId, int taskId);
+
     //@Query("SELECT * FROM TaskModel")
     //public TaskModel[] loadAllUsers();
 }
