@@ -166,7 +166,6 @@ public class TaskViewModel extends AndroidViewModel {
     }//End of addTask for non-logged in user method
 
     public void addTask(int userId, String taskTitle, int sessionCount, int priorityLevel, int categoryId, String taskDescription, long timestamp){
-
         executor.execute(() -> {
             List<TaskModel> currentTasks = db.taskDao().getAll(userId);
             int newPosition = currentTasks.size();
