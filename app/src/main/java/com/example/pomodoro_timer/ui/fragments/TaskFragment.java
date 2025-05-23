@@ -156,9 +156,19 @@ public class TaskFragment extends Fragment {
 
     private void observeTaskAndCategory(){
         taskVM.getTaskList().observe(getViewLifecycleOwner(), tasks -> {
+            if(tasks.isEmpty()){
+                binding.youHaveNoTasks.setVisibility(View.VISIBLE);
+            }else {
+                binding.youHaveNoTasks.setVisibility(View.GONE);
+            }
             taskAdapter.setTasks(tasks);
         });
         taskVM.getCategoryList().observe(getViewLifecycleOwner(), categories -> {
+            if(categories.isEmpty()){
+                binding.youHaveNoCategories.setVisibility(View.VISIBLE);
+            }else {
+                binding.youHaveNoCategories.setVisibility(View.GONE);
+            }
             categoryAdapter.setCategoryList(categories);
         });
     }
