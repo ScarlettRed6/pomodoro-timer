@@ -83,6 +83,7 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/desc_placeholder"
                         android:textSize="16sp"
+                        android:text="@={taskVM.categoryDescription}"
                         android:maxLines="5"
                         android:gravity="top|start"/>
 

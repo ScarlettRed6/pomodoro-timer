@@ -136,7 +136,8 @@ public class TaskFragment extends Fragment {
 
             @Override
             public void onViewCategory(CategoryModel category) {
-
+                taskVM.loadEditCategory(category);
+                navController.navigate(R.id.viewCategoryFragment);
             }
 
             @Override
@@ -176,6 +177,8 @@ public class TaskFragment extends Fragment {
     private void onAddBtnClick(){
         sharedVM.getAddBtnClicked().observe(getViewLifecycleOwner(), clicked -> {
             if(clicked){
+                taskVM.clearTaskFields();
+                taskVM.clearCategoryFields();
                 NavHostFragment.findNavController(TaskFragment.this)
                         .navigate(R.id.action_menu_task_to_addFragment);
                 sharedVM.getAddBtnClicked().setValue(false);

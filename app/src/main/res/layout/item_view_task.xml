@@ -54,16 +54,16 @@
                 app:layout_constraintBottom_toBottomOf="parent"/>
 
             <ImageButton
-                android:id="@+id/task_options_menu_id"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:src="@drawable/ic_hamburger"
-                android:contentDescription="hamburger"
-                android:scaleType="fitCenter"
+                android:id="@+id/delete_task_btn"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:src="@drawable/ic_delete"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:scaleType="fitCenter"
+                android:contentDescription="@string/delete_btn"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

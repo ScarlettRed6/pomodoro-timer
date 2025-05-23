@@ -170,6 +170,7 @@ public class TaskViewModel extends AndroidViewModel {
 
     public void clearCategoryFields(){
         categoryTitle.setValue("");
+        categoryDescription.setValue("");
         categoryIcon.setValue(0);
     }
 
@@ -226,7 +227,12 @@ public class TaskViewModel extends AndroidViewModel {
     public void loadEditCategory(CategoryModel category){
         categoryTitle.setValue(category.getCategoryTitle());
         categoryIcon.setValue(category.getIcon());
-        categoryDescription.setValue(category.getCategoryDescription());
+        if (!category.getCategoryDescription().isEmpty()){
+            categoryDescription.setValue(category.getCategoryDescription());
+        }else {
+            categoryDescription.setValue("");
+        }
+        Log.d("CHECK_DESC", category.getCategoryDescription());
         this.category.setValue(category);
     }//End of loadEditCategory method
 
@@ -265,6 +271,20 @@ public class TaskViewModel extends AndroidViewModel {
             categoryList.postValue(allCategories);
         });
     }
+
+    public void displayTaskByCategory(int userId, int categoryId){
+        executor.execute(() -> {
+            List<TaskModel> viewTaskCategories = db.taskDao().getAllTaskByCategory(userId, categoryId);
+            taskList.postValue(viewTaskCategories);
+        });
+    }//End of displayTaskByCategry method
+
+    public void removeCategoryOfTask(int userId, int categoryId, int taskId){
+        executor.execute(() -> {
+            db.taskDao().removeCategoryOfTask(userId, categoryId, taskId);
+            displayTaskByCategory(userId, categoryId);
+        });
+    }//End of removeCategoryOfTask method
 
     public void addCategory(int userId, String categoryTitle, String categoryDescription, Integer icon){
         executor.execute(() -> {

@@ -106,4 +106,15 @@
             app:destination="@id/menu_task" />
     </fragment>
 
+    <fragment
+        android:id="@+id/viewCategoryFragment"
+        android:name="com.example.pomodoro_timer.ui.fragments.Tasks.ViewCategoryFragment"
+        android:label="ViewCategoryFragment"
+        tools:layout="@layout/fragment_task_view_category">
+        <action
+            android:id="@+id/action_viewCategoryFragment_to_menu_task"
+            app:destination="@id/menu_task" />
+    </fragment>
+
+
 </navigation>

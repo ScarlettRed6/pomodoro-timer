@@ -31,6 +31,12 @@ public interface TaskDao {
     @Query("SELECT * FROM tasks WHERE user_Id = :userId AND id = :taskId")
     TaskModel getTaskById(int userId, int taskId);
 
+    @Query("SELECT * FROM tasks WHERE user_Id = :userId AND category_Id = :categoryId")
+    List<TaskModel> getAllTaskByCategory(int userId, int categoryId);
+
+    @Query("UPDATE tasks SET category_Id = 0 WHERE user_Id = :userId AND category_Id = :categoryId AND id = :taskId")
+    void removeCategoryOfTask(int userId, int categoryId, int taskId);
+
     //@Query("SELECT * FROM TaskModel")
     //public TaskModel[] loadAllUsers();
 }

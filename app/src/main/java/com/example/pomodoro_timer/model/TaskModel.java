@@ -34,6 +34,9 @@ public class TaskModel {
     @ColumnInfo(name = "position")
     private int position;
 
+    @ColumnInfo(name = "is_completed")
+    private boolean isCompleted = false;
+
     public TaskModel(int userId, String taskTitle, int sessionCount, int priorityLevel, int categoryId, String taskDescription){
         this.userId = userId;
         this.taskTitle = taskTitle;
@@ -71,7 +74,9 @@ public class TaskModel {
     public int getPosition(){
         return position;
     }
-
+    public boolean getIsCompleted(){
+        return isCompleted;
+    }
 
     public void setTaskTitle(String taskTitle){
         this.taskTitle = taskTitle;
@@ -99,6 +104,9 @@ public class TaskModel {
     }
     public void setPosition(int position) {
         this.position = position;
+    }
+    public void setIsCompleted(boolean isCompleted) {
+        this.isCompleted = isCompleted;
     }
 
     @Override
