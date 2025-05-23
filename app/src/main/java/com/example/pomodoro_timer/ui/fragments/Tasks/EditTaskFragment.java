@@ -100,7 +100,7 @@ public class EditTaskFragment extends Fragment {
                 if (isUserLoggedIn) {
                     taskVM.updateTask(userId, taskId, taskTitle, sessionCount, priorityLevel, categoryId, taskDescription);
                 } else {
-                    taskVM.updateTask(taskId, taskTitle, sessionCount, priorityLevel, taskDescription);
+                    taskVM.updateTask(1, taskId, taskTitle, sessionCount, priorityLevel, categoryId, taskDescription);
                 }
             }//End of if statement
             navController.popBackStack(R.id.menu_task, false);

@@ -1,12 +1,25 @@
 package com.example.pomodoro_timer.viewmodels;
 
+import android.app.Application;
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class SharedViewModel extends ViewModel {
+import com.example.pomodoro_timer.data.AppDatabase;
+import com.example.pomodoro_timer.model.UserModel;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+public class SharedViewModel extends AndroidViewModel {
 
     //Fields
+    private final AppDatabase db;
+    private final ExecutorService executor;
     private final MutableLiveData<Boolean> showAddTaskBtn = new MutableLiveData<>(false);
     private final MutableLiveData<Boolean> addBtnClicked = new MutableLiveData<>();
     private final MutableLiveData<Boolean> inAddMode = new MutableLiveData<>(false);
@@ -54,6 +67,23 @@ public class SharedViewModel extends ViewModel {
     }
     public void setCurrentUserId(int value) {
         currentUserId.setValue(value);
+    }
+
+    //Constructor
+    public SharedViewModel(@NonNull Application application) {
+        super(application);
+        db = AppDatabase.getInstance(application);
+        executor = Executors.newSingleThreadExecutor();
+    }
+
+    public void ensureGuestUserExists() {
+        executor.execute(() -> {
+            if (db.userDao().getUserById(1) == null) {
+                UserModel guestUser = new UserModel("Guest", "guest", "guest@guest");
+                guestUser.setId(1);
+                db.userDao().insert(guestUser);
+            }
+        });
     }
 
 }

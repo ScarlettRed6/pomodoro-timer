@@ -124,23 +124,32 @@ public class TaskViewModel extends AndroidViewModel {
         executor = Executors.newSingleThreadExecutor();
     }
 
-    //THIS IS FOR TESTING PURPOSES ONLY
-    //LATER USE FOR ACTUAL DATA FROM DATABASE FIREBASE
+    //THIS IS FOR GUEST USER
     public void initializeTasks(){
-        if (testTasks.isEmpty()) {
-            testTasks.add(new TaskModel(10,"Task 1", 4, 1, 0, "eyo"));
-            taskList.setValue(testTasks);
-            //adapter.setTasks(testTasks);
-        }
+        executor.execute(() -> {
+            List<TaskModel> currentTasks = db.taskDao().getAll(1);
+            int newPosition = currentTasks.size();
+
+            if (!db.userDao().hasTask(1)){
+                TaskModel guestTask = new TaskModel(1, "Goon", 1, 1, 1, "Test Description");
+                guestTask.setPosition(newPosition);
+
+                db.taskDao().insert(guestTask);
+                taskList.postValue(db.taskDao().getAll(1));
+            }
+        });
         //Log.d("TaskViewModel", "TEST INITIALIZE TASK!");
-    }
+    }//End of initializeTasks method
+
     public void initializeCategories(){
-        if (testCategories.isEmpty()) {
-            testCategories.add(new CategoryModel(10,"Work", R.drawable.ic_category_laptop));
-            categoryList.setValue(testCategories);
-            //categoryAdapter.setCategoryList(testCategories);
-        }
-    }
+        executor.execute(() -> {
+            if (!db.userDao().hasCategory(1)){
+                CategoryModel guestCategory = new CategoryModel(1, "Work", R.drawable.ic_category_laptop);
+                db.categoryDao().insert(guestCategory);
+                categoryList.postValue(db.categoryDao().getAllCategories(1));
+            }
+        });
+    }//End of initializeCategories method
 
     public void resetToTestData() {
         testTasks.clear();
@@ -161,14 +170,6 @@ public class TaskViewModel extends AndroidViewModel {
         categoryTitle.setValue("");
         categoryIcon.setValue(0);
     }
-
-    public void addTask(String taskTitle, int sessionCount, int priorityLevel, String taskDescription){
-        int taskId = taskList.getValue().size();
-        TaskModel newTask = new TaskModel(10, taskTitle, sessionCount, priorityLevel, 0, taskDescription);
-        newTask.setId(taskId + 1);
-        testTasks.add(newTask);
-        taskList.setValue(testTasks);
-    }//End of addTask for non-logged in user method
 
     public void addTask(int userId, String taskTitle, int sessionCount, int priorityLevel, int categoryId, String taskDescription){
         executor.execute(() -> {
@@ -193,11 +194,6 @@ public class TaskViewModel extends AndroidViewModel {
             task.setTaskDescription(taskDescription);
             db.taskDao().update(task);
         });
-    }
-
-    //No user logged in update task
-    public void updateTask(int taskId, String taskTitle, int sessionCount, int priorityLevel, String taskDescription){
-
     }
 
     public void deleteTask(TaskModel task){

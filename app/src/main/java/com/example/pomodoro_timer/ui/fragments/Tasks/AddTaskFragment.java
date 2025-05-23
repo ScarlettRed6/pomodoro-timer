@@ -123,7 +123,7 @@ public class AddTaskFragment extends Fragment {
             if (isUserLoggedIn){
                 taskVM.addTask(userId, newTitle, newSessionCount, newPriority, newCategory, taskDescription);
             }else{
-                taskVM.addTask(newTitle, newSessionCount, newPriority, taskDescription);
+                taskVM.addTask(1, newTitle, newSessionCount, newPriority, newCategory, taskDescription);
             }
             clearCredentials();
             navController.popBackStack(R.id.menu_task, false);

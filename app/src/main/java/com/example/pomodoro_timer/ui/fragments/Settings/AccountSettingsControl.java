@@ -62,7 +62,6 @@ public class AccountSettingsControl extends Fragment {
         SessionManager sessionManager = new SessionManager(requireContext());
         binding.logoutBtnId.setOnClickListener(v -> {
             sessionManager.clearLoginSession();
-            taskVM.resetToTestData();
             settingsVM.setLoginUsername(null);
             settingsVM.setLoginPassword(null);
             sharedVM.setIsUserLoggedIn(false);

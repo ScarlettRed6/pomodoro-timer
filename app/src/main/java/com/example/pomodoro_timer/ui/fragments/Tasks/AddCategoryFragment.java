@@ -107,7 +107,12 @@ public class AddCategoryFragment extends Fragment {
             int newCategoryIcon = taskVM.getCategoryIcon().getValue(); //Just test to get icon from content description,
             //Implement later the actual fetching of the icon and display it
 
-            taskVM.addCategory(userId, newCategoryTitle, newCategoryIcon);
+            if (isUserLoggedIn){
+                taskVM.addCategory(userId, newCategoryTitle, newCategoryIcon);
+            }else {
+                taskVM.addCategory(1, newCategoryTitle, newCategoryIcon);
+            }
+
             taskVM.clearCategoryFields();
             navController.popBackStack(R.id.menu_task, false);
             sharedVM.setInAddMode(false);

@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout dropdownMenu;
     private MaterialTextView viewProfile;
     private SharedViewModel sharedVM;
+    private boolean isLoggedIn = false;
 
     //method for edge to edge(optional)
     protected void edge(){
@@ -64,11 +65,21 @@ public class MainActivity extends AppCompatActivity {
         profileContainer = findViewById(R.id.profile_container_id);
         viewProfile = findViewById(R.id.view_profile);
         sharedVM = new ViewModelProvider(this).get(SharedViewModel.class);
+        isLoggedIn = sharedVM.getIsUserLoggedIn().getValue();
+
+        setGuest();
         restoreSession();
         setupNavigation();
         showFab();
         showProfileDropDown();
-    }
+    }//End of angInit method
+
+    private void setGuest(){
+        if(!isLoggedIn){
+            sharedVM.ensureGuestUserExists();
+            sharedVM.setCurrentUsername("Guest");
+        }
+    }//End of setGuest method
 
     private void setupNavigation() {
         NavHostFragment navHost = (NavHostFragment)

@@ -30,6 +30,15 @@ public interface UserDao {
     @Query("SELECT * FROM users WHERE username = :username LIMIT 1")
     UserModel getUserByUsernameNow(String username); //for login
 
+    @Query("SELECT * FROM users WHERE id = :id")
+    UserModel getUserById(int id);
+
+    @Query("SELECT EXISTS(SELECT 1 FROM tasks WHERE user_id = :userId)")
+    boolean hasTask(int userId);
+
+    @Query("SELECT EXISTS(SELECT 1 FROM categories WHERE user_id = :userId)")
+    boolean hasCategory(int userId);
+
     //@Query("SELECT * FROM users")
     //public UserModel[] loadAllUsers();
 

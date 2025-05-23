@@ -82,6 +82,15 @@ public class TimerFragment extends Fragment {
     private void checkUser(){
         userId = sharedVM.getCurrentUserId().getValue();
         isUserLoggedIn = sharedVM.getIsUserLoggedIn().getValue();
+
+        if (isUserLoggedIn){
+            taskVM.displayTask(userId);
+            taskVM.displayCategory(userId);
+        }else {
+            taskVM.displayTask(1);
+            taskVM.displayCategory(1);
+        }
+
     }//End of checkUser method
 
     private void initializeTimers(){

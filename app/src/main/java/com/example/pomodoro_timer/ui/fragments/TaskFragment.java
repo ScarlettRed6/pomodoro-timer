@@ -104,6 +104,9 @@ public class TaskFragment extends Fragment {
         if(isUserLoggedIn){
             taskVM.displayTask(userId);
             taskVM.displayCategory(userId);
+        }else {
+            taskVM.displayTask(1);
+            taskVM.displayCategory(1);
         }
     }//End of displayTasks method
 

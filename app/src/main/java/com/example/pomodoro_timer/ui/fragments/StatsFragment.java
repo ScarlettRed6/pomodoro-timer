@@ -68,7 +68,6 @@ public class StatsFragment extends Fragment {
 
     private void initStuff(){
         barChart = binding.pomodoroCountPerWeekBarGraphId;
-        listenSessionUserId();
         dateFilter = Arrays.asList("All","Week", "Month", "Year");
         dateSpinnerAdapter();
         checkUserLoggedIn();
@@ -79,6 +78,7 @@ public class StatsFragment extends Fragment {
         if (isUserLoggedIn){
             statsVM.resetStats();
             userId = sharedVM.getCurrentUserId().getValue();
+            listenSessionUserId();
             handleBarGraph("All");
             updateFirstStats();
             Log.d("LOG_CHECK_USER_LOGGED_IN", "User logged in: " + isUserLoggedIn);
