@@ -25,8 +25,6 @@ public class TaskViewModel extends AndroidViewModel {
     private final ExecutorService executor;
     private final List<TaskModel> testTasks = new ArrayList<>();
     private final List<CategoryModel> testCategories = new ArrayList<>();
-    //private CategoryAdapter categoryAdapter = new CategoryAdapter();
-    //private TaskAdapter adapter = new TaskAdapter();
 
     //Task list
     private final MutableLiveData<List<TaskModel>> taskList = new MutableLiveData<>(new ArrayList<>());
@@ -44,6 +42,7 @@ public class TaskViewModel extends AndroidViewModel {
     //Category fields
     private MutableLiveData<String> categoryTitle = new MutableLiveData<>("");
     private MutableLiveData<Integer> categoryIcon = new MutableLiveData<>();
+    private MutableLiveData<String> categoryDescription = new MutableLiveData<>("");
     private MutableLiveData<CategoryModel> category = new MutableLiveData<>();
 
     //Getters and Setters
@@ -107,6 +106,9 @@ public class TaskViewModel extends AndroidViewModel {
     public MutableLiveData<Integer> getCategoryIcon(){
         return categoryIcon;
     }
+    public MutableLiveData<String> getCategoryDescription(){
+        return categoryDescription;
+    }
     public void setCategoryIcon(Integer icon) {
         categoryIcon.setValue(icon);
     }
@@ -144,7 +146,7 @@ public class TaskViewModel extends AndroidViewModel {
     public void initializeCategories(){
         executor.execute(() -> {
             if (!db.userDao().hasCategory(1)){
-                CategoryModel guestCategory = new CategoryModel(1, "Work", R.drawable.ic_category_laptop);
+                CategoryModel guestCategory = new CategoryModel(1, "Work","this Category", R.drawable.ic_category_laptop);
                 db.categoryDao().insert(guestCategory);
                 categoryList.postValue(db.categoryDao().getAllCategories(1));
             }
@@ -221,6 +223,13 @@ public class TaskViewModel extends AndroidViewModel {
         matchCategory(task.getCategoryId());
     }//End of loadEditTask method
 
+    public void loadEditCategory(CategoryModel category){
+        categoryTitle.setValue(category.getCategoryTitle());
+        categoryIcon.setValue(category.getIcon());
+        categoryDescription.setValue(category.getCategoryDescription());
+        this.category.setValue(category);
+    }//End of loadEditCategory method
+
     private void matchCategory(int categoryId){
         executor.execute(() -> {
             CategoryModel category = db.categoryDao().getCategoryById(categoryId);
@@ -257,17 +266,31 @@ public class TaskViewModel extends AndroidViewModel {
         });
     }
 
-    public void addCategory(int userId, String categoryTitle, Integer icon){
+    public void addCategory(int userId, String categoryTitle, String categoryDescription, Integer icon){
         executor.execute(() -> {
-            CategoryModel newCategory = new CategoryModel(userId, categoryTitle, icon);
+            CategoryModel newCategory = new CategoryModel(userId, categoryTitle, categoryDescription, icon);
             db.categoryDao().insert(newCategory);
             categoryList.postValue(db.categoryDao().getAllCategories(userId)); //Refresh category list after insert
         });
     }
 
-    public void deleteCategory(CategoryModel category) {
+    public void updateCategory(int userId, int categoryId, String categoryTitle, int categoryIcon, String categoryDescription){
+        executor.execute(() -> {
+            CategoryModel category = db.categoryDao().getCategoryById(categoryId);
+            category.setCategoryTitle(categoryTitle);
+            category.setIcon(categoryIcon);
+            category.setCategoryDescription(categoryDescription);
+            db.categoryDao().update(category);
+        });
+    }//End of updateCategory method
 
-    }
+    public void deleteCategory(CategoryModel category) {
+        executor.execute(() -> {
+            db.categoryDao().delete(category);
+            List<CategoryModel> allCategories = db.categoryDao().getAllCategories(category.getUserId());
+            categoryList.postValue(allCategories);
+        });
+    }//End of deleteCategory method
 
 
 }

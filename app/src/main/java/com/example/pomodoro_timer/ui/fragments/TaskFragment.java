@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pomodoro_timer.R;
 import com.example.pomodoro_timer.databinding.FragmentTaskBinding;
+import com.example.pomodoro_timer.model.CategoryModel;
 import com.example.pomodoro_timer.model.TaskModel;
 import com.example.pomodoro_timer.ui.fragments.Tasks.EditCategoryFragment;
 import com.example.pomodoro_timer.ui.fragments.Tasks.EditTaskFragment;
@@ -131,8 +132,25 @@ public class TaskFragment extends Fragment {
     }//End of taskAdapterHandle method
 
     private void categoryAdapterHandle(){
-        categoryAdapter = new CategoryAdapter(() -> {
-            navController.navigate(R.id.editCategoryFragment);
+        categoryAdapter = new CategoryAdapter(new CategoryAdapter.CategoryItemMenuListener(){
+
+            @Override
+            public void onViewCategory(CategoryModel category) {
+
+            }
+
+            @Override
+            public void onEditCategory(CategoryModel category) {
+                taskVM.loadEditCategory(category);
+                navController.navigate(R.id.editCategoryFragment);
+            }
+
+            @Override
+            public void onDeleteCategory(CategoryModel category) {
+                if (taskVM.getCategoryList().getValue() != null) {
+                    taskVM.deleteCategory(category);
+                }
+            }
         });
     }//End of categoryAdapterHandle method
 

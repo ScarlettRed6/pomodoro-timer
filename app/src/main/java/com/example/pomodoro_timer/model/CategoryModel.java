@@ -17,13 +17,17 @@ public class CategoryModel {
     @ColumnInfo(name = "category_title")
     private String categoryTitle;
 
+    @ColumnInfo(name = "category_description")
+    private String categoryDescription;
+
     @ColumnInfo(name = "icon")
     private Integer icon;
 
     //Constructor
-    public CategoryModel(int userId, String categoryTitle, Integer icon){
+    public CategoryModel(int userId, String categoryTitle, String categoryDescription, Integer icon){
         this.userId = userId;
         this.categoryTitle = categoryTitle;
+        this.categoryDescription = categoryDescription;
         this.icon = icon;
     }
 
@@ -45,15 +49,20 @@ public class CategoryModel {
     public String getCategoryTitle(){
         return categoryTitle;
     }
-
-    public Integer getIcon(){
-        return icon;
-    }
-
     public void setCategoryTitle(String categoryTitle){
         this.categoryTitle = categoryTitle;
     }
 
+    public String getCategoryDescription(){
+        return categoryDescription;
+    }
+    public void setCategoryDescription(String categoryDescription){
+        this.categoryDescription = categoryDescription;
+    }
+
+    public Integer getIcon(){
+        return icon;
+    }
     public void setIcon(int icon){
         this.icon = icon;
     }
