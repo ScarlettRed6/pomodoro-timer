@@ -312,5 +312,43 @@ public class TaskViewModel extends AndroidViewModel {
         });
     }//End of deleteCategory method
 
+    public void decreaseTaskSession(TaskModel task) {
+        if (task == null) return;
+
+        executor.execute(() -> {
+            // Get the latest task data from database
+            TaskModel currentTask = db.taskDao().getTaskById(task.getUserId(), task.getId());
+            if (currentTask == null) return;
+
+            int newRemainingSessions = currentTask.getRemainingSessions() - 1;
+
+            // Ensure remaining sessions don't go below 0
+            if (newRemainingSessions < 0) {
+                newRemainingSessions = 0;
+            }
+
+            currentTask.setRemainingSessions(newRemainingSessions);
+
+            // If no remaining sessions, mark as completed and set completion date
+            if (newRemainingSessions == 0) {
+                currentTask.setIsCompleted(true);
+                currentTask.setTimeFinished(System.currentTimeMillis()); // Changed from setTimeFinished
+                Log.d("LOG_TASK_COMPLETED", "Task completed: " + currentTask.getTaskTitle());
+            }
+
+            // Update the task in database
+            db.taskDao().update(currentTask);
+
+            // Refresh the task list to update UI
+            List<TaskModel> allTasks = db.taskDao().getAll(currentTask.getUserId());
+            taskList.postValue(allTasks);
+
+            Log.d("LOG_TASK_SESSION_UPDATE",
+                    "Task: " + currentTask.getTaskTitle() +
+                            ", Remaining sessions: " + newRemainingSessions +
+                            ", Completed: " + currentTask.getIsCompleted());
+        });
+    }//End of decreaseTaskSession method
+
 
 }

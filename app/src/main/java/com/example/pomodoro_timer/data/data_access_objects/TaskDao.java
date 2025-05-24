@@ -22,7 +22,7 @@ public interface TaskDao {
     @Delete
     int delete(TaskModel task);
 
-    @Query("SELECT * FROM tasks WHERE user_Id = :userId ORDER BY position ASC")
+    @Query("SELECT * FROM tasks WHERE user_Id = :userId AND is_Completed = 0 ORDER BY position ASC")
     List<TaskModel> getAll(int userId);
 
     @Update

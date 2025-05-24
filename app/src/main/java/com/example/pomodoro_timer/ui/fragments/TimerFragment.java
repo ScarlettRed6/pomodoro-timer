@@ -32,6 +32,7 @@ public class TimerFragment extends Fragment {
     private FragmentTimerBinding binding;
     private SettingsViewModel settingsVM;
     private SharedViewModel sharedVM;
+    private TaskModel firstTask;
     private Integer userId;
     private Integer pMinutes, sMinutes, lMinutes;
     private Integer pSeconds, sSeconds, lSeconds;
@@ -64,7 +65,7 @@ public class TimerFragment extends Fragment {
         timerVM.setUserLoggedIn(isUserLoggedIn);
         taskVM.initializeTasks();
         taskVM.initializeCategories();
-        setFirstPriorityTask();
+        observeTaskList();
         timerListener();
         initializeTimers();
         settingsVM.getPomodoroMinutes().observe(getViewLifecycleOwner(), minutes -> updateTimerTotalTime());
@@ -178,23 +179,33 @@ public class TimerFragment extends Fragment {
 
     }//End of timerListener method
 
-    private void setFirstPriorityTask(){
+    private void observeTaskList(){
         taskVM.getTaskList().observe(getViewLifecycleOwner(), tasks -> {
             if(tasks != null && !tasks.isEmpty()){
-                TaskModel firstTask = tasks.get(0);
-
-                TextView taskTitle = binding.taskTitleId;
-                TextView sessionCount = binding.sessionCountId;
-
-                String sessionCountText = firstTask.getRemainingSessions() + "/" + firstTask.getSessionCount();
-
-                taskTitle.setText(firstTask.getTaskTitle());
-                sessionCount.setText(sessionCountText);
+                firstTask = tasks.get(0);
+                updateTaskUI();
                 binding.firstTaskCardId.setVisibility(View.VISIBLE);
+            } else {
+                firstTask = null;
+                binding.firstTaskCardId.setVisibility(View.GONE);
+                Log.d("LOG_NO_TASKS", "No incomplete tasks available");
             }
-
         });
-    }//End of setFirstPriorityTask method
+    }//End of observeTaskList method
+
+    private void updateTaskUI(){
+        if (firstTask != null) {
+            TextView taskTitle = binding.taskTitleId;
+            TextView sessionCount = binding.sessionCountId;
+
+            String sessionCountText = firstTask.getRemainingSessions() + "/" + firstTask.getSessionCount();
+
+            taskTitle.setText(firstTask.getTaskTitle());
+            sessionCount.setText(sessionCountText);
+            Log.d("LOG_TASK_UI_UPDATE", "Updated UI for task: " + firstTask.getTaskTitle() +
+                    " with sessions: " + sessionCountText);
+        }
+    }//End of updateTaskUI method
 
     private void listenSession(){
         timerVM.getSessionFinished().observe(getViewLifecycleOwner(), finished -> {
@@ -204,10 +215,19 @@ public class TimerFragment extends Fragment {
                         timerVM.recordPomodoroSession(userId, timerVM.getTotalTime());
                         timerVM.saveTotalFocus(userId, timerVM.getTotalTime());
                         Log.d("LOG_RECORD_SESSION_AND_FOCUS","FOCUS SAVED");
+                        if (firstTask != null) {
+                            taskVM.decreaseTaskSession(firstTask);
+                            Log.d("LOG_TASK_SESSION_DECREASED", "Task session decreased for: " + firstTask.getTaskTitle());
+                        }
                     }else {
                         timerVM.recordBreakSession(userId, timerVM.getTotalTime());
                         timerVM.saveTotalBreakTime(userId, timerVM.getTotalTime());
                         Log.d("LOG_RECORD_SESSION_AND_BREAK","BREAK SAVED");
+                    }
+                }else {
+                    if (firstTask != null) {
+                        taskVM.decreaseTaskSession(firstTask);
+                        Log.d("LOG_TASK_SESSION_DECREASED", "Task session decreased for: " + firstTask.getTaskTitle());
                     }
                 }
                 updateTimerTotalTime();
