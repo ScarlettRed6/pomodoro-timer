@@ -60,7 +60,7 @@ public class AddCategoryFragment extends Fragment {
         setIconSelector();
         onCancelBtnClick();
         onSaveBtnClick();
-    }
+    }//End of init method
 
     private void checkUser(){
         userId = sharedVM.getCurrentUserId().getValue();
@@ -104,9 +104,10 @@ public class AddCategoryFragment extends Fragment {
     private void onSaveBtnClick(){
         binding.saveBtnId.setOnClickListener(v -> {
             String newCategoryTitle = taskVM.getCategoryTitle().getValue();
-            int newCategoryIcon = taskVM.getCategoryIcon().getValue(); //Just test to get icon from content description,
-            String newCategoryDescription = taskVM.getCategoryTitle().getValue();
-            //Implement later the actual fetching of the icon and display it
+            int newCategoryIcon = taskVM.getCategoryIcon().getValue();
+            String newCategoryDescription = taskVM.getCategoryDescription().getValue();
+
+            Log.d("CHECK_DESCRIPTION", "Description: " + newCategoryDescription);
 
             if (isUserLoggedIn)
                 taskVM.addCategory(userId, newCategoryTitle, newCategoryDescription, newCategoryIcon);

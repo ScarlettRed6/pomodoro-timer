@@ -186,8 +186,10 @@ public class TimerFragment extends Fragment {
                 TextView taskTitle = binding.taskTitleId;
                 TextView sessionCount = binding.sessionCountId;
 
+                String sessionCountText = firstTask.getRemainingSessions() + "/" + firstTask.getSessionCount();
+
                 taskTitle.setText(firstTask.getTaskTitle());
-                sessionCount.setText(String.valueOf(firstTask.getSessionCount()));
+                sessionCount.setText(sessionCountText);
                 binding.firstTaskCardId.setVisibility(View.VISIBLE);
             }
 

@@ -141,7 +141,7 @@ public class AddTaskFragment extends Fragment {
                 Toast.makeText(getContext(), "No categories found", Toast.LENGTH_SHORT).show();
             }
         });
-    }
+    }//End of onCategoryPickBtn method
 
     private void onRemoveCategoryBtn(){
         binding.removePickedCategoryBtnId.setOnClickListener(v -> {

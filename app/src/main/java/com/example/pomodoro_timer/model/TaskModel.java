@@ -19,6 +19,9 @@ public class TaskModel {
     @ColumnInfo(name = "session_count")
     private int sessionCount;
 
+    @ColumnInfo(name = "remaining_sessions")
+    private int remainingSessions;
+
     @ColumnInfo(name = "priority_level")
     private int priorityLevel; //Levels: 1 = low, 2 = medium, 3 = high
 
@@ -41,6 +44,7 @@ public class TaskModel {
         this.userId = userId;
         this.taskTitle = taskTitle;
         this.sessionCount = sessionCount;
+        this.remainingSessions = sessionCount;
         this.priorityLevel = priorityLevel;
         this.categoryId = categoryId;
         this.taskDescription = taskDescription;
@@ -77,6 +81,9 @@ public class TaskModel {
     public boolean getIsCompleted(){
         return isCompleted;
     }
+    public int getRemainingSessions() {
+        return remainingSessions;
+    }
 
     public void setTaskTitle(String taskTitle){
         this.taskTitle = taskTitle;
@@ -107,6 +114,9 @@ public class TaskModel {
     }
     public void setIsCompleted(boolean isCompleted) {
         this.isCompleted = isCompleted;
+    }
+    public void setRemainingSessions(int remainingSessions) {
+        this.remainingSessions = remainingSessions;
     }
 
     @Override
