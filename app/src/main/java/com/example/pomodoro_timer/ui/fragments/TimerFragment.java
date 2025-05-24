@@ -198,7 +198,7 @@ public class TimerFragment extends Fragment {
             TextView taskTitle = binding.taskTitleId;
             TextView sessionCount = binding.sessionCountId;
 
-            String sessionCountText = firstTask.getRemainingSessions() + "/" + firstTask.getSessionCount();
+            String sessionCountText = firstTask.getSessionsCompleted() + "/" + firstTask.getSessionCount();
 
             taskTitle.setText(firstTask.getTaskTitle());
             sessionCount.setText(sessionCountText);
@@ -216,7 +216,7 @@ public class TimerFragment extends Fragment {
                         timerVM.saveTotalFocus(userId, timerVM.getTotalTime());
                         Log.d("LOG_RECORD_SESSION_AND_FOCUS","FOCUS SAVED");
                         if (firstTask != null) {
-                            taskVM.decreaseTaskSession(firstTask);
+                            taskVM.increaseFinishedTaskSession(firstTask);
                             Log.d("LOG_TASK_SESSION_DECREASED", "Task session decreased for: " + firstTask.getTaskTitle());
                         }
                     }else {
@@ -226,7 +226,7 @@ public class TimerFragment extends Fragment {
                     }
                 }else {
                     if (firstTask != null) {
-                        taskVM.decreaseTaskSession(firstTask);
+                        taskVM.increaseFinishedTaskSession(firstTask);
                         Log.d("LOG_TASK_SESSION_DECREASED", "Task session decreased for: " + firstTask.getTaskTitle());
                     }
                 }
