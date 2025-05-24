@@ -19,7 +19,7 @@ public class TaskModel {
     @ColumnInfo(name = "session_count")
     private int sessionCount;
 
-    @ColumnInfo(name = "remaining_sessions")
+    @ColumnInfo(name = "sessions_completed")
     private int sessionsCompleted;
 
     @ColumnInfo(name = "priority_level")

@@ -7,13 +7,18 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
 
 import com.example.pomodoro_timer.data.AppDatabase;
+import com.example.pomodoro_timer.model.DateTaskCount;
 import com.example.pomodoro_timer.model.PomodoroLogModel;
 import com.example.pomodoro_timer.model.StatsModel;
 
 import java.text.DecimalFormat;
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -120,5 +125,38 @@ public class StatsViewModel extends AndroidViewModel {
     private void calculateProductivityScore(int totalPomodoros) {
         //Implement later
     }//End of calculateProductivityScore method
+
+    public LiveData<Map<String, Integer>> getHeatMapDataForMonth(int userId, int month, int year) {
+        Calendar startCal = Calendar.getInstance();
+        startCal.set(year, month, 1, 0, 0, 0);
+        startCal.set(Calendar.MILLISECOND, 0);
+        long startTime = startCal.getTimeInMillis();
+
+        Calendar endCal = Calendar.getInstance();
+        endCal.set(year, month, startCal.getActualMaximum(Calendar.DAY_OF_MONTH), 23, 59, 59);
+        endCal.set(Calendar.MILLISECOND, 999);
+        long endTime = endCal.getTimeInMillis();
+
+        return Transformations.map(
+                database.taskDao().observeCompletedTaskCountsByDateRange(userId, startTime, endTime),
+                list -> {
+                    Map<String, Integer> map = new HashMap<>();
+                    for (DateTaskCount entry : list) {
+                        map.put(entry.date, entry.completedCount);
+                    }
+                    return map;
+                }
+        );
+    }//End of getHeatMapDataForMonth method
+
+    public LiveData<Map<String, Integer>> getHeatMapData(int userId) {
+        return Transformations.map(database.taskDao().observeCompletedTaskCountsByDate(userId), list -> {
+            Map<String, Integer> map = new HashMap<>();
+            for (DateTaskCount entry : list) {
+                map.put(entry.date, entry.completedCount);
+            }
+            return map;
+        });
+    }//End of getHeatMapData method
 
 }

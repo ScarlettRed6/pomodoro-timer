@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
         <variable
@@ -8,7 +9,6 @@
     </data>
     
     <androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -51,186 +51,243 @@
         </RelativeLayout>
 
         <!-- Main stats -->
-        <RelativeLayout
-            android:id="@+id/main_stats_layout_id"
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:background="@drawable/background_curved_white"
-            android:layout_marginTop="10dp"
-            android:padding="16dp"
-            app:layout_constraintTop_toBottomOf="@+id/theme_spinner_layout_id">
-
-            <LinearLayout
-                android:id="@+id/productivity_score_layout_id"
+            app:layout_constraintTop_toBottomOf="@+id/theme_spinner_layout_id"
+            app:layout_constraintBottom_toBottomOf="parent">
+            <RelativeLayout
+                android:id="@+id/main_stats_layout_id"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/background_gradient_purple2"
-                android:orientation="vertical">
-                <!-- Productivity Score -->
+                android:background="@drawable/background_curved_white"
+                android:layout_marginTop="10dp"
+                android:padding="16dp">
+
                 <LinearLayout
+                    android:id="@+id/productivity_score_layout_id"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:orientation="horizontal">
+                    android:background="@drawable/background_gradient_purple2"
+                    android:orientation="vertical">
+                    <!-- Productivity Score -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:orientation="horizontal">
 
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/productivity_text_id"
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/productivity_text_id"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Productivity"
+                            android:textStyle="bold"
+                            android:textColor="@color/white"/>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/productivity_percent_score_id"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="75%"
+                            android:textStyle="bold"
+                            android:textColor="@color/white"/>
+
+                    </LinearLayout>
+
+                    <ProgressBar
+                        android:id="@+id/category_progress"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:progress="75"
+                        android:progressTint="@android:color/white"/>
+                </LinearLayout>
+
+                <!-- Total stats values -->
+                <LinearLayout
+                    android:id="@+id/total_stats_values_layout_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="12dp"
+                    android:layout_below="@+id/productivity_score_layout_id">
+
+                    <!-- Total Pomodoro -->
+                    <LinearLayout
+                        android:id="@+id/total_pomodoros_layout_id"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Productivity"
-                        android:textStyle="bold"
-                        android:textColor="@color/white"/>
+                        android:padding="8dp"
+                        android:layout_marginEnd="6dp"
+                        android:background="@drawable/background_gradient_purple2"
+                        android:orientation="vertical">
 
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/productivity_percent_score_id"
-                        android:layout_width="wrap_content"
+                        <ImageView
+                            android:id="@+id/pomodoro_image_icon_id"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/ic_tomato"
+                            android:layout_gravity="center"
+                            android:contentDescription="@string/tomato_icon"/>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/pomodoro_count_id"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="@{String.valueOf(statsVM.pomodoroSessions)}" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/pomodoro_count_label_id"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/total_pomodoros_label"
+                            android:textSize="12sp"
+                            android:layout_gravity="center"/>
+
+                    </LinearLayout>
+
+                    <!-- Total focus -->
+                    <LinearLayout
+                        android:id="@+id/total_focus_layout_id"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="75%"
-                        android:textStyle="bold"
-                        android:textColor="@color/white"/>
+                        android:layout_weight="1"
+                        android:padding="8dp"
+                        android:background="@drawable/background_gradient_purple2"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/focus_image_icon_id"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/ic_tomato"
+                            android:layout_gravity="center"
+                            android:contentDescription="@string/tomato_icon"/>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/focus_count_id"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text='@{String.valueOf(statsVM.totalFocus)+ "h"}' />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/focus_count_label_id"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/total_focus_label"
+                            android:textSize="12sp"
+                            android:layout_gravity="center"/>
+
+                    </LinearLayout>
+
+                    <!-- Total break times -->
+                    <LinearLayout
+                        android:id="@+id/break_time_layout_id"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:padding="8dp"
+                        android:layout_marginStart="6dp"
+                        android:background="@drawable/background_gradient_purple2"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/break_image_icon_id"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/ic_tomato"
+                            android:layout_gravity="center"
+                            android:contentDescription="@string/tomato_icon"/>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/break_time_count_id"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{String.valueOf(statsVM.breakTime)}"
+                            android:layout_gravity="center"/>
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/break_time_count_label_id"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/total_break_times_label"
+                            android:textSize="12sp"
+                            android:layout_gravity="center"/>
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
-                <ProgressBar
-                    android:id="@+id/category_progress"
-                    style="?android:attr/progressBarStyleHorizontal"
+                <!-- Pomodoro count per week bar graph -->
+                <com.github.mikephil.charting.charts.BarChart
+                    android:id="@+id/pomodoro_count_per_week_bar_graph_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:layout_margin="16dp"
+                    android:layout_below="@+id/total_stats_values_layout_id"/>
+
+                <LinearLayout
+                    android:id="@+id/calendar_navigation_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:progress="75"
-                    android:progressTint="@android:color/white"/>
-            </LinearLayout>
+                    android:orientation="horizontal"
+                    android:layout_marginTop="16dp"
+                    android:layout_below="@id/pomodoro_count_per_week_bar_graph_id"
+                    android:gravity="center_vertical">
 
-            <!-- Total stats values -->
-            <LinearLayout
-                android:id="@+id/total_stats_values_layout_id"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="12dp"
-                android:layout_below="@+id/productivity_score_layout_id">
-
-                <!-- Total Pomodoro -->
-                <LinearLayout
-                    android:id="@+id/total_pomodoros_layout_id"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:padding="8dp"
-                    android:layout_marginEnd="6dp"
-                    android:background="@drawable/background_gradient_purple2"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:id="@+id/pomodoro_image_icon_id"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:src="@drawable/ic_tomato"
-                        android:layout_gravity="center"
-                        android:contentDescription="@string/tomato_icon"/>
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/pomodoro_count_id"
+                    <Button
+                        android:id="@+id/prev_month_button_id"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="@{String.valueOf(statsVM.pomodoroSessions)}" />
+                        android:text="‹"
+                        android:textSize="18sp"
+                        android:minWidth="48dp"
+                        android:background="@drawable/background_dim_curved_purple2"
+                        android:textColor="@color/text_color" />
 
                     <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/pomodoro_count_label_id"
+                        android:id="@+id/month_year_label_id"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="May 2025"
+                        android:textAlignment="center"
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        android:layout_marginHorizontal="16dp" />
+
+                    <Button
+                        android:id="@+id/next_month_button_id"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/total_pomodoros_label"
-                        android:textSize="12sp"
-                        android:layout_gravity="center"/>
+                        android:text="›"
+                        android:textSize="18sp"
+                        android:minWidth="48dp"
+                        android:background="@drawable/background_dim_curved_purple2"
+                        android:textColor="@color/text_color" />
 
                 </LinearLayout>
 
-                <!-- Total focus -->
-                <LinearLayout
-                    android:id="@+id/total_focus_layout_id"
-                    android:layout_width="0dp"
+                <com.example.pomodoro_timer.ui.custom.CalendarHeatMapView
+                    android:id="@+id/monthlyCalendarView"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:padding="8dp"
-                    android:background="@drawable/background_gradient_purple2"
-                    android:orientation="vertical">
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@id/calendar_navigation_layout"
+                    android:clickable="true"
+                    android:focusable="true" />
 
-                    <ImageView
-                        android:id="@+id/focus_image_icon_id"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:src="@drawable/ic_tomato"
-                        android:layout_gravity="center"
-                        android:contentDescription="@string/tomato_icon"/>
+            </RelativeLayout>
 
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/focus_count_id"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text='@{String.valueOf(statsVM.totalFocus)+ "h"}' />
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/focus_count_label_id"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/total_focus_label"
-                        android:textSize="12sp"
-                        android:layout_gravity="center"/>
-
-                </LinearLayout>
-
-                <!-- Total break times -->
-                <LinearLayout
-                    android:id="@+id/break_time_layout_id"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:padding="8dp"
-                    android:layout_marginStart="6dp"
-                    android:background="@drawable/background_gradient_purple2"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:id="@+id/break_image_icon_id"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:src="@drawable/ic_tomato"
-                        android:layout_gravity="center"
-                        android:contentDescription="@string/tomato_icon"/>
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/break_time_count_id"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@{String.valueOf(statsVM.breakTime)}"
-                        android:layout_gravity="center"/>
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/break_time_count_label_id"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/total_break_times_label"
-                        android:textSize="12sp"
-                        android:layout_gravity="center"/>
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <!-- Pomodoro count per week bar graph -->
-            <com.github.mikephil.charting.charts.BarChart
-                android:id="@+id/pomodoro_count_per_week_bar_graph_id"
-                android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:layout_margin="16dp"
-                android:layout_below="@+id/total_stats_values_layout_id"/>
-
-        </RelativeLayout>
+        </ScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

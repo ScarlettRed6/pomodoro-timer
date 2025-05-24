@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -16,6 +18,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.pomodoro_timer.R;
 import com.example.pomodoro_timer.databinding.FragmentStatsBinding;
 import com.example.pomodoro_timer.model.PomodoroLogModel;
+import com.example.pomodoro_timer.ui.custom.CalendarHeatMapView;
 import com.example.pomodoro_timer.viewmodels.SharedViewModel;
 import com.example.pomodoro_timer.viewmodels.StatsViewModel;
 import com.github.mikephil.charting.charts.BarChart;
@@ -26,6 +29,7 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.google.android.material.textview.MaterialTextView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -44,6 +48,10 @@ public class StatsFragment extends Fragment {
     private SharedViewModel sharedVM;
     private StatsViewModel statsVM;
     private List<String> dateFilter;
+    private CalendarHeatMapView calendarHeatMapView;
+    private Button prevMonthButton;
+    private Button nextMonthButton;
+    private MaterialTextView monthYearLabel;
     private BarChart barChart;
     private int userId;
 
@@ -56,6 +64,7 @@ public class StatsFragment extends Fragment {
         binding = FragmentStatsBinding.inflate(inflater, container, false);
         statsVM = new ViewModelProvider(requireActivity()).get(StatsViewModel.class);
         sharedVM = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
+        calendarHeatMapView = binding.monthlyCalendarView;
         binding.setStatsVM(statsVM);
         binding.setLifecycleOwner(getViewLifecycleOwner());
 
@@ -71,7 +80,72 @@ public class StatsFragment extends Fragment {
         dateFilter = Arrays.asList("All","Week", "Month", "Year");
         dateSpinnerAdapter();
         checkUserLoggedIn();
+        initCalendarNavigation();
+
+        statsVM.getHeatMapData(userId).observe(getViewLifecycleOwner(), map -> {
+            calendarHeatMapView.setDataPoints(map);
+        });
+
+        calendarHeatMapView.setOnDateClickListener((date, value) -> {
+            SimpleDateFormat sdf = new SimpleDateFormat("MMMM d, yyyy", Locale.getDefault());
+            String formattedDate = sdf.format(date.getTime());
+
+            String intensity;
+            if (value == 0) {
+                intensity = "No tasks completed";
+            } else if (value == 1) {
+                intensity = "1 task completed";
+            } else {
+                intensity = value + " tasks completed";
+            }
+
+            String message = formattedDate + ": " + intensity;
+            Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+        });
+
     }//End of initStuff method
+
+    // Add this method in initStuff() after your existing initialization
+    private void initCalendarNavigation() {
+        prevMonthButton = binding.prevMonthButtonId;
+        nextMonthButton = binding.nextMonthButtonId;
+        monthYearLabel = binding.monthYearLabelId;
+
+        // Set up navigation button listeners
+        prevMonthButton.setOnClickListener(v -> {
+            calendarHeatMapView.previousMonth();
+            updateMonthYearLabel();
+            refreshHeatMapData(); // Refresh data for new month
+        });
+
+        nextMonthButton.setOnClickListener(v -> {
+            calendarHeatMapView.nextMonth();
+            updateMonthYearLabel();
+            refreshHeatMapData(); // Refresh data for new month
+        });
+
+        // Initial label update
+        updateMonthYearLabel();
+    }
+
+    // Add this method to update the month/year display
+    private void updateMonthYearLabel() {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.MONTH, calendarHeatMapView.getCurrentMonth());
+        cal.set(Calendar.YEAR, calendarHeatMapView.getCurrentYear());
+
+        SimpleDateFormat sdf = new SimpleDateFormat("MMMM yyyy", Locale.getDefault());
+        monthYearLabel.setText(sdf.format(cal.getTime()));
+    }
+
+    // Add this method to refresh heat map data when month changes
+    private void refreshHeatMapData() {
+        if (userId > 0) {
+            statsVM.getHeatMapData(userId).observe(getViewLifecycleOwner(), map -> {
+                calendarHeatMapView.setDataPoints(map);
+            });
+        }
+    }
 
     private void checkUserLoggedIn(){
         boolean isUserLoggedIn = sharedVM.getIsUserLoggedIn().getValue();
