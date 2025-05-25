@@ -75,9 +75,7 @@ public class TimerFragment extends Fragment {
         settingsVM.getLongBreakMinutes().observe(getViewLifecycleOwner(), minutes -> updateTimerTotalTime());
         settingsVM.getLongBreakSeconds().observe(getViewLifecycleOwner(), seconds -> updateTimerTotalTime());
 
-        if (isUserLoggedIn){
-            listenSession();
-        }
+        listenSession();
     }//End of init method
 
     private void checkUser(){

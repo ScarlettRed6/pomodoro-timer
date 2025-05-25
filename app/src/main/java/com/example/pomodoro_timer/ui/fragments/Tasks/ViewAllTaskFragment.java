@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.example.pomodoro_timer.R;
 import com.example.pomodoro_timer.databinding.FragmentTaskViewAllTaskBinding;
 import com.example.pomodoro_timer.model.TaskModel;
+import com.example.pomodoro_timer.utils.adapter.FinishedTaskAdapter;
 import com.example.pomodoro_timer.utils.adapter.TaskAdapter;
 import com.example.pomodoro_timer.viewmodels.SharedViewModel;
 import com.example.pomodoro_timer.viewmodels.TaskViewModel;
@@ -24,6 +25,7 @@ public class ViewAllTaskFragment extends Fragment {
     private FragmentTaskViewAllTaskBinding binding;
     private TaskViewModel taskVM;
     private TaskAdapter taskAdapter;
+    private FinishedTaskAdapter finishedTaskAdapter;
     private SharedViewModel sharedVM;
     private NavController navController;
     private Integer userId;
@@ -56,7 +58,7 @@ public class ViewAllTaskFragment extends Fragment {
         binding.ongoingTasksRecyclerViewId.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.ongoingTasksRecyclerViewId.setAdapter(taskAdapter);
         binding.finishedTasksRecyclerViewId.setLayoutManager(new LinearLayoutManager(getContext()));
-        binding.finishedTasksRecyclerViewId.setAdapter(taskAdapter);
+        binding.finishedTasksRecyclerViewId.setAdapter(finishedTaskAdapter);
 
         observeTasks();
     }//End of initializeStuff method
@@ -92,11 +94,18 @@ public class ViewAllTaskFragment extends Fragment {
                 }
             }
         });
+        finishedTaskAdapter = new FinishedTaskAdapter(task -> {
+            taskVM.reAddTask(task);
+            displayTask();
+        });
     }//End of taskAdapterHandler method
 
     private void observeTasks(){
         taskVM.getInProgressTaskList().observe(getViewLifecycleOwner(), tasks -> {
             taskAdapter.setTasks(tasks);
+        });
+        taskVM.getFinishedTaskList().observe(getViewLifecycleOwner(), tasks -> {
+            finishedTaskAdapter.setTasks(tasks);
         });
     }//End of observeTasks method
 

@@ -225,11 +225,21 @@ public class TaskViewModel extends AndroidViewModel {
         });
     }//End of deleteInProgressTask method
 
+    public void reAddTask(TaskModel task){
+        executor.execute(() -> {
+            //This updates the task to not be completed
+            task.setIsCompleted(false);
+            task.setSessionsCompleted(0);
+            task.setTimeFinished(0L);
+            db.taskDao().update(task);
+        });
+    }//End of reAddTask method
+
     public void updateTaskOrder(List<TaskModel> tasks) {
         executor.execute(() -> {
             db.taskDao().updateTasks(tasks);
         });
-    }
+    }//End of updateTaskOrder method
 
     public void loadEditTask(TaskModel task){
         taskTitle.setValue(task.getTaskTitle());

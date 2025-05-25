@@ -21,7 +21,7 @@ public class FinishedTaskAdapter extends RecyclerView.Adapter<FinishedTaskAdapte
 
     //Interface for callback
     public interface FinishedTaskItemMenuListener{
-        void onDeleteTask(TaskModel task);
+        void onReAdd(TaskModel task);
     }
 
     //Constructor
@@ -67,6 +67,8 @@ public class FinishedTaskAdapter extends RecyclerView.Adapter<FinishedTaskAdapte
         }
         public void bind(TaskModel task) {
             binding.setTaskModel(task);
+            binding.executePendingBindings();
+            binding.reAddFinishedTaskIconId.setOnClickListener(v -> menuListener.onReAdd(task));
         }
     }//End of FinishedTaskViewHolder
 }
