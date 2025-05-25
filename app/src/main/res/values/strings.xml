@@ -2,7 +2,7 @@
     <!-- put string texts here -->
 
     <!-- Titles -->
-    <string name="app_name">Pomodoro Timer (TISRBD)</string>
+    <string name="app_name">pomodoro-timer</string>
 
     <!-- Menu labels/titles (may use visibility to not visible in bottom nav control) -->
     <string name="menu_timer">Timer</string>
