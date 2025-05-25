@@ -347,6 +347,20 @@ public class TaskViewModel extends AndroidViewModel {
         });
     }//End of updateCategory method
 
+    public void reApplyCategoryTasks(int userId, int categoryId){
+        executor.execute(() -> {
+            //This reapplys the tasks of the category where the tasks are completed and sets it to not completed and resets the remaining sessions
+            List<TaskModel> tasks = db.taskDao().getAllCompletedTasksByCategory(userId, categoryId);
+            for (TaskModel task : tasks) {
+                task.setIsCompleted(false);
+                task.setSessionsCompleted(0);
+                task.setTimeFinished(0L);
+                db.taskDao().update(task);
+            }
+            displayTaskByCategory(userId, categoryId);
+        });
+    }
+
     public void deleteCategory(CategoryModel category) {
         executor.execute(() -> {
             db.categoryDao().delete(category);

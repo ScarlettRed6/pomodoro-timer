@@ -59,6 +59,7 @@ public class ViewCategoryFragment extends Fragment {
         binding.categoryTasksRecyclerViewId.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.categoryTasksRecyclerViewId.setAdapter(taskAdapter);
 
+        onApplyTask();
         observeTask();
     }//End of initializeStuff method
 
@@ -86,5 +87,15 @@ public class ViewCategoryFragment extends Fragment {
             taskAdapter.setTasks(tasks);
         });
     }
+
+    private void onApplyTask(){
+        binding.applyCategoryTasksButtonId.setOnClickListener(view -> {
+            int categoryId = taskVM.getCategory().getValue().getId();
+            if (isUserLoggedIn)
+                taskVM.reApplyCategoryTasks(userId, categoryId);
+            else
+                taskVM.reApplyCategoryTasks(1, categoryId);
+        });
+    }//End of onApplyTask method
 
 }

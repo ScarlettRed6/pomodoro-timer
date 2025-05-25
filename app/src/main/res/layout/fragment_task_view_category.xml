@@ -63,6 +63,17 @@
             app:layout_constraintTop_toBottomOf="@+id/category_description_display_id"
             app:layout_constraintStart_toStartOf="parent"/>
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/apply_category_tasks_button_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/cropped_ellipse_color1"
+            android:text="apply"
+            android:textSize="16sp"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/category_description_display_id"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/category_tasks_recycler_view_id"
             android:layout_width="match_parent"
