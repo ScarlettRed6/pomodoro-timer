@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="taskVM"
+            type="com.example.pomodoro_timer.viewmodels.TaskViewModel" />
+    </data>
+    
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- Guidelines -->
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintGuide_percent="0.05"
+            android:orientation="vertical"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintGuide_percent="0.95"
+            android:orientation="vertical"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintGuide_percent="0.85"
+            android:orientation="horizontal"/>
+
+        <!-- End of Guidelines-->
+
+        <!-- Ongoing tasks -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/ongoing_tasks_label_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ongoing_tasks"
+            android:textColor="@android:color/white"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:layout_marginTop="10dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/guideline1"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/ongoing_tasks_recycler_view_id"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintStart_toEndOf="@+id/guideline1"
+            app:layout_constraintEnd_toStartOf="@id/guideline2"
+            app:layout_constraintTop_toBottomOf="@+id/ongoing_tasks_label_id"
+            app:layout_constraintBottom_toTopOf="@+id/finished_tasks_label_id"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/finished_tasks_label_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/finished_tasks"
+            android:textColor="@android:color/white"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:layout_marginTop="10dp"
+            app:layout_constraintStart_toEndOf="@+id/guideline1"
+            app:layout_constraintTop_toBottomOf="@+id/ongoing_tasks_recycler_view_id"
+            app:layout_constraintBottom_toTopOf="@+id/finished_tasks_recycler_view_id"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/finished_tasks_recycler_view_id"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintStart_toEndOf="@+id/guideline1"
+            app:layout_constraintEnd_toStartOf="@id/guideline2"
+            app:layout_constraintTop_toBottomOf="@+id/finished_tasks_label_id"
+            app:layout_constraintBottom_toTopOf="@id/guideline3"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

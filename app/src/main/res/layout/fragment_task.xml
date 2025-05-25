@@ -50,6 +50,18 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toEndOf="@+id/guideline1"/>
 
+        <ImageButton
+            android:id="@+id/see_all_tasks_button_id"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:src="@drawable/ic_more_options"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/view_all_tasks"
+            android:scaleType="fitCenter"
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toStartOf="@+id/guideline2"
+            app:layout_constraintTop_toTopOf="parent"/>
+
         <!-- This are the task lists, these are NOW DRAGGABLES!-->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/task_recycler_view_id"

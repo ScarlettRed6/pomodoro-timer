@@ -28,6 +28,8 @@ public class TaskViewModel extends AndroidViewModel {
 
     //Task list
     private final MutableLiveData<List<TaskModel>> taskList = new MutableLiveData<>(new ArrayList<>());
+    private final MutableLiveData<List<TaskModel>> finishedTaskList = new MutableLiveData<>(new ArrayList<>());
+    private final MutableLiveData<List<TaskModel>> inProgressTaskList = new MutableLiveData<>(new ArrayList<>());
     private final MutableLiveData<TaskModel> firstTask = new MutableLiveData<>();
     private final MutableLiveData<List<CategoryModel>> categoryList = new MutableLiveData<>(new ArrayList<>());
 
@@ -97,6 +99,12 @@ public class TaskViewModel extends AndroidViewModel {
     }
     public MutableLiveData<Integer> getTaskId(){
         return taskId;
+    }
+    public MutableLiveData<List<TaskModel>> getFinishedTaskList() {
+        return finishedTaskList;
+    }
+    public MutableLiveData<List<TaskModel>> getInProgressTaskList() {
+        return inProgressTaskList;
     }
 
     //Category getters and setters
@@ -208,6 +216,15 @@ public class TaskViewModel extends AndroidViewModel {
         });
     }//End of deleteTask method
 
+    public void deleteInProgressTask(TaskModel task){
+        executor.execute(() -> {
+            db.taskDao().delete(task);
+            List<TaskModel> allTasks = db.taskDao().getAll(task.getUserId());
+            Log.d("LOG_CHECK_TASK_FROM_DB", allTasks != null ? allTasks.toString() : "No tasks found");
+            inProgressTaskList.postValue(allTasks);
+        });
+    }//End of deleteInProgressTask method
+
     public void updateTaskOrder(List<TaskModel> tasks) {
         executor.execute(() -> {
             db.taskDao().updateTasks(tasks);
@@ -263,6 +280,22 @@ public class TaskViewModel extends AndroidViewModel {
             taskList.postValue(allTasks);
         });
     }//End of displayTask method
+
+    public void displayOngoingTask(int userId){
+        executor.execute(() -> {
+            List<TaskModel> ongoingTasks = db.taskDao().getAllOngoingTasks(userId);
+            Log.d("LOG_CHECK_TASK_FROM_DB", ongoingTasks != null ? ongoingTasks.toString() : "No tasks found");
+            inProgressTaskList.postValue(ongoingTasks);
+        });
+    }//End of displayOngoingTask method
+
+    public void displayCompletedTask(int userId) {
+        executor.execute(() -> {
+            List<TaskModel> completedTasks = db.taskDao().getAllCompletedTasks(userId);
+            Log.d("LOG_CHECK_TASK_FROM_DB", completedTasks != null ? completedTasks.toString() : "No tasks found");
+            finishedTaskList.postValue(completedTasks);
+        });
+    }//End of displayCompletedTask method
 
     public void displayCategory(int userId){
         executor.execute(() -> {

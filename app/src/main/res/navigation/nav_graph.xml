@@ -40,6 +40,9 @@
         <action
             android:id="@+id/action_menu_task_to_addFragment"
             app:destination="@id/addFragment" />
+        <action
+            android:id="@+id/action_menu_task_to_viewAllTaskFragment"
+            app:destination="@id/viewAllTaskFragment" />
     </fragment>
 
     <fragment
@@ -115,6 +118,17 @@
             android:id="@+id/action_viewCategoryFragment_to_menu_task"
             app:destination="@id/menu_task" />
     </fragment>
+
+    <fragment
+        android:id="@+id/viewAllTaskFragment"
+        android:name="com.example.pomodoro_timer.ui.fragments.Tasks.ViewAllTaskFragment"
+        android:label="ViewAllTaskFragment"
+        tools:layout="@layout/fragment_task_view_all_task">
+        <action
+            android:id="@+id/action_viewAllTaskFragment_to_menu_task"
+            app:destination="@id/menu_task" />
+    </fragment>
+
 
 
 </navigation>

@@ -83,6 +83,7 @@ public class TaskFragment extends Fragment {
         displayTasks();
         taskAdapterHandle();
         categoryAdapterHandle();
+        seeAllTasks();
 
         //For task recycler view
         binding.taskRecyclerViewId.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -110,6 +111,10 @@ public class TaskFragment extends Fragment {
             taskVM.displayCategory(1);
         }
     }//End of displayTasks method
+
+    private void seeAllTasks(){
+        binding.seeAllTasksButtonId.setOnClickListener(v -> navController.navigate(R.id.action_menu_task_to_viewAllTaskFragment));
+    }//End of seeAllTasks method
 
     //Handle adapters
     private void taskAdapterHandle(){
@@ -172,7 +177,7 @@ public class TaskFragment extends Fragment {
             }
             categoryAdapter.setCategoryList(categories);
         });
-    }
+    }//End of observeTaskAndCategory method
 
     private void onAddBtnClick(){
         sharedVM.getAddBtnClicked().observe(getViewLifecycleOwner(), clicked -> {
@@ -184,7 +189,7 @@ public class TaskFragment extends Fragment {
                 sharedVM.getAddBtnClicked().setValue(false);
             }
         });
-    }
+    }//End of onAddBtnClick method
 
     private void featDraggableTask(){
         ItemTouchHelper helper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, 0) {

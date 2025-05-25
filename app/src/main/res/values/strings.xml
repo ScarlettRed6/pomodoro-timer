@@ -30,6 +30,8 @@
     <string name="category_icon_selector_label">Category Icon</string>
     <string name="category_icon_selector_label2">Choose an Icon for your category</string>
     <string name="task_list_label">Tasks</string>
+    <string name="ongoing_tasks">Ongoing Tasks</string>
+    <string name="finished_tasks">Finished Tasks</string>
     <string name="category_list_label">Categories</string>
     <string name="login_title">Login</string>
     <string name="sign_up_title">Sign Up</string>
@@ -83,6 +85,7 @@
     <string name="google_icon">Google icon</string>
     <string name="back_icon_arrow">Back arrow</string>
     <string name="tomato_icon">Tomato icon</string>
+    <string name="view_all_tasks">View all tasks</string>
 
     <string name="selector_icon_laptop">Selected_laptop_icon</string>
     <string name="selector_icon_book">Selected_book_icon</string>

@@ -24,7 +24,7 @@ public interface TaskDao {
     @Delete
     int delete(TaskModel task);
 
-    @Query("SELECT * FROM tasks WHERE user_Id = :userId AND is_Completed = 0 ORDER BY position ASC")
+    @Query("SELECT * FROM tasks WHERE user_Id = :userId ORDER BY position ASC")
     List<TaskModel> getAll(int userId);
 
     @Update
@@ -35,6 +35,12 @@ public interface TaskDao {
 
     @Query("SELECT * FROM tasks WHERE user_Id = :userId AND category_Id = :categoryId")
     List<TaskModel> getAllTaskByCategory(int userId, int categoryId);
+
+    @Query("SELECT * FROM tasks WHERE user_Id = :userId AND is_Completed = 1")
+    List<TaskModel> getAllCompletedTasks(int userId);
+
+    @Query("SELECT * FROM tasks WHERE user_Id = :userId AND is_Completed = 0")
+    List<TaskModel> getAllOngoingTasks(int userId);
 
     @Query("UPDATE tasks SET category_Id = 0 WHERE user_Id = :userId AND category_Id = :categoryId AND id = :taskId")
     void removeCategoryOfTask(int userId, int categoryId, int taskId);
