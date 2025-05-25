@@ -16,10 +16,11 @@ import com.example.pomodoro_timer.model.PomodoroLogModel;
 import com.example.pomodoro_timer.model.StatsModel;
 import com.example.pomodoro_timer.model.TaskModel;
 import com.example.pomodoro_timer.model.UserModel;
+import com.example.pomodoro_timer.model.UserPreferencesModel;
 
 @Database(
-        entities = { CategoryModel.class, TaskModel.class, UserModel.class, StatsModel.class, PomodoroLogModel.class },
-        version = 21
+        entities = { CategoryModel.class, TaskModel.class, UserModel.class, StatsModel.class, PomodoroLogModel.class, UserPreferencesModel.class },
+        version = 22
 )
 public abstract class AppDatabase extends RoomDatabase {
     private static final String DB_NAME = "pomodoro_timer_db";
