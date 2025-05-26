@@ -26,7 +26,7 @@ public class SharedViewModel extends AndroidViewModel {
 
     //User logged in fields
     private final MutableLiveData<Boolean> isUserLoggedIn = new MutableLiveData<>(false); //Set true or false for testing purposes
-    private final MutableLiveData<String> currentUsername = new MutableLiveData<>("Username");
+    private final MutableLiveData<String> currentEmail = new MutableLiveData<>("Username");
     private final MutableLiveData<Integer> currentUserId = new MutableLiveData<>(0);
 
     //Getters and Setters
@@ -56,11 +56,11 @@ public class SharedViewModel extends AndroidViewModel {
     public void setIsUserLoggedIn(boolean value) {
         this.isUserLoggedIn.postValue(value);
     }
-    public LiveData<String> getCurrentUsername() {
-        return currentUsername;
+    public LiveData<String> getCurrentEmail() {
+        return currentEmail;
     }
-    public void setCurrentUsername(String value) {
-        currentUsername.setValue(value);
+    public void setCurrentEmail(String value) {
+        currentEmail.setValue(value);
     }
     public LiveData<Integer> getCurrentUserId() {
         return currentUserId;
@@ -79,7 +79,7 @@ public class SharedViewModel extends AndroidViewModel {
     public void ensureGuestUserExists() {
         executor.execute(() -> {
             if (db.userDao().getUserById(1) == null) {
-                UserModel guestUser = new UserModel("Guest", "guest", "guest@guest");
+                UserModel guestUser = new UserModel("guest@guest", "guest");
                 guestUser.setId(1);
                 db.userDao().insert(guestUser);
             }

@@ -149,6 +149,8 @@ public class AddTaskFragment extends Fragment {
             binding.removePickedCategoryBtnId.setVisibility(View.GONE);
             binding.taskCategoryIconId.setVisibility(View.GONE);
             binding.taskCategoryTitleId.setVisibility(View.GONE);
+            taskVM.clearCategoryFields();
+            taskVM.setCategory(null);
         });
     }//End of onRemoveCategoryBtn method
 

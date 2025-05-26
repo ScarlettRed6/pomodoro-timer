@@ -55,7 +55,7 @@
             android:id="@+id/username_display_text_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/username_input"
+            android:text="@string/user_email_input"
             android:textSize="20sp"
             android:textColor="@color/white"
             android:layout_marginTop="10dp"

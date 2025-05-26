@@ -70,7 +70,7 @@ public class StatsFragment extends Fragment {
 
         //Context here
         initStuff();
-        Log.d("Log_user_id", "User ID: " + sharedVM.getCurrentUserId().getValue() + "Username: " + sharedVM.getCurrentUsername().getValue());
+        Log.d("Log_user_id", "User ID: " + sharedVM.getCurrentUserId().getValue() + "Username: " + sharedVM.getCurrentEmail().getValue());
 
         return binding.getRoot();
     }//End of onCreateView method

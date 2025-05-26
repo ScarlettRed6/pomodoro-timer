@@ -27,11 +27,11 @@ public class SettingsViewModel extends AndroidViewModel {
     private final MutableLiveData<Integer> userIdHolder = new MutableLiveData<>(0);
 
     //Login Fields
-    private final MutableLiveData<String> loginUsername = new MutableLiveData<>();
+    private final MutableLiveData<String> loginEmail = new MutableLiveData<>();
     private final MutableLiveData<String> loginPassword = new MutableLiveData<>();
 
     //Sign up Fields
-    private final MutableLiveData<String> signUpUsername = new MutableLiveData<>();
+    private final MutableLiveData<String> signUpEmail = new MutableLiveData<>();
     private final MutableLiveData<String> signUpPassword = new MutableLiveData<>();
     private final MutableLiveData<String> signUpConfirmPassword = new MutableLiveData<>();
 
@@ -64,22 +64,22 @@ public class SettingsViewModel extends AndroidViewModel {
     }
 
     //Login getters and setters
-    public MutableLiveData<String> getLoginUsername() {
-        return loginUsername;
+    public MutableLiveData<String> getLoginEmail() {
+        return loginEmail;
     }
     public MutableLiveData<String> getLoginPassword() {
         return loginPassword;
     }
-    public void setLoginUsername(String loginUsername) {
-        this.loginUsername.setValue(loginUsername);
+    public void setLoginEmail(String loginEmail) {
+        this.loginEmail.setValue(loginEmail);
     }
     public void setLoginPassword(String loginPassword) {
         this.loginPassword.setValue(loginPassword);
     }
 
     //Sign up getters and setters
-    public MutableLiveData<String> getSignUpUsername() {
-        return signUpUsername;
+    public MutableLiveData<String> getSignUpEmail() {
+        return signUpEmail;
     }
     public MutableLiveData<String> getSignUpPassword() {
         return signUpPassword;
@@ -87,8 +87,8 @@ public class SettingsViewModel extends AndroidViewModel {
     public MutableLiveData<String> getSignUpConfirmPassword() {
         return signUpConfirmPassword;
     }
-    public void setSignUpUsername(String signUpUsername) {
-        this.signUpUsername.setValue(signUpUsername);
+    public void setSignUpEmail(String signUpEmail) {
+        this.signUpEmail.setValue(signUpEmail);
     }
     public void setSignUpPassword(String signUpPassword) {
         this.signUpPassword.setValue(signUpPassword);
@@ -172,7 +172,7 @@ public class SettingsViewModel extends AndroidViewModel {
     //LOGIN VIEWMODEL FUNCTIONS
     public void login(){
         executor.execute(() -> {
-            UserModel user = db.userDao().getUserByUsernameNow(loginUsername.getValue());
+            UserModel user = db.userDao().getUserByEmailNow(loginEmail.getValue());
 
             if (user == null){
                 Log.d("SettingsViewModel", "User not found");
@@ -181,11 +181,11 @@ public class SettingsViewModel extends AndroidViewModel {
                 return;
             }
             if (user.getPassword().equals(loginPassword.getValue())){
-                sessionManager.saveLoginSession(user.getId(), user.getUsername());
+                sessionManager.saveLoginSession(user.getId(), user.getEmail());
                 userIdHolder.postValue(sessionManager.getUserId());
                 loginResult.postValue(true);
                 Log.d("SettingsViewModel", "Login Successful");
-                Log.d("USER INFO", "Username: " + user.getUsername() + " Password: " + user.getPassword() + " Email: " + user.getEmail() + " ID: " + user.getId());
+                Log.d("USER INFO", "Email: " + user.getEmail() + " Password: " + user.getPassword() + " ID: " + user.getId());
             } else {
                 Log.d("SettingsViewModel", "Login Failed");
                 toastLoginResultMessage.postValue("Login Failed: Wrong password or username");
@@ -198,19 +198,19 @@ public class SettingsViewModel extends AndroidViewModel {
     public void signUp(){
         executor.execute(() -> {
             if(signUpPassword.getValue().equals(signUpConfirmPassword.getValue())){
-                UserModel registerUser = new UserModel(signUpUsername.getValue(), signUpPassword.getValue(), "");
-                if (db.userDao().getUserByUsernameNow(registerUser.getUsername()) != null){
+                UserModel registerUser = new UserModel(signUpEmail.getValue(), signUpPassword.getValue());
+                if (db.userDao().getUserByEmailNow(registerUser.getEmail()) != null){
                     toastLoginResultMessage.postValue("Username already exists");
                     loginResult.postValue(false);
                     return;
                 }
                 long userId = db.userDao().insert(registerUser); // This returns the auto-generated ID
-                sessionManager.saveLoginSession((int) userId, registerUser.getUsername()); //Remind me to modify sessionManager instance in SettingsViewModel or other ViewModel, Reason: Tightly coupled
+                sessionManager.saveLoginSession((int) userId, registerUser.getEmail()); //Remind me to modify sessionManager instance in SettingsViewModel or other ViewModel, Reason: Tightly coupled
                 userIdHolder.postValue(sessionManager.getUserId());
-                loginUsername.postValue(signUpUsername.getValue());
+                loginEmail.postValue(signUpEmail.getValue());
                 loginResult.postValue(true);
                 clearSignUpFields();
-                Log.d("NEW USER INFO", "Username: " + signUpUsername.getValue() + " Password: " + signUpPassword.getValue());
+                Log.d("NEW USER INFO", "Email: " + signUpEmail.getValue() + " Password: " + signUpPassword.getValue());
             }
             else{
                 toastLoginResultMessage.postValue("Passwords do not match");
@@ -220,19 +220,9 @@ public class SettingsViewModel extends AndroidViewModel {
     }//End of signUp method
 
     private void clearSignUpFields(){
-        signUpUsername.postValue("");
+        signUpEmail.postValue("");
         signUpPassword.postValue("");
         signUpConfirmPassword.postValue("");
     }//End of clearSignUpFields method
-
-    //For testing purposes
-    public void createTestUser(){
-        UserModel testUser = new UserModel("testuser", "1234", "test@example.com");
-        executor.execute(() -> {
-            if (db.userDao().getUserByUsername("testuser") == null) {
-                db.userDao().insert(testUser);
-            }
-        });
-    }
 
 }

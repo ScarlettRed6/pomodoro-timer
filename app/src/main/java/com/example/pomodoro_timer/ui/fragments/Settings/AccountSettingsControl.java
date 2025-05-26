@@ -54,7 +54,7 @@ public class AccountSettingsControl extends Fragment {
 
     private void setUsernameBySession(){
         if (sharedVM.getIsUserLoggedIn().getValue()){
-            settingsVM.setLoginUsername(sharedVM.getCurrentUsername().getValue());
+            settingsVM.setLoginEmail(sharedVM.getCurrentEmail().getValue());
         }
     }//End of setUsernameBySession method
 
@@ -62,10 +62,10 @@ public class AccountSettingsControl extends Fragment {
         SessionManager sessionManager = new SessionManager(requireContext());
         binding.logoutBtnId.setOnClickListener(v -> {
             sessionManager.clearLoginSession();
-            settingsVM.setLoginUsername(null);
+            settingsVM.setLoginEmail(null);
             settingsVM.setLoginPassword(null);
             sharedVM.setIsUserLoggedIn(false);
-            sharedVM.setCurrentUsername("Username");
+            sharedVM.setCurrentEmail("Email");
             sharedVM.setCurrentUserId(-1);  //Set to invalid user ID
             navController.popBackStack(R.id.menu_timer, false);
         });

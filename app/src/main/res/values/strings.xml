@@ -35,7 +35,7 @@
     <string name="category_list_label">Categories</string>
     <string name="login_title">Login</string>
     <string name="sign_up_title">Sign Up</string>
-    <string name="username_input">UserName</string>
+    <string name="user_email_input">Email</string>
     <string name="password_input">Password</string>
     <string name="confirm_password_input">Confirm Password</string>
     <string name="remember_me_label">Remember Me</string>

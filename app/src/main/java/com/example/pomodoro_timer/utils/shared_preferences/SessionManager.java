@@ -8,7 +8,7 @@ public class SessionManager {
     //Fields
     private static final String PREF_NAME = "pomodoro_prefs";
     private static final String KEY_USER_ID = "user_id";
-    private static final String KEY_USERNAME = "username";
+    private static final String KEY_EMAIL = "email";
     private static final String KEY_IS_LOGGED_IN = "is_logged_in";
 
     private final SharedPreferences sharedPreferences;
@@ -21,7 +21,7 @@ public class SessionManager {
     public void saveLoginSession(int userId, String username){
         sharedPreferences.edit()
                 .putInt(KEY_USER_ID, userId)
-                .putString(KEY_USERNAME, username)
+                .putString(KEY_EMAIL, username)
                 .putBoolean(KEY_IS_LOGGED_IN, true)
                 .apply();
     }
@@ -38,8 +38,8 @@ public class SessionManager {
         return sharedPreferences.getInt(KEY_USER_ID, -1);
     }
 
-    public String getUsername(){
-        return sharedPreferences.getString(KEY_USERNAME, "Username");
+    public String getEmail(){
+        return sharedPreferences.getString(KEY_EMAIL, "Email");
     }
 
 }

@@ -86,9 +86,9 @@
                     android:id="@+id/username_input_id"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/username_input"
+                    android:hint="@string/user_email_input"
                     android:inputType="text"
-                    android:text="@={settingsVM.loginUsername}"
+                    android:text="@={settingsVM.loginEmail}"
                     android:textSize="16sp"/>
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -241,9 +241,9 @@
                     android:id="@+id/new_username_input_id"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/username_input"
+                    android:hint="@string/user_email_input"
                     android:inputType="text"
-                    android:text="@={settingsVM.signUpUsername}"
+                    android:text="@={settingsVM.signUpEmail}"
                     android:textSize="16sp"/>
             </com.google.android.material.textfield.TextInputLayout>
 

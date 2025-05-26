@@ -71,7 +71,7 @@ public class UserPreferencesModel {
     public long getDurationPomodoro() { return durationPomodoro; }
     public long getDurationLongBreak() { return durationLongBreak; }
     public long getDurationShortBreak() { return durationShortBreak; }
-    public long getLongBreakInterval() { return longBreakInterval; }
+    public int getLongBreakInterval() { return longBreakInterval; }
     public boolean getAutoStartPomodoro() { return autoStartPomodoro; }
     public boolean getAutoStartBreaks() { return autoStartBreaks; }
     //Setters

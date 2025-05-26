@@ -59,7 +59,7 @@ public class LoginSettingsFragment extends Fragment {
             if (result){
                 //Update shared view model with user info
                 sharedVM.setIsUserLoggedIn(true);
-                sharedVM.setCurrentUsername(settingsVM.getLoginUsername().getValue());
+                sharedVM.setCurrentEmail(settingsVM.getLoginEmail().getValue());
 
                 int userId = settingsVM.getUserId().getValue();
                 sharedVM.setCurrentUserId(userId);
@@ -99,7 +99,7 @@ public class LoginSettingsFragment extends Fragment {
         settingsVM.getLoginResult().observe(getViewLifecycleOwner(), result -> {
             if (result){
                 sharedVM.setIsUserLoggedIn(true);
-                sharedVM.setCurrentUsername(settingsVM.getLoginUsername().getValue());
+                sharedVM.setCurrentEmail(settingsVM.getLoginEmail().getValue());
 
                 int userId = settingsVM.getUserId().getValue();
                 sharedVM.setCurrentUserId(userId);

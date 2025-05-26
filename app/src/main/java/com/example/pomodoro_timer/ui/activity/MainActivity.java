@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
     private void setGuest(){
         if(!isLoggedIn){
             sharedVM.ensureGuestUserExists();
-            sharedVM.setCurrentUsername("Guest");
+            sharedVM.setCurrentEmail("GuestEmail@guest.com");
         }
     }//End of setGuest method
 
@@ -231,7 +231,7 @@ public class MainActivity extends AppCompatActivity {
         SessionManager sessionManager = new SessionManager(this);
         if(sessionManager.isLoggedIn()){
             sharedVM.setIsUserLoggedIn(true);
-            sharedVM.setCurrentUsername(sessionManager.getUsername());
+            sharedVM.setCurrentEmail(sessionManager.getEmail());
             sharedVM.setCurrentUserId(sessionManager.getUserId());
             Log.d("LOG_RESTORE_SESSION", "Session restored CALLED");
         }

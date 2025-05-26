@@ -24,11 +24,8 @@ public interface UserDao {
     @Query("SELECT * FROM users")
     UserModel getAllUsers();
 
-    @Query("SELECT * FROM users WHERE username = :username")
-    LiveData<UserModel> getUserByUsername(String username); //for observing
-
-    @Query("SELECT * FROM users WHERE username = :username LIMIT 1")
-    UserModel getUserByUsernameNow(String username); //for login
+    @Query("SELECT * FROM users WHERE email = :email LIMIT 1")
+    UserModel getUserByEmailNow(String email); //for login
 
     @Query("SELECT * FROM users WHERE id = :id")
     UserModel getUserById(int id);
