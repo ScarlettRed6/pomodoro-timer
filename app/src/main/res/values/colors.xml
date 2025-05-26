@@ -59,7 +59,7 @@
 
     <!-- Timer colors -->
 
-    <color name="t2_count_down_color">##E6442F</color>
+    <color name="t2_count_down_color">#E6442F</color>
     <color name="t2_ellipse_color">#FFFFFF</color>
     <color name="t2_cropped_ellipse_color1">#99271D</color>
     <color name="t2_cropped_ellipse_color2">#E6442F</color>
