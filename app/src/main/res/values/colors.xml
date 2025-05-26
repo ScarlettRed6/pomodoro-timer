@@ -53,4 +53,56 @@
     <color name="dim_color">#AD9999</color>
     <color name="dim_color2">#33000000</color>
 
+
+
+    <!-- Theme 2 -->
+
+    <!-- Timer colors -->
+
+    <color name="t2_count_down_color">##E6442F</color>
+    <color name="t2_ellipse_color">#FFFFFF</color>
+    <color name="t2_cropped_ellipse_color1">#99271D</color>
+    <color name="t2_cropped_ellipse_color2">#E6442F</color>
+    <color name="t2_cropped_ellipse_color3">#ECE3FC</color>
+
+    <!-- Button colors -->
+    <color name="t2_logout_btn_color">#4D0B0B</color>
+
+    <color name="t2_text_color">#E6442F</color>
+
+    <!-- Icon colors -->
+
+    <!-- Belongs to a linear gradient -->
+    <color  name="t2_icon_bg1">#999999</color>
+    <color  name="t2_icon_bg2">#FFFFFF</color>
+    <color  name="t2_icon_bg3">#FFFFFF</color>
+    <!-- Belongs to a linear gradient -->
+
+    <color name="t2_task_indicator_color1">#E6442F</color>
+    <color name="t2_task_indicator_color2">#D73F2C</color>
+
+    <!-- Category colors -->
+    <color name="t2_category_rectangle_bg_color1">#E6442F</color>
+
+    <!-- Category titles colors -->
+    <color name="t2_category_title_color1">#741408</color>
+    <color name="t2_category_title_color2">#99271D</color>
+    <color name="t2_category_title_color3">#4D0B0B</color>
+    <color name="t2_category_title_color4">#898989</color> <!-- When not selected -->
+
+    <color name="t2_progress_bar_color1">#E6442F</color>
+    <color name="t2_progress_bar_color2">#D73F2C</color>
+
+    <!-- Bottom nav colors -->
+    <color name="t2_bottom_nav_color1">#E6442F</color>
+    <color name="t2_bottom_nav_color2">#D73F2C</color>
+
+    <!-- card colors or for dimmed backgrounds -->
+    <color name="t2_background_dim_color1">#99271D</color>
+    <color name="t2_background_dim_color2">#CCFFFFFF</color>
+
+    <!-- Misc colors -->
+    <color name="t2_dim_color">#AD9999</color>
+    <color name="t2_dim_color2">#33000000</color>
+
 </resources>

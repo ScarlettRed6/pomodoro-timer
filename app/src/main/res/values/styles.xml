@@ -47,5 +47,51 @@
     </style>
 
 
+    <!-- Theme 2 Style -->
+    <style name="T2NumberPickerTheme" parent="Theme.AppCompat.Light">
+        <item name="colorAccent">@color/t2_icon_bg1</item>
+        <item name="colorControlNormal">@android:color/transparent</item>
+        <item name="android:textColorPrimary">@color/t2_icon_bg2</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <!-- Custom dialog style -->
+    <style name="T2CustomDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:windowBackground">@drawable/background_curved_white</item>
+        <item name="android:textColor">@color/t2_count_down_color</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:windowTitleStyle">@style/CustomDialogTitleStyle</item>
+        <item name="colorAccent">@color/white</item> <!-- color of positive and negative buttons text.-->
+        <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
+        <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
+    </style>
+
+    <!-- Custom positive button style -->
+    <style name="T2PositiveButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">@color/t2_cropped_ellipse_color1</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <!-- Custom negative button style -->
+    <style name="T2NegativeButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">@color/t2_cropped_ellipse_color2</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <!-- Custom dialog title style -->
+    <style name="T2CustomDialogTitleStyle" parent="TextAppearance.AppCompat.Title">
+        <item name="android:textColor">@color/t2_count_down_color</item>
+    </style>
+
+    <!-- Custom popup menu style -->
+    <style name="T2PopupMenuStyle" parent="android:Theme.Holo.Light.DarkActionBar">
+        <item name="android:popupMenuStyle">@style/MyApp.PopupMenu</item>
+        <item name="android:textColor">@color/t2_text_color</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="T2MyApp.PopupMenu" parent="android:Widget.Holo.Light.ListPopupWindow">
+        <item name="android:popupBackground">@drawable/background_curved_white</item>
+    </style>
+
+
 
 </resources>
