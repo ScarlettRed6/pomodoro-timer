@@ -4,7 +4,7 @@ plugins {
     kotlin("plugin.serialization") version "2.0.21"
 
     // Add the Google services Gradle plugin
-    //id("com.google.gms.google-services")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -45,6 +45,21 @@ dependencies {
 
     //Added new dependencies for fragments and navigation component
     val navVersion = "2.8.9"
+
+    // Import the Firebase BoM
+
+    implementation(platform("com.google.firebase:firebase-bom:33.14.0"))
+
+    // TODO: Add the dependencies for Firebase products you want to use
+
+    // When using the BoM, don't specify versions in Firebase dependencies
+    implementation("com.google.firebase:firebase-analytics")
+    // TODO: Add the dependencies for any other Firebase products you want to use
+    // See https://firebase.google.com/docs/android/setup#available-libraries
+    // For example, add the dependencies for Firebase Authentication and Cloud Firestore
+    implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.firebase:firebase-firestore")
+
 
     //Dependencies for Room database
     val room_version = "2.7.1"
@@ -90,6 +105,10 @@ dependencies {
 
     // JSON serialization library, works with the Kotlin serialization plugin
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
+
+    // Retrofit & Gson
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
     implementation(libs.appcompat)
     implementation(libs.material)
