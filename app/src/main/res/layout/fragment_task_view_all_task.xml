@@ -72,6 +72,18 @@
             app:layout_constraintTop_toBottomOf="@+id/ongoing_tasks_recycler_view_id"
             app:layout_constraintBottom_toTopOf="@+id/finished_tasks_recycler_view_id"/>
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/clear_finished_tasks_button_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Clear"
+            android:textSize="16sp"
+            android:textColor="@android:color/white"
+            android:backgroundTint="@color/cropped_ellipse_color1"
+            app:layout_constraintEnd_toStartOf="@+id/guideline2"
+            app:layout_constraintTop_toBottomOf="@+id/ongoing_tasks_recycler_view_id"
+            app:layout_constraintBottom_toTopOf="@+id/finished_tasks_recycler_view_id"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/finished_tasks_recycler_view_id"
             android:layout_width="0dp"

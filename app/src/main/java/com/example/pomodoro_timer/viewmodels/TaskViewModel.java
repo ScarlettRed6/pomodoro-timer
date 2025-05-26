@@ -359,7 +359,16 @@ public class TaskViewModel extends AndroidViewModel {
             }
             displayTaskByCategory(userId, categoryId);
         });
-    }
+    }//End of reApplyCategoryTasks method
+
+    public void clearAllFinishedTasks(int userId){
+        executor.execute(() -> {
+            List<TaskModel> tasks = db.taskDao().getAllCompletedTasks(userId);
+            for (TaskModel task : tasks) {
+                db.taskDao().delete(task);
+            }
+        });
+    }//End of clearAllFinishedTasks method
 
     public void deleteCategory(CategoryModel category) {
         executor.execute(() -> {

@@ -60,6 +60,7 @@ public class ViewAllTaskFragment extends Fragment {
         binding.finishedTasksRecyclerViewId.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.finishedTasksRecyclerViewId.setAdapter(finishedTaskAdapter);
 
+        clearCompletedTasks();
         observeTasks();
     }//End of initializeStuff method
 
@@ -99,6 +100,13 @@ public class ViewAllTaskFragment extends Fragment {
             displayTask();
         });
     }//End of taskAdapterHandler method
+
+    private void clearCompletedTasks(){
+        binding.clearFinishedTasksButtonId.setOnClickListener(v -> {
+            taskVM.clearAllFinishedTasks(userId);
+            displayTask();
+        });
+    }//End of clearCompletedTasks method
 
     private void observeTasks(){
         taskVM.getInProgressTaskList().observe(getViewLifecycleOwner(), tasks -> {
