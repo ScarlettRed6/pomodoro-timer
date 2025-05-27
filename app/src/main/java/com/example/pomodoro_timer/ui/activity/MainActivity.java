@@ -1,5 +1,7 @@
 package com.example.pomodoro_timer.ui.activity;
 
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,6 +12,8 @@ import android.widget.PopupMenu;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -19,6 +23,7 @@ import androidx.navigation.NavOptions;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
+import android.Manifest;
 import com.example.pomodoro_timer.R;
 import com.example.pomodoro_timer.utils.shared_preferences.SessionManager;
 import com.example.pomodoro_timer.viewmodels.SharedViewModel;
@@ -66,6 +71,14 @@ public class MainActivity extends AppCompatActivity {
         viewProfile = findViewById(R.id.view_profile);
         sharedVM = new ViewModelProvider(this).get(SharedViewModel.class);
         isLoggedIn = sharedVM.getIsUserLoggedIn().getValue();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) // Use android.Manifest here
+                    != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.POST_NOTIFICATIONS}, 1); // And here
+            }
+        }
 
         setGuest();
         restoreSession();

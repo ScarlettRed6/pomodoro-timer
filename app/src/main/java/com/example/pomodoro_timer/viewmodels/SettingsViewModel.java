@@ -38,7 +38,7 @@ public class SettingsViewModel extends AndroidViewModel {
     //Themes Fields
     private final MutableLiveData<String> selectedTheme = new MutableLiveData<>("Theme 1");
     private final MutableLiveData<String> selectedAlarm = new MutableLiveData<>("Alarm 1");
-    private final MutableLiveData<Boolean> allowNotifications = new MutableLiveData<>(true);
+    private final MutableLiveData<Boolean> allowNotifications = new MutableLiveData<>(false);
     private final MutableLiveData<Boolean> allowNudge = new MutableLiveData<>(true);
 
     //Timer Fields (Pomodoro, Short and Long break Timer values)

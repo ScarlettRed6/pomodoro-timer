@@ -31,7 +31,6 @@ public class TimerViewModel extends AndroidViewModel {
     private long totalTime = 10 * 1000; // 25 * 60 * 1000 for 25 minutes // this is also for the pomodoro default
     private long remainingTime = totalTime;
     private boolean isRunning = false;
-    private ImageView startBtnIcon; //Fix this later
     private boolean isUserLoggedIn = false;
     private boolean sessionStartedWhileLoggedIn = false;
     private final MutableLiveData<Integer> defaultLBInterval = new MutableLiveData<>(1);
@@ -58,9 +57,6 @@ public class TimerViewModel extends AndroidViewModel {
         this.totalTime = totalTime;
         this.remainingTime = totalTime;
         timerText.setValue(formatTime(totalTime));
-    }
-    public void setStartBtnIcon(ImageView startBtnIcon) {
-        this.startBtnIcon = startBtnIcon;
     }
     public void setUserLoggedIn(boolean loggedIn) {
         this.isUserLoggedIn = loggedIn;
@@ -121,7 +117,6 @@ public class TimerViewModel extends AndroidViewModel {
                 remainingTime = totalTime;
                 progressAngle.setValue(360f);
                 timerText.setValue(formatTime(totalTime));
-                startBtnIcon.setImageResource(R.drawable.ic_start);
                 sessionFinished.setValue(true);
             }
         };

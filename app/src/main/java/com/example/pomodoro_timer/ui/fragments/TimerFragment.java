@@ -1,5 +1,10 @@
 package com.example.pomodoro_timer.ui.fragments;
 
+import android.Manifest;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +15,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresPermission;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -18,10 +24,14 @@ import com.example.pomodoro_timer.databinding.FragmentTimerBinding;
 import com.example.pomodoro_timer.model.PomodoroLogModel;
 import com.example.pomodoro_timer.model.TaskModel;
 import com.example.pomodoro_timer.ui.custom.TimerAnimationView;
+import com.example.pomodoro_timer.utils.TimerReceiver;
 import com.example.pomodoro_timer.viewmodels.SettingsViewModel;
 import com.example.pomodoro_timer.viewmodels.SharedViewModel;
 import com.example.pomodoro_timer.viewmodels.TaskViewModel;
 import com.example.pomodoro_timer.viewmodels.TimerViewModel;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.Objects;
 
 public class TimerFragment extends Fragment {
 
@@ -32,12 +42,15 @@ public class TimerFragment extends Fragment {
     private FragmentTimerBinding binding;
     private SettingsViewModel settingsVM;
     private SharedViewModel sharedVM;
-    private TaskModel firstTask;
+    private TaskModel currentDisplayedTask;
+    private ImageView startBtnIcon;
+    private BottomNavigationView bottomNav;
     private Integer userId;
     private Integer pMinutes, sMinutes, lMinutes;
     private Integer pSeconds, sSeconds, lSeconds;
     private String currentType = "Pomodoro";
     private boolean isUserLoggedIn = false;
+    private boolean isAllowNotifications = false;
 
     public TimerFragment(){
 
@@ -74,6 +87,10 @@ public class TimerFragment extends Fragment {
         settingsVM.getShortBreakSeconds().observe(getViewLifecycleOwner(), seconds -> updateTimerTotalTime());
         settingsVM.getLongBreakMinutes().observe(getViewLifecycleOwner(), minutes -> updateTimerTotalTime());
         settingsVM.getLongBreakSeconds().observe(getViewLifecycleOwner(), seconds -> updateTimerTotalTime());
+
+        settingsVM.getAllowNotifications().observe(getViewLifecycleOwner(), allow -> {
+            isAllowNotifications = Objects.requireNonNullElse(allow, false);
+        });
 
         listenSession();
     }//End of init method
@@ -136,11 +153,10 @@ public class TimerFragment extends Fragment {
         });
 
         FrameLayout startBtn = binding.startBtn;
-        ImageView startBtnIcon = binding.startBtnIcon;
+        startBtnIcon = binding.startBtnIcon;
         FrameLayout stopBtn = binding.stopBtn;
         ImageView stopBtnIcon = binding.stopBtnIcon;
-
-        timerVM.setStartBtnIcon(startBtnIcon);
+        bottomNav = getActivity().findViewById(R.id.bottom_nav);
 
         binding.startBtnIcon.setImageResource(R.drawable.ic_start);
         startBtn.setOnClickListener(v -> {
@@ -154,14 +170,18 @@ public class TimerFragment extends Fragment {
 
             if(timerVM.isRunning()){
                 timerVM.pauseTimer();
+                bottomNavSetVisible();
                 binding.startBtnIcon.setImageResource(R.drawable.ic_start);
             } else{
                 timerVM.startOrResumeTimer();
+                notificationTimer();
+                bottomNavSetGone();
                 binding.startBtnIcon.setImageResource(R.drawable.ic_pause);
             }
         });//End of startBtn listener
 
         stopBtn.setOnClickListener(v -> {
+            bottomNavSetVisible();
             stopBtnIcon.animate()
                     .scaleX(1.3f)
                     .scaleY(1.3f)
@@ -177,14 +197,57 @@ public class TimerFragment extends Fragment {
 
     }//End of timerListener method
 
+    private void bottomNavSetGone(){
+        //This sets the animation of bottom nav when GONE it has animation of fade out
+        bottomNav.animate()
+                .alpha(0f)
+                .setDuration(300)
+                .withEndAction(() -> bottomNav.setVisibility(View.GONE))
+                .start();
+    }//End of bottomNavSetGone method
+
+    private void bottomNavSetVisible(){
+        bottomNav.setVisibility(View.VISIBLE);
+        bottomNav.animate()
+                .alpha(1f)
+                .setDuration(300)
+                .start();
+    }
+
     private void observeTaskList(){
         taskVM.getTaskList().observe(getViewLifecycleOwner(), tasks -> {
             if(tasks != null && !tasks.isEmpty()){
-                firstTask = tasks.get(0);
-                updateTaskUI();
-                binding.firstTaskCardId.setVisibility(View.VISIBLE);
+                TaskModel newTask = tasks.get(0);
+                // Check if task has changed before animating
+                if (currentDisplayedTask == null || !Objects.equals(currentDisplayedTask.getId(), newTask.getId())) {
+                    binding.firstTaskCardId.animate()
+                            .alpha(0f)
+                            .scaleX(0.95f)
+                            .scaleY(0.95f)
+                            .setDuration(200)
+                            .withEndAction(() -> {
+                                currentDisplayedTask = newTask;
+                                updateTaskUI();
+
+                                binding.firstTaskCardId.setAlpha(0f);
+                                binding.firstTaskCardId.setScaleX(0.95f);
+                                binding.firstTaskCardId.setScaleY(0.95f);
+                                binding.firstTaskCardId.setVisibility(View.VISIBLE);
+                                binding.firstTaskCardId.animate()
+                                        .alpha(1f)
+                                        .scaleX(1f)
+                                        .scaleY(1f)
+                                        .setDuration(200)
+                                        .start();
+                            })
+                            .start();
+                } else {
+                    // No change in task, just update UI without animation
+                    currentDisplayedTask = newTask;
+                    updateTaskUI();
+                }
             } else {
-                firstTask = null;
+                currentDisplayedTask = null;
                 binding.firstTaskCardId.setVisibility(View.GONE);
                 Log.d("LOG_NO_TASKS", "No incomplete tasks available");
             }
@@ -192,30 +255,46 @@ public class TimerFragment extends Fragment {
     }//End of observeTaskList method
 
     private void updateTaskUI(){
-        if (firstTask != null) {
+        if (currentDisplayedTask != null) {
             TextView taskTitle = binding.taskTitleId;
             TextView sessionCount = binding.sessionCountId;
 
-            String sessionCountText = firstTask.getSessionsCompleted() + "/" + firstTask.getSessionCount();
+            String sessionCountText = currentDisplayedTask.getSessionsCompleted() + "/" + currentDisplayedTask.getSessionCount();
 
-            taskTitle.setText(firstTask.getTaskTitle());
+            taskTitle.setText(currentDisplayedTask.getTaskTitle());
             sessionCount.setText(sessionCountText);
-            Log.d("LOG_TASK_UI_UPDATE", "Updated UI for task: " + firstTask.getTaskTitle() +
+            Log.d("LOG_TASK_UI_UPDATE", "Updated UI for task: " + currentDisplayedTask.getTaskTitle() +
                     " with sessions: " + sessionCountText);
         }
     }//End of updateTaskUI method
 
+    @RequiresPermission(Manifest.permission.SCHEDULE_EXACT_ALARM)
+    private void notificationTimer(){
+        if (!isAllowNotifications) {
+            return;
+        }
+        Intent intent = new Intent(requireContext(), TimerReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                requireContext(), 0, intent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
+
+        AlarmManager alarmManager = (AlarmManager) requireContext().getSystemService(Context.ALARM_SERVICE);
+        long triggerTime = System.currentTimeMillis() + timerVM.getRemainingTime();
+        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent);
+    }
+
     private void listenSession(){
         timerVM.getSessionFinished().observe(getViewLifecycleOwner(), finished -> {
             if (finished != null && finished) {//If session is finished
+                bottomNavSetVisible();
+                startBtnIcon.setImageResource(R.drawable.ic_start);
                 if (isUserLoggedIn && timerVM.wasSessionStartedWhileLoggedIn()) {
                     if("Pomodoro".equals(currentType)){
                         timerVM.recordPomodoroSession(userId, timerVM.getTotalTime());
                         timerVM.saveTotalFocus(userId, timerVM.getTotalTime());
                         Log.d("LOG_RECORD_SESSION_AND_FOCUS","FOCUS SAVED");
-                        if (firstTask != null) {
-                            taskVM.increaseFinishedTaskSession(firstTask);
-                            Log.d("LOG_TASK_SESSION_DECREASED", "Task session decreased for: " + firstTask.getTaskTitle());
+                        if (currentDisplayedTask != null) {
+                            taskVM.increaseFinishedTaskSession(currentDisplayedTask);
+                            Log.d("LOG_TASK_SESSION_DECREASED", "Task session decreased for: " + currentDisplayedTask.getTaskTitle());
                         }
                     }else {
                         timerVM.recordBreakSession(userId, timerVM.getTotalTime());
@@ -223,9 +302,9 @@ public class TimerFragment extends Fragment {
                         Log.d("LOG_RECORD_SESSION_AND_BREAK","BREAK SAVED");
                     }
                 }else {
-                    if (firstTask != null) {
-                        taskVM.increaseFinishedTaskSession(firstTask);
-                        Log.d("LOG_TASK_SESSION_DECREASED", "Task session decreased for: " + firstTask.getTaskTitle());
+                    if ("Pomodoro".equals(currentType) && currentDisplayedTask != null) {
+                        taskVM.increaseFinishedTaskSession(currentDisplayedTask);
+                        Log.d("LOG_TASK_SESSION_INCREASED", "Task session increased for guest user: " + currentDisplayedTask.getTaskTitle());
                     }
                 }
                 updateTimerTotalTime();
