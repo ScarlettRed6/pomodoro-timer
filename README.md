@@ -9,7 +9,7 @@ An elegant and powerful **Pomodoro Timer** app to boost your productivity and ke
 - 📂 **Categories & Tasks**: Create custom categories (e.g., Study, Work, Exercise) and add tasks under each.
 - 🎨 **Theme Customization**: Choose between **Purple** and **Red** accent themes to match your style.
 - 📅 **Heat Map Calendar**: Visualize your daily activity with a color-coded calendar heat map.
-- 👤 **Guest & Account Mode**: Use as a guest for quick sessions, or sign up to save your data and sync across devices.
+- 👤 **Guest & Account Mode**: Use as a guest for quick sessions, or sign up to save your data.
 
 ## 🚀 Getting Started
 
