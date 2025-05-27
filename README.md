@@ -19,3 +19,22 @@ Follow these steps to run the project locally:
    ```bash
    git clone https://github.com/yourusername/pomodoro-timer.git
    cd pomodoro-timer
+2. **Open in Android Studio**
+- Launch Android Studio and select Open an existing Android Studio project.
+- Navigate to the cloned folder and click OK.
+
+3. **Build & Run**
+- Let Gradle sync and resolve all dependencies.
+- Connect an Android device or start an emulator.
+- Click the Run button or execute:
+```
+./gradlew installDebug
+```
+
+## 🛠️ Built With
+
+- **Java** – Programming language
+- **Android SDK** – Platform tools
+- **Room** – Local database
+- **MVVM** – Architecture pattern
+- **Jetpack Components** – Navigation, LiveData, ViewModel
