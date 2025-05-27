@@ -17,7 +17,7 @@ Follow these steps to run the project locally:
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/pomodoro-timer.git
+   git clone https://github.com/ScarlettRed6/pomodoro-timer.git
    cd pomodoro-timer
 2. **Open in Android Studio**
 - Launch Android Studio and select Open an existing Android Studio project.
