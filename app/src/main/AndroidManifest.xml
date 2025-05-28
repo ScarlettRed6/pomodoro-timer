@@ -34,7 +34,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <receiver android:name="com.example.pomodoro_timer.utils.TimerReceiver" android:exported="true" />
+        <receiver android:name="com.example.pomodoro_timer.utils.timer_utils.TimerReceiver" android:exported="true"
+            android:permission="TODO" />
+        <receiver android:name=".utils.timer_utils.AlarmStopReceiver" />
     </application>
 
 

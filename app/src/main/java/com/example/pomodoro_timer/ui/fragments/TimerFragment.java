@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -22,10 +21,9 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.pomodoro_timer.R;
 import com.example.pomodoro_timer.databinding.FragmentTimerBinding;
-import com.example.pomodoro_timer.model.PomodoroLogModel;
 import com.example.pomodoro_timer.model.TaskModel;
 import com.example.pomodoro_timer.ui.custom.TimerAnimationView;
-import com.example.pomodoro_timer.utils.TimerReceiver;
+import com.example.pomodoro_timer.utils.timer_utils.TimerReceiver;
 import com.example.pomodoro_timer.viewmodels.SettingsViewModel;
 import com.example.pomodoro_timer.viewmodels.SharedViewModel;
 import com.example.pomodoro_timer.viewmodels.TaskViewModel;
@@ -315,18 +313,5 @@ public class TimerFragment extends Fragment {
             }
         });
     }//End of listenSession method
-
-//    private void recordSession(){
-//        if (userId == null) {
-//            Log.e("LOG_USER_ID_TIMER_FRAGMENT", "User ID is null! Cannot log session.");
-//            return;
-//        }
-//
-//        long timestamp = System.currentTimeMillis();
-//        int sessionCount = 1; //Each Pomodoro session = 1
-//
-//        PomodoroLogModel log = new PomodoroLogModel(userId, timestamp, sessionCount);
-//        timerVM.insert(log);
-//    }//End of recordSession method
 
 }
