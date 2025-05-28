@@ -114,14 +114,25 @@
                     android:gravity="center|start"/>
 
                 <!-- Allow notifications switch -->
-                <androidx.appcompat.widget.SwitchCompat
+                <com.codersroute.flexiblewidgets.FlexibleSwitch
                     android:id="@+id/allow_notification_switch_id"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:thumbTint="@color/cropped_ellipse_color3"
-                    app:trackTint="@color/icon_bg1"
-                    android:thumb="@drawable/custom_switch_thumb"
-                    app:track="@drawable/custom_switch_track"/>
+                    android:layout_width="65dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_gravity="center"
+                    app:showText="true"
+                    android:textSize="12sp"
+                    app:backgroundColorOnSwitchOn="@color/task_indicator_color2"
+                    app:backgroundColorOnSwitchOff="@color/icon_bg1"
+                    app:thumbColorOnSwitchOff="#FFFFFF"
+                    app:thumbColorOnSwitchOn="#4A148C"
+                    app:strokeColorOnSwitchOn="@color/cropped_ellipse_color2"
+                    app:strokeColorOnSwitchOff="@color/logout_btn_color"
+                    app:textColorOnSwitchOff="@color/white"
+                    app:textColorOnSwitchOn="@color/white"/>
             </LinearLayout>
 
             <!-- Nudge layout -->
@@ -147,14 +158,25 @@
                     app:layout_constraintTop_toBottomOf="@+id/allow_notification_layout_id"/>
 
                 <!-- Nudge switch -->
-                <androidx.appcompat.widget.SwitchCompat
+                <com.codersroute.flexiblewidgets.FlexibleSwitch
                     android:id="@+id/nudge_switch_id"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:thumbTint="@color/cropped_ellipse_color3"
-                    app:trackTint="@color/icon_bg1"
-                    android:thumb="@drawable/custom_switch_thumb"
-                    app:track="@drawable/custom_switch_track"
+                    android:layout_width="65dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_gravity="center"
+                    app:showText="true"
+                    android:textSize="12sp"
+                    app:backgroundColorOnSwitchOn="@color/task_indicator_color2"
+                    app:backgroundColorOnSwitchOff="@color/icon_bg1"
+                    app:thumbColorOnSwitchOff="#FFFFFF"
+                    app:thumbColorOnSwitchOn="#4A148C"
+                    app:strokeColorOnSwitchOn="@color/cropped_ellipse_color2"
+                    app:strokeColorOnSwitchOff="@color/logout_btn_color"
+                    app:textColorOnSwitchOff="@color/white"
+                    app:textColorOnSwitchOn="@color/white"
                     app:layout_constraintTop_toBottomOf="@id/allow_notification_layout_id"
                     app:layout_constraintEnd_toEndOf="parent"/>
             </LinearLayout>

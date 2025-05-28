@@ -1,6 +1,7 @@
 package com.example.pomodoro_timer.ui.fragments.Settings;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.ArrayAdapter;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.codersroute.flexiblewidgets.FlexibleSwitch;
 import com.example.pomodoro_timer.R;
 import com.example.pomodoro_timer.databinding.FragmentSettingsThemeBinding;
 import com.example.pomodoro_timer.viewmodels.SettingsViewModel;
@@ -44,20 +46,35 @@ public class ThemeSettingsFragment extends Fragment {
     private void initStuff(){
         themeList = Arrays.asList("Theme 1", "Theme 2", "Theme 3");
         alarmList = Arrays.asList("Alarm 1", "Alarm 2", "Alarm 3");
+        notificationsSwitch();
         themeSpinnerAdapter();
         alarmSpinnerAdapter();
-    }
+        switchStatusListener();
+    }//End of initStuff method
+
+    private void notificationsSwitch(){
+        binding.allowNotificationSwitchId.addOnStatusChangedListener(b -> {
+            Log.d("LOG_SWITCH", "onStatusChanged: " + b);
+            settingsVM.setAllowNotifications(b);
+        });
+    }//End of notificationsSwitch method
+
+    private void switchStatusListener(){
+        settingsVM.getAllowNotifications().observe(getViewLifecycleOwner(), allow -> {
+            binding.allowNotificationSwitchId.setChecked(allow);
+        });
+    }//End of switchStatusListener method
 
     private void themeSpinnerAdapter(){
         ArrayAdapter<String> themeAdapter = new ArrayAdapter<>(requireContext(), R.layout.item_theme_spinner, themeList);
         themeAdapter.setDropDownViewResource(R.layout.item_theme_spinner_dropdown);
         binding.themeSpinnerId.setAdapter(themeAdapter);
-    }
+    }//End of themeSpinnerAdapter method
 
     private void alarmSpinnerAdapter(){
         ArrayAdapter<String> alarmAdapter = new ArrayAdapter<>(requireContext(), R.layout.item_theme_spinner, alarmList);
         alarmAdapter.setDropDownViewResource(R.layout.item_theme_spinner_dropdown);
         binding.alarmSpinnerId.setAdapter(alarmAdapter);
-    }
+    }//End of alarmSpinnerAdapter method
 
 }

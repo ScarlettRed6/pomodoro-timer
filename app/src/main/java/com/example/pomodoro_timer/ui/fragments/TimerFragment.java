@@ -1,6 +1,7 @@
 package com.example.pomodoro_timer.ui.fragments;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -53,7 +54,7 @@ public class TimerFragment extends Fragment {
     private boolean isAllowNotifications = false;
 
     public TimerFragment(){
-
+        //Required empty public constructor
     }
 
     @Override
@@ -142,6 +143,7 @@ public class TimerFragment extends Fragment {
         }
     }//End of updateTimerTotalTime method
 
+    @SuppressLint("ScheduleExactAlarm")
     private void timerListener(){
         timerAnimView = binding.timerAnimationViewId;
 
@@ -268,6 +270,7 @@ public class TimerFragment extends Fragment {
         }
     }//End of updateTaskUI method
 
+    @SuppressLint("ScheduleExactAlarm")
     @RequiresPermission(Manifest.permission.SCHEDULE_EXACT_ALARM)
     private void notificationTimer(){
         if (!isAllowNotifications) {
