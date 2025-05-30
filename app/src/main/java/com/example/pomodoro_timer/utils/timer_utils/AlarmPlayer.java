@@ -10,7 +10,16 @@ public class AlarmPlayer {
         stop();
         mediaPlayer = MediaPlayer.create(context, soundResId);
         if (mediaPlayer != null) {
-            mediaPlayer.setLooping(true);
+            // Remove looping so it plays only once
+            mediaPlayer.setLooping(false);
+
+            // Set completion listener to auto-stop and clean up
+            mediaPlayer.setOnCompletionListener(mp -> {
+                stop();
+                // Also dismiss the notification when sound finishes
+                dismissNotification(context);
+            });
+
             mediaPlayer.start();
         }
     }//End of play method
@@ -24,5 +33,13 @@ public class AlarmPlayer {
             mediaPlayer = null;
         }
     }//End of stop method
+
+    private static void dismissNotification(Context context) {
+        android.app.NotificationManager manager =
+                (android.app.NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        if (manager != null) {
+            manager.cancel(100); // Same notification ID used in TimerReceiver
+        }
+    }//End of dismissNotification method
 
 }
