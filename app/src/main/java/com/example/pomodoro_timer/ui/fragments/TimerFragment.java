@@ -76,9 +76,6 @@ public class TimerFragment extends Fragment {
     private void init(){
         checkUser();
         timerVM.setUserLoggedIn(isUserLoggedIn);
-        taskVM.initializeTasks();
-        taskVM.initializeCategories();
-        observeTaskList();
         timerListener();
         initializeTimers();
         settingsVM.getPomodoroMinutes().observe(getViewLifecycleOwner(), minutes -> updateTimerTotalTime());
@@ -97,15 +94,23 @@ public class TimerFragment extends Fragment {
 
     private void checkUser(){
         userId = sharedVM.getCurrentUserId().getValue();
-        isUserLoggedIn = sharedVM.getIsUserLoggedIn().getValue();
 
-        if (isUserLoggedIn){
-            taskVM.displayTask(userId);
-            taskVM.displayCategory(userId);
-        }else {
-            taskVM.displayTask(1);
-            taskVM.displayCategory(1);
-        }
+        sharedVM.getIsUserLoggedIn().observe(getViewLifecycleOwner(), loggedIn -> {
+            isUserLoggedIn = loggedIn;
+            if (isUserLoggedIn) {
+                taskVM.displayTask(userId);
+                taskVM.displayCategory(userId);
+                observeTaskList();
+                Log.d("LOG_USER_LOGGED_IN", "USER LOGGED IN: USER TASKS/CATEGORIES APPLIED");
+            }else {
+                taskVM.initializeTasks();
+                taskVM.initializeCategories();
+                taskVM.displayTask(1);
+                taskVM.displayCategory(1);
+                observeTaskList();
+                Log.d("LOG_USER_NOT_LOGGED_IN", "USER NOT LOGGED IN: GUEST TASKS/CATEGORIES APPLIED");
+            }
+        });
 
     }//End of checkUser method
 
