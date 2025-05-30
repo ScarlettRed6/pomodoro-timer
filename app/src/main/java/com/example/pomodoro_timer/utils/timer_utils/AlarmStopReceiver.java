@@ -9,9 +9,9 @@ public class AlarmStopReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        AlarmPlayer.stop(); // stop the sound
+        AlarmPlayer.stop(); //stop the sound
         NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        manager.cancel(100); // optional: remove the notification
+        manager.cancel(100); //remove the notification
     }
 
 }

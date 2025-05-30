@@ -50,6 +50,7 @@ public class TimerFragment extends Fragment {
     private String currentType = "Pomodoro";
     private boolean isUserLoggedIn = false;
     private boolean isAllowNotifications = false;
+    private static final int TIMER_ALARM_REQUEST_CODE = 731;
 
     public TimerFragment(){
         //Required empty public constructor
@@ -156,7 +157,9 @@ public class TimerFragment extends Fragment {
         startBtnIcon = binding.startBtnIcon;
         FrameLayout stopBtn = binding.stopBtn;
         ImageView stopBtnIcon = binding.stopBtnIcon;
-        bottomNav = getActivity().findViewById(R.id.bottom_nav);
+        if (getActivity() != null) {
+            bottomNav = getActivity().findViewById(R.id.bottom_nav);
+        }
 
         binding.startBtnIcon.setImageResource(R.drawable.ic_start);
         startBtn.setOnClickListener(v -> {
@@ -170,11 +173,12 @@ public class TimerFragment extends Fragment {
 
             if(timerVM.isRunning()){
                 timerVM.pauseTimer();
+                cancelSystemAlarm();
                 bottomNavSetVisible();
                 binding.startBtnIcon.setImageResource(R.drawable.ic_start);
             } else{
                 timerVM.startOrResumeTimer();
-                notificationTimer();
+                scheduleSystemsAlarm();
                 bottomNavSetGone();
                 binding.startBtnIcon.setImageResource(R.drawable.ic_pause);
             }
@@ -192,6 +196,7 @@ public class TimerFragment extends Fragment {
                             .setDuration(150));
             //End of animation
             timerVM.stopTimer();
+            cancelSystemAlarm();
             binding.startBtnIcon.setImageResource(R.drawable.ic_start);
         });
 
@@ -268,20 +273,80 @@ public class TimerFragment extends Fragment {
         }
     }//End of updateTaskUI method
 
-    @SuppressLint("ScheduleExactAlarm")
-    @RequiresPermission(Manifest.permission.SCHEDULE_EXACT_ALARM)
-    private void notificationTimer(){
-        if (!isAllowNotifications) {
+    private PendingIntent getTimerAlarmPendingIntent(boolean create){
+        Intent intent = new Intent(requireContext(), TimerReceiver.class);
+
+        int flags = PendingIntent.FLAG_IMMUTABLE;
+        if (create){
+            flags |= PendingIntent.FLAG_UPDATE_CURRENT;
+        }else {
+            flags |= PendingIntent.FLAG_UPDATE_CURRENT;
+        }
+        return PendingIntent.getBroadcast(requireContext(), TIMER_ALARM_REQUEST_CODE, intent, flags);
+    }//End of getTimerAlarmPendingIntent method
+
+    private void scheduleSystemsAlarm(){
+        if (!isAllowNotifications || !timerVM.isRunning() || requireContext() == null){
+            Log.d("LOG_TIMER_FRAGMENT", "Not scheduling system alarm: notifications disabled, timer not running, or context null.");
             return;
         }
-        Intent intent = new Intent(requireContext(), TimerReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(
-                requireContext(), 0, intent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
+
+        // Ensure getRemainingTime() doesn't return 0 or negative if the timer just finished internally
+        long remainingTime = timerVM.getRemainingTime();
+        if (remainingTime <= 0) {
+            Log.d("TimerFragment", "Not scheduling system alarm: remaining time is zero or less.");
+            return;
+        }
+
+        PendingIntent pendingIntent = getTimerAlarmPendingIntent(true); // 'true' to create/update
 
         AlarmManager alarmManager = (AlarmManager) requireContext().getSystemService(Context.ALARM_SERVICE);
-        long triggerTime = System.currentTimeMillis() + timerVM.getRemainingTime();
-        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent);
+        if (alarmManager != null) {
+            long triggerTime = System.currentTimeMillis() + remainingTime;
+            try {
+                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent);
+                Log.d("TimerFragment", "System alarm scheduled for: " + triggerTime + " (in " + remainingTime + "ms)");
+            } catch (SecurityException se) {
+                Log.e("TimerFragment", "SecurityException: Failed to schedule exact alarm. Check SCHEDULE_EXACT_ALARM permission.", se);
+                // Handle this case, perhaps by informing the user or using a less exact alarm
+            }
+        }
     }
+
+    private void cancelSystemAlarm() {
+        if (requireContext() == null) {
+            Log.d("TimerFragment", "Cannot cancel system alarm: context is null.");
+            return;
+        }
+        PendingIntent pendingIntent = getTimerAlarmPendingIntent(false);
+
+        if (pendingIntent == null){
+            Log.w("LOG_NULL_PENDING_INTENT", "PENDING INTENT IS NULL when trying to cancel. Alarm might not have been set or context was null.");
+            return;
+        }
+
+        AlarmManager alarmManager = (AlarmManager) requireContext().getSystemService(Context.ALARM_SERVICE);
+        if (alarmManager != null) {
+            alarmManager.cancel(pendingIntent);
+            pendingIntent.cancel();
+            Log.d("TimerFragment", "System alarm cancelled.");
+        }
+    }
+
+//    @SuppressLint("ScheduleExactAlarm")
+//    @RequiresPermission(Manifest.permission.SCHEDULE_EXACT_ALARM)
+//    private void notificationTimer(){
+//        if (!isAllowNotifications) {
+//            return;
+//        }
+//        Intent intent = new Intent(requireContext(), TimerReceiver.class);
+//        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+//                requireContext(), 0, intent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
+//
+//        AlarmManager alarmManager = (AlarmManager) requireContext().getSystemService(Context.ALARM_SERVICE);
+//        long triggerTime = System.currentTimeMillis() + timerVM.getRemainingTime();
+//        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent);
+//    }
 
     private void listenSession(){
         timerVM.getSessionFinished().observe(getViewLifecycleOwner(), finished -> {
