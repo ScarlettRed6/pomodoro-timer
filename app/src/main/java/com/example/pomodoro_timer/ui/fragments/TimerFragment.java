@@ -213,22 +213,22 @@ public class TimerFragment extends Fragment {
 
     }//End of timerListener method
 
-    private void autoStartPomodoro(){
-        boolean autoStartPomodoro = settingsVM.getAutoStartPomodoro().getValue();
+    private void autoStartBreak(){
+        boolean autoStartBreaks = settingsVM.getAutoStartBreaks().getValue();
         binding.getRoot().postDelayed(() -> {
-            if (autoStartPomodoro && !"Pomodoro".equals(timerVM.getTimerTypeText().getValue())) {
+            if (autoStartBreaks && !"Pomodoro".equals(timerVM.getTimerTypeText().getValue())) {
                 timerVM.startOrResumeTimer();
-                Log.d("LOG_AUTOPOMO", "AUTO START POMODORO , CHECK TIMERTYPE: " + currentType);
+                Log.d("LOG_AUTOBREAK", "AUTO START BREAK , CHECK TIMERTYPE: " + currentType);
             }
         }, 100);
     }//End of autoStartPomodoro method
 
-    private void autoStartBreak(){
-        boolean autoStartBreaks = settingsVM.getAutoStartBreaks().getValue();
+    private void autoStartPomodoro(){
+        boolean autoStartPomodoro = settingsVM.getAutoStartPomodoro().getValue();
         binding.getRoot().postDelayed(() -> {
-            if (autoStartBreaks && !("Short Break".equals(timerVM.getTimerTypeText().getValue()) || "Long Break".equals(timerVM.getTimerTypeText().getValue()))) {
+            if (autoStartPomodoro && !("Short Break".equals(timerVM.getTimerTypeText().getValue()) || "Long Break".equals(timerVM.getTimerTypeText().getValue()))) {
                 timerVM.startOrResumeTimer();
-                Log.d("LOG_AUTOBREAK", "AUTO START BREAK , CHECK TIMERTYPE: " + currentType);
+                Log.d("LOG_AUTOPOMO", "AUTO START POMODORO , CHECK TIMERTYPE: " + currentType);
             }
         }, 100);
     }//End of autoStartBreak method
