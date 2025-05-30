@@ -182,7 +182,7 @@ public class TimerFragment extends Fragment {
                                 .setDuration(150));
             //End of animation
 
-            if(timerVM.isRunning()){
+            if(Boolean.TRUE.equals(timerVM.getIsRunning().getValue())){
                 timerVM.pauseTimer();
                 cancelSystemAlarm();
                 bottomNavSetVisible();
@@ -213,6 +213,26 @@ public class TimerFragment extends Fragment {
 
     }//End of timerListener method
 
+    private void autoStartPomodoro(){
+        boolean autoStartPomodoro = settingsVM.getAutoStartPomodoro().getValue();
+        binding.getRoot().postDelayed(() -> {
+            if (autoStartPomodoro && !"Pomodoro".equals(timerVM.getTimerTypeText().getValue())) {
+                timerVM.startOrResumeTimer();
+                Log.d("LOG_AUTOPOMO", "AUTO START POMODORO , CHECK TIMERTYPE: " + currentType);
+            }
+        }, 100);
+    }//End of autoStartPomodoro method
+
+    private void autoStartBreak(){
+        boolean autoStartBreaks = settingsVM.getAutoStartBreaks().getValue();
+        binding.getRoot().postDelayed(() -> {
+            if (autoStartBreaks && !("Short Break".equals(timerVM.getTimerTypeText().getValue()) || "Long Break".equals(timerVM.getTimerTypeText().getValue()))) {
+                timerVM.startOrResumeTimer();
+                Log.d("LOG_AUTOBREAK", "AUTO START BREAK , CHECK TIMERTYPE: " + currentType);
+            }
+        }, 100);
+    }//End of autoStartBreak method
+
     private void bottomNavSetGone(){
         //This sets the animation of bottom nav when GONE it has animation of fade out
         bottomNav.animate()
@@ -228,7 +248,7 @@ public class TimerFragment extends Fragment {
                 .alpha(1f)
                 .setDuration(300)
                 .start();
-    }
+    }//End of bottomNavSetVisible method
 
     private void observeTaskList(){
         taskVM.getTaskList().observe(getViewLifecycleOwner(), tasks -> {
@@ -297,7 +317,7 @@ public class TimerFragment extends Fragment {
     }//End of getTimerAlarmPendingIntent method
 
     private void scheduleSystemsAlarm(){
-        if (!isAllowNotifications || !timerVM.isRunning() || requireContext() == null){
+        if (!isAllowNotifications || Boolean.FALSE.equals(timerVM.getIsRunning().getValue()) || requireContext() == null){
             Log.d("LOG_TIMER_FRAGMENT", "Not scheduling system alarm: notifications disabled, timer not running, or context null.");
             return;
         }
@@ -387,6 +407,8 @@ public class TimerFragment extends Fragment {
                     }
                 }
                 updateTimerTotalTime();
+                autoStartPomodoro();
+                autoStartBreak();
                 timerVM.clearSessionFinished();
             }
         });

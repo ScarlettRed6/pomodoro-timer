@@ -30,9 +30,9 @@ public class TimerViewModel extends AndroidViewModel {
     private CountDownTimer countDownTimer;
     private long totalTime = 10 * 1000; // 25 * 60 * 1000 for 25 minutes // this is also for the pomodoro default
     private long remainingTime = totalTime;
-    private boolean isRunning = false;
     private boolean isUserLoggedIn = false;
     private boolean sessionStartedWhileLoggedIn = false;
+    private final MutableLiveData<Boolean> isRunning = new MutableLiveData<>(false);
     private final MutableLiveData<Integer> defaultLBInterval = new MutableLiveData<>();
     private final MutableLiveData<Integer> currentLongBreakInterval = new MutableLiveData<>(defaultLBInterval.getValue());
     private final MutableLiveData<Boolean> sessionFinished = new MutableLiveData<>(false);
@@ -47,11 +47,11 @@ public class TimerViewModel extends AndroidViewModel {
     public long getRemainingTime() {
         return remainingTime;
     }
-    public boolean isRunning() {
+    public LiveData<Boolean> getIsRunning() {
         return isRunning;
     }
-    public void setRunning(boolean running) {
-        isRunning = running;
+    public void setIsRunning(boolean running) {
+        this.isRunning.setValue(running);
     }
     public void setTotalTime(long totalTime) {
         this.totalTime = totalTime;
@@ -113,7 +113,7 @@ public class TimerViewModel extends AndroidViewModel {
 
             @Override
             public void onFinish() {
-                isRunning = false;
+                isRunning.setValue(false);
                 setTimerType();
                 remainingTime = totalTime;
                 progressAngle.setValue(360f);
@@ -131,8 +131,8 @@ public class TimerViewModel extends AndroidViewModel {
 
     //Timer functions
     public void startOrResumeTimer(){
-        if(isRunning) return;
-        isRunning = true;
+        if(isRunning.getValue()) return;
+        isRunning.setValue(true);
         sessionStartedWhileLoggedIn = isUserLoggedIn;
         startTimer();
     }
@@ -140,7 +140,7 @@ public class TimerViewModel extends AndroidViewModel {
     public void stopTimer(){
         if(countDownTimer != null){
             countDownTimer.cancel();
-            isRunning = false;
+            isRunning.setValue(false);
             remainingTime = totalTime;
             progressAngle.setValue(360f);
             timerText.setValue(formatTime(remainingTime));
@@ -150,7 +150,7 @@ public class TimerViewModel extends AndroidViewModel {
     public void pauseTimer(){
         if(countDownTimer != null){
             countDownTimer.cancel();
-            isRunning = false;
+            isRunning.setValue(false);
         }
     }
 

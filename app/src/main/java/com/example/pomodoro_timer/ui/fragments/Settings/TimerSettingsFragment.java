@@ -1,6 +1,7 @@
 package com.example.pomodoro_timer.ui.fragments.Settings;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +42,9 @@ public class TimerSettingsFragment extends Fragment {
         handlePomodoroTimePicker();
         handleShortBreakTimePicker();
         handleLongBreakTimePicker();
-    }
+        autoStartTimersSwitch();
+        switchStatusListener();
+    }//End of initStuff method
 
     private void initializeDisplayTimers(){
         settingsVM.getPomodoroMinutes().observe(getViewLifecycleOwner(), minutes -> {
@@ -88,6 +91,26 @@ public class TimerSettingsFragment extends Fragment {
             binding.longBreakTimeDisplayId.setText(formatted);
         }
     }//End of updateDisplayTime method
+
+    private void autoStartTimersSwitch(){
+        binding.autoStartPomodoroSwitchId.addOnStatusChangedListener(b -> {
+            settingsVM.setAutoStartPomodoro(b);
+            Log.d("AUTO START POMODORO", "Auto start pomodoro: " + b);
+        });
+        binding.autoStartBreaksSwitchId.addOnStatusChangedListener(b -> {
+            settingsVM.setAutoStartBreaks(b);
+            Log.d("AUTO START BREAKS", "Auto start breaks: " + b);
+        });
+    }//End of autoStartTimersSwitch method
+
+    private void switchStatusListener(){
+        settingsVM.getAutoStartPomodoro().observe(getViewLifecycleOwner(), autoStart -> {
+            binding.autoStartPomodoroSwitchId.setChecked(autoStart);
+        });
+        settingsVM.getAutoStartBreaks().observe(getViewLifecycleOwner(), autoStart -> {
+            binding.autoStartBreaksSwitchId.setChecked(autoStart);
+        });
+    }//End of switchStatusListener method
 
     private void handlePomodoroTimePicker(){
         binding.pomodoroTimeDisplayId.setOnClickListener(v -> {

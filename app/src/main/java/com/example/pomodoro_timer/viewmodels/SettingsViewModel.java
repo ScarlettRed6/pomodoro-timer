@@ -48,7 +48,9 @@ public class SettingsViewModel extends AndroidViewModel {
     private final MutableLiveData<Integer> shortBreakSeconds= new MutableLiveData<>(0);
     private final MutableLiveData<Integer> longBreakMinutes= new MutableLiveData<>(15);
     private final MutableLiveData<Integer> longBreakSeconds= new MutableLiveData<>(0);
-    private final MutableLiveData<Integer> defaultLBInterval = new MutableLiveData<>(4);
+    private final MutableLiveData<String> defaultLBIntervalString = new MutableLiveData<>(String.valueOf(4));
+    private final MutableLiveData<Boolean> autoStartPomodoro = new MutableLiveData<>(false);
+    private final MutableLiveData<Boolean> autoStartBreaks = new MutableLiveData<>(false);
 
     //Getters and Setters
     public LiveData<Boolean> getLoginResult() {
@@ -161,18 +163,27 @@ public class SettingsViewModel extends AndroidViewModel {
     public void setLongBreakSeconds(int longBreakSeconds) {
         this.longBreakSeconds.setValue(longBreakSeconds);
     }
-    private final MutableLiveData<String> defaultLBIntervalString = new MutableLiveData<>(String.valueOf(4));
-
     public MutableLiveData<String> getDefaultLBIntervalString() {
         return defaultLBIntervalString;
     }
-
     public Integer getDefaultLBIntervalValue() {
         try {
             return Integer.parseInt(defaultLBIntervalString.getValue());
         } catch (NumberFormatException e) {
             return 4; // Or some other default/error value
         }
+    }
+    public MutableLiveData<Boolean> getAutoStartPomodoro() {
+        return autoStartPomodoro;
+    }
+    public MutableLiveData<Boolean> getAutoStartBreaks() {
+        return autoStartBreaks;
+    }
+    public void setAutoStartPomodoro(boolean autoStartPomodoro) {
+        this.autoStartPomodoro.setValue(autoStartPomodoro);
+    }
+    public void setAutoStartBreaks(boolean autoStartBreaks) {
+        this.autoStartBreaks.setValue(autoStartBreaks);
     }
 
     //Constructor
