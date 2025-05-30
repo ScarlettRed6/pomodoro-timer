@@ -48,6 +48,7 @@ public class SettingsViewModel extends AndroidViewModel {
     private final MutableLiveData<Integer> shortBreakSeconds= new MutableLiveData<>(0);
     private final MutableLiveData<Integer> longBreakMinutes= new MutableLiveData<>(15);
     private final MutableLiveData<Integer> longBreakSeconds= new MutableLiveData<>(0);
+    private final MutableLiveData<Integer> defaultLBInterval = new MutableLiveData<>(4);
 
     //Getters and Setters
     public LiveData<Boolean> getLoginResult() {
@@ -159,6 +160,19 @@ public class SettingsViewModel extends AndroidViewModel {
     }
     public void setLongBreakSeconds(int longBreakSeconds) {
         this.longBreakSeconds.setValue(longBreakSeconds);
+    }
+    private final MutableLiveData<String> defaultLBIntervalString = new MutableLiveData<>(String.valueOf(4));
+
+    public MutableLiveData<String> getDefaultLBIntervalString() {
+        return defaultLBIntervalString;
+    }
+
+    public Integer getDefaultLBIntervalValue() {
+        try {
+            return Integer.parseInt(defaultLBIntervalString.getValue());
+        } catch (NumberFormatException e) {
+            return 4; // Or some other default/error value
+        }
     }
 
     //Constructor

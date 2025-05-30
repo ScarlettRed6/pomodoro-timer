@@ -155,6 +155,7 @@
                         android:gravity="center|start"
                         android:textSize="18sp"/>
 
+
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/pomodoro_count_id"
                         android:layout_width="60dp"
@@ -163,7 +164,7 @@
                         android:background="@drawable/background_gradient_card"
                         android:textAlignment="center"
                         android:hint="@string/pomodoro_number_placeholder"
-                        android:autofillHints=""
+                        android:text="@={settingsVM.defaultLBIntervalString}"
                         android:textColor="@color/white"
                         android:textColorHint="@color/white"
                         android:textStyle="bold"

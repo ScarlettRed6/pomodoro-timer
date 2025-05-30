@@ -33,7 +33,7 @@ public class TimerViewModel extends AndroidViewModel {
     private boolean isRunning = false;
     private boolean isUserLoggedIn = false;
     private boolean sessionStartedWhileLoggedIn = false;
-    private final MutableLiveData<Integer> defaultLBInterval = new MutableLiveData<>(1);
+    private final MutableLiveData<Integer> defaultLBInterval = new MutableLiveData<>();
     private final MutableLiveData<Integer> currentLongBreakInterval = new MutableLiveData<>(defaultLBInterval.getValue());
     private final MutableLiveData<Boolean> sessionFinished = new MutableLiveData<>(false);
     private final MutableLiveData<Float> progressAngle = new MutableLiveData<>(360f);
@@ -84,6 +84,7 @@ public class TimerViewModel extends AndroidViewModel {
     }
     public void setDefaultLBInterval(int defInterval){
         this.defaultLBInterval.setValue(defInterval);
+        this.currentLongBreakInterval.setValue(defaultLBInterval.getValue());
     }
     public LiveData<Integer> getLongBreakInterval(){
         return currentLongBreakInterval;

@@ -75,7 +75,7 @@ public class TimerFragment extends Fragment {
 
     private void init(){
         checkUser();
-        timerVM.setUserLoggedIn(isUserLoggedIn);
+        listenUserInterval();
         timerListener();
         initializeTimers();
         settingsVM.getPomodoroMinutes().observe(getViewLifecycleOwner(), minutes -> updateTimerTotalTime());
@@ -97,6 +97,7 @@ public class TimerFragment extends Fragment {
 
         sharedVM.getIsUserLoggedIn().observe(getViewLifecycleOwner(), loggedIn -> {
             isUserLoggedIn = loggedIn;
+            timerVM.setUserLoggedIn(isUserLoggedIn);
             if (isUserLoggedIn) {
                 taskVM.displayTask(userId);
                 taskVM.displayCategory(userId);
@@ -113,6 +114,11 @@ public class TimerFragment extends Fragment {
         });
 
     }//End of checkUser method
+
+    private void listenUserInterval(){
+        settingsVM.getDefaultLBIntervalString().observe(getViewLifecycleOwner(), interval -> timerVM.setDefaultLBInterval(Integer.parseInt(interval)));
+        Log.d("LOG_DEFAULT_LB_INTERVAL", "DEFAULT LB INTERVAL: " + settingsVM.getDefaultLBIntervalString().getValue());
+    }//End of listenUserInterval method
 
     private void initializeTimers(){
         //For pomodoro timer
@@ -356,6 +362,8 @@ public class TimerFragment extends Fragment {
     private void listenSession(){
         timerVM.getSessionFinished().observe(getViewLifecycleOwner(), finished -> {
             if (finished != null && finished) {//If session is finished
+                Log.d("LOG_SESSION_FINISHED", "SESSION FINISHED");
+                Log.d("LOG_USERID_TIMERFRAGMENT", "USER ID: " + userId);
                 bottomNavSetVisible();
                 startBtnIcon.setImageResource(R.drawable.ic_start);
                 if (isUserLoggedIn && timerVM.wasSessionStartedWhileLoggedIn()) {
