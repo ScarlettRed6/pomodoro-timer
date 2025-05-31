@@ -20,6 +20,12 @@ public class UserModel {
     @ColumnInfo(name = "is_logged_in")
     private boolean isLoggedIn;
 
+    @ColumnInfo(name = "firebase_uid")
+    private String firebaseUid;
+
+    public UserModel() {
+        // Firestore requires a no‐arg constructor
+    }
     public UserModel(String email, String password){
         this.password = password;
         this.email = email;
@@ -39,6 +45,7 @@ public class UserModel {
     public boolean getIsLoggedIn() {
         return isLoggedIn;
     }
+    public String getFirebaseUid() { return firebaseUid; }
     public void setId(int id) {
         this.id = id;
     }
@@ -51,6 +58,7 @@ public class UserModel {
     public void setEmail(String email){
         this.email = email;
     }
+    public void setFirebaseUid(String firebaseUid) { this.firebaseUid = firebaseUid; }
 
 
 }

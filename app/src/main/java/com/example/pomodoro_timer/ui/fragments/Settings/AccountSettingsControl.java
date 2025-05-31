@@ -17,6 +17,8 @@ import com.example.pomodoro_timer.viewmodels.SettingsViewModel;
 import com.example.pomodoro_timer.viewmodels.SharedViewModel;
 import com.example.pomodoro_timer.viewmodels.TaskViewModel;
 
+import com.example.pomodoro_timer.viewmodels.SettingsViewModel;
+
 public class AccountSettingsControl extends Fragment {
 
     //Fields
@@ -61,6 +63,7 @@ public class AccountSettingsControl extends Fragment {
     private void onLogout(){
         SessionManager sessionManager = new SessionManager(requireContext());
         binding.logoutBtnId.setOnClickListener(v -> {
+            settingsVM.signOut();
             sessionManager.clearLoginSession();
             settingsVM.setLoginEmail(null);
             settingsVM.setLoginPassword(null);

@@ -36,6 +36,9 @@ public interface UserDao {
     @Query("SELECT EXISTS(SELECT 1 FROM categories WHERE user_id = :userId)")
     boolean hasCategory(int userId);
 
+    @Query("SELECT * FROM users WHERE firebase_uid = :firebaseUid LIMIT 1")
+    UserModel getUserByFirebaseUid(String firebaseUid);
+
     //@Query("SELECT * FROM users")
     //public UserModel[] loadAllUsers();
 

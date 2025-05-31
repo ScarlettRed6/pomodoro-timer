@@ -8,10 +8,15 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.pomodoro_timer.data.AppDatabase;
+import com.example.pomodoro_timer.data.repository.UserRepository;
 import com.example.pomodoro_timer.model.UserModel;
 import com.example.pomodoro_timer.utils.SingleLiveEvent;
 import com.example.pomodoro_timer.utils.shared_preferences.SessionManager;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -19,12 +24,17 @@ import java.util.concurrent.Executors;
 public class SettingsViewModel extends AndroidViewModel {
 
     //Fields
-    private final AppDatabase db;
+    private final UserRepository userRepo;
     private final ExecutorService executor;
     private final SessionManager sessionManager;
+
+    //Livedata for UI Updates
     private final SingleLiveEvent<Boolean> loginResult = new SingleLiveEvent<>();
     private final MutableLiveData<String> toastLoginResultMessage = new MutableLiveData<>();
     private final MutableLiveData<Integer> userIdHolder = new MutableLiveData<>(0);
+
+    //FirebaseAuth Instance
+    private final FirebaseAuth firebaseAuth;
 
     //Login Fields
     private final MutableLiveData<String> loginEmail = new MutableLiveData<>();
@@ -190,59 +200,219 @@ public class SettingsViewModel extends AndroidViewModel {
     public SettingsViewModel(@NonNull Application application){
         super(application);
         sessionManager = new SessionManager(application);
-        db = AppDatabase.getInstance(application);
+        userRepo = new UserRepository(application);
+        firebaseAuth = FirebaseAuth.getInstance();
         executor = Executors.newSingleThreadExecutor();
     }//End of constructor
 
     //LOGIN VIEWMODEL FUNCTIONS
     public void login(){
-        executor.execute(() -> {
-            UserModel user = db.userDao().getUserByEmailNow(loginEmail.getValue());
+        final String email = loginEmail.getValue();
+        final String password = loginPassword.getValue();
 
-            if (user == null){
-                Log.d("SettingsViewModel", "User not found");
-                toastLoginResultMessage.postValue("User not found");
-                loginResult.postValue(false);
-                return;
-            }
-            if (user.getPassword().equals(loginPassword.getValue())){
-                sessionManager.saveLoginSession(user.getId(), user.getEmail());
-                userIdHolder.postValue(sessionManager.getUserId());
-                loginResult.postValue(true);
-                Log.d("SettingsViewModel", "Login Successful");
-                Log.d("USER INFO", "Email: " + user.getEmail() + " Password: " + user.getPassword() + " ID: " + user.getId());
-            } else {
-                Log.d("SettingsViewModel", "Login Failed");
-                toastLoginResultMessage.postValue("Login Failed: Wrong password or username");
-                loginResult.postValue(false);
-            }
-        });
+        if (email == null || password == null) {
+            toastLoginResultMessage.setValue("Please fill both email and password.");
+            loginResult.setValue(false);
+            return;
+        }
+
+        firebaseAuth.signInWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    FirebaseUser firebaseUser = task.getResult().getUser();
+                                    if (firebaseUser == null) {
+                                        toastLoginResultMessage.setValue("UNEXPECTED: FIREBASE USER IS NULL");
+                                        loginResult.setValue(false);
+                                        return;
+                                    }
+                                    final String firebaseUid = firebaseUser.getUid();
+
+                                    executor.execute(() -> {
+                                        UserModel user = userRepo.getUserByFirebaseUid(firebaseUid);
+
+                                        if (user == null){
+                                            Log.d("SettingsViewModel", "User not found");
+                                            toastLoginResultMessage.postValue("User not found");
+                                            loginResult.postValue(false);
+                                            return;
+                                        }
+                                        if (user.getPassword().equals(loginPassword.getValue())){
+                                            // Mark as logged in locally
+                                            user.setIsLoggedIn(true);
+
+                                            //Update room and firestore with UserRepository
+                                            userRepo.updateUser(user, new UserRepository.RepositoryCallback() {
+                                                @Override
+                                                public void onSuccess() {
+                                                    // Save session and notify UI if sync succeeds
+                                                    sessionManager.saveLoginSession(user.getId(), user.getEmail());
+                                                    userIdHolder.postValue(sessionManager.getUserId());
+                                                    loginResult.postValue(true);
+
+                                                    Log.d("SettingsViewModel", "Login Successful & isLoggedIn synced");
+                                                    Log.d("SettingsViewMode", String.valueOf(user.getId()));
+                                                }
+
+                                                @Override
+                                                public void onFailure(Exception e) {
+                                                    // Still log in locally if firestore fails
+                                                    Log.e("SettingsViewModel", "Firestore sync FAILED (isLoggedIn) for userId="
+                                                            + user.getId(), e);
+
+                                                    sessionManager.saveLoginSession(user.getId(), user.getEmail());
+                                                    userIdHolder.postValue(sessionManager.getUserId());
+                                                    loginResult.postValue(true);
+
+                                                    toastLoginResultMessage.postValue(
+                                                            "Logged in locally, but could not sync status to server."
+                                                    );
+                                                }
+                                            });
+
+                                            Log.d("SettingsViewModel", "Login Successful");
+                                            Log.d("USER INFO", "Email: " + user.getEmail() + " Password: " + user.getPassword() + " ID: " + user.getId());
+                                        } else {
+                                            Log.d("SettingsViewModel", "Login Failed");
+                                            toastLoginResultMessage.postValue("Login Failed: Wrong password or username");
+                                            loginResult.postValue(false);
+                                        }
+                                    });
+                                }
+                            }
+                        });
+
     }//End of login method
 
     //SIGN UP VIEWMODEL FUNCTIONS
-    public void signUp(){
+    public void signUp() {
+        final String email = signUpEmail.getValue();
+        final String password = signUpPassword.getValue();
+        final String confirm = signUpConfirmPassword.getValue();
+
+        // 1) Simple password/confirm check
+        if (email == null || password == null || confirm == null) {
+            toastLoginResultMessage.setValue("Please fill all fields.");
+            loginResult.setValue(false);
+            return;
+        }
+        if (!password.equals(confirm)) {
+            toastLoginResultMessage.setValue("Passwords do not match");
+            loginResult.setValue(false);
+            return;
+        }
+
+        // 2) Create user in FirebaseAuth
+        firebaseAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // 2a) Sign‐up succeeded
+                            FirebaseUser firebaseUser = task.getResult().getUser();
+                            if (firebaseUser == null) {
+                                toastLoginResultMessage.setValue("Unexpected error: FirebaseUser is null");
+                                loginResult.setValue(false);
+                                return;
+                            }
+                            String firebaseUid = firebaseUser.getUid();
+                            Log.d("CHECK FIREBASE UID", "Firebase UID: " + firebaseUid);
+
+                            // 2b) Build a new UserModel, set fields including firebaseUid
+                            UserModel newUser = new UserModel(email, password);
+                            newUser.setFirebaseUid(firebaseUid);
+                            newUser.setIsLoggedIn(true); // Immediately mark as “logged in”
+                            Log.d("FIREBASE UID UNDER NEW USER", "Firebase UID Under New User: " + newUser.getFirebaseUid());
+
+                            // 2c) Insert into Room & Firestore
+                            userRepo.insertUser(newUser, new UserRepository.RepositoryCallback() {
+                                @Override
+                                public void onSuccess() {
+                                    // 3) On success (both Room + Firestore done):
+                                    sessionManager.saveLoginSession(newUser.getId(), newUser.getEmail());
+                                    // Log.d("GET SESSIONMANAGER USERID", "SessionManager.getUserID: " + sessionManager.getUserId());
+                                    userIdHolder.postValue(sessionManager.getUserId());
+                                    loginEmail.postValue(sessionManager.getEmail());
+                                    loginResult.postValue(true);
+                                    clearSignUpFields();
+                                    Log.d("SIGNUP USER CREATED", "signUp(): new user created, UID=" + firebaseUid);
+                                    Log.d("GET USER EMAIL", "User Email: " + newUser.getEmail());
+                                }
+
+                                @Override
+                                public void onFailure(Exception e) {
+                                    // Something failed (Room or Firestore). We should probably roll back
+                                    // the FirebaseAuth user, but for now, just notify UI.
+                                    Log.e("SIGNUP INSERTING ERROR", "signUp(): error inserting user in Room/Firestore", e);
+                                    toastLoginResultMessage.postValue("Sign up failed: " + e.getMessage());
+                                    loginResult.postValue(false);
+                                }
+                            });
+
+                        } else {
+                            // FirebaseAuth signUp failed (e.g. email already in use, invalid, etc.)
+                            Exception e = task.getException();
+                            String msg = (e != null) ? e.getMessage() : "Unknown error";
+                            toastLoginResultMessage.setValue("FirebaseAuth sign‐up failed: " + msg);
+                            loginResult.setValue(false);
+                            Log.e("SIGNUP FIREBASE AUTH FAILED", "signUp(): FirebaseAuth failed", e);
+                        }
+                    }
+                });
+    }
+
+
+    public void signOut() {
+        // Get the currently‐logged in user ID from SessionManager
+        FirebaseUser current = firebaseAuth.getCurrentUser();
+        if (current == null) {
+            Log.w("NO SIGNED IN", "signOut(): no FirebaseAuth user is signed in");
+            // Just clear local Room session if any:
+            sessionManager.clearLoginSession();
+            userIdHolder.postValue(0);
+            return;
+        }
+        final String firebaseUid = current.getUid();
+
+        // SIGN THIS SHIT OUT OF FIREBASE AUTH
+        firebaseAuth.signOut();
+
         executor.execute(() -> {
-            if(signUpPassword.getValue().equals(signUpConfirmPassword.getValue())){
-                UserModel registerUser = new UserModel(signUpEmail.getValue(), signUpPassword.getValue());
-                if (db.userDao().getUserByEmailNow(registerUser.getEmail()) != null){
-                    toastLoginResultMessage.postValue("Username already exists");
-                    loginResult.postValue(false);
-                    return;
-                }
-                long userId = db.userDao().insert(registerUser); // This returns the auto-generated ID
-                sessionManager.saveLoginSession((int) userId, registerUser.getEmail()); //Remind me to modify sessionManager instance in SettingsViewModel or other ViewModel, Reason: Tightly coupled
-                userIdHolder.postValue(sessionManager.getUserId());
-                loginEmail.postValue(signUpEmail.getValue());
-                loginResult.postValue(true);
-                clearSignUpFields();
-                Log.d("NEW USER INFO", "Email: " + signUpEmail.getValue() + " Password: " + signUpPassword.getValue());
+            UserModel user = userRepo.getUserByFirebaseUid(firebaseUid);
+            if (user == null) {
+                Log.d("LOG: CHECK USER NULL ", "USER IS NULL");
+                // Log.d("LOG: CHECK CURRENT USER ID", String.valueOf(currentUserId));
             }
-            else{
-                toastLoginResultMessage.postValue("Passwords do not match");
-                loginResult.postValue(false);
+            if (user != null) {
+                user.setIsLoggedIn(false);
+
+                // Push that change to Room + Firestore
+                userRepo.updateUser(user, new UserRepository.RepositoryCallback() {
+                    @Override
+                    public void onSuccess() {
+                        Log.d("LOG: SIGN OUT SUCCESS", "Successfully synced signOut to Firestore for userId=" + getUserId());
+                        sessionManager.clearLoginSession();
+                        userIdHolder.postValue(0);
+                    }
+
+                    @Override
+                    public void onFailure(Exception e) {
+                        Log.e("LOG: SIGN OUT FAILURE", "Failed to sync signOut to Firestore for userId=" + getUserId(), e);
+                        // Even if Firestore fails we still clear the local session:
+                        sessionManager.clearLoginSession();
+                        userIdHolder.postValue(0);
+                        toastLoginResultMessage.postValue("Signed out locally, but could not update server status.");
+                    }
+                });
+            } else {
+                // If user null clear session
+                Log.w("LOG: USER NOT FOUND (USER NULL CLEAR SESSION)", "signOut(): user not found in local DB. Clearing session anyway.");
+                sessionManager.clearLoginSession();
+                userIdHolder.postValue(0);
             }
         });
-    }//End of signUp method
+    }
 
     private void clearSignUpFields(){
         signUpEmail.postValue("");
