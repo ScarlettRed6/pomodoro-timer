@@ -9,4 +9,42 @@
         <attr name="textColor" format="color" />
         <attr name="weeksToShow" format="integer" />
     </declare-styleable>
+
+
+    <!-- Theme attribute colors -->
+
+    <!-- Text colors -->
+    <attr name="baseTextColor" format="color"/>
+    <attr name="timerTypeTextColor" format="color"/>
+    <attr name="timerSelectionTextColor" format="color"/>
+
+    <!-- Buttons colors -->
+    <attr name="saveBtnColor" format="color"/>
+    <attr name="cancelBtnColor" format="color"/>
+    <attr name="prevMonthBtnColor" format="color"/>
+    <attr name="nextMonthBtnColor" format="color"/>
+
+    <!-- Switch Colors -->
+    <attr name="switchColor" format="color"/>
+
+    <!-- Custom Background colors -->
+    <attr name="backgroundDimCurvedColor1" format="color"/> <!-- from background_dim_curved_pink -->
+    <attr name="backgroundDimCurvedColor2" format="color"/> <!-- from background_dim_curved_purple -->
+    <attr name="backgroundDimCurvedColor3" format="color"/> <!-- from background_dim_curved_purple2 -->
+    <attr name="backgroundDimCurvedColor4" format="color"/> <!-- from background_dim_curved_white -->
+
+    <attr name="backgroundGradientCardColor1.1" format="color"/> <!-- from background_gradient_card -->
+    <attr name="backgroundGradientCardColor1.2" format="color"/> <!-- from background_gradient_card -->
+    <attr name="backgroundGradientCardColor2.1" format="color"/> <!-- from background_gradient_card_purple -->
+    <attr name="backgroundGradientCardColor2.2" format="color"/> <!-- from background_gradient_card_purple -->
+    <attr name="backgroundGradientCardColor3.1" format="color"/> <!-- from background_gradient_card_purple2 -->
+    <attr name="backgroundGradientCardColor3.2" format="color"/> <!-- from background_gradient_card_purple2 -->
+
+    <attr name="bottomNavBgCurved1.1" format="color"/> <!-- from bottom_nav_bg_curved -->
+    <attr name="bottomNavBgCurved1.2" format="color"/> <!-- from bottom_nav_bg_curved -->
+
+    <attr name="roundedBtnBg" format="color"/> <!-- from rounded_btn_bg -->
+    <attr name="roundedBtnBg2" format="color"/> <!-- from rounded_btn_bg2 -->
+
+
 </resources>

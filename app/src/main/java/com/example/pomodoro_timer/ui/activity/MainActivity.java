@@ -1,8 +1,10 @@
 package com.example.pomodoro_timer.ui.activity;
 
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -55,6 +57,23 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //Set first the theme
+        // Load selected theme from preferences
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        int themeIndex = prefs.getInt("selected_theme_index", 0);
+
+        // Apply theme before calling super.onCreate
+        if (themeIndex == 0) {
+            setTheme(R.style.Theme_Pomodorotimer);
+            Log.d("MYTHEME", "Theme 1: " + themeIndex);
+            //Restart app
+            //recreate();
+        } else {
+            setTheme(R.style.AppTheme_Theme2);
+            Log.d("MYTHEME", "BASE THEME: " + themeIndex);
+            //recreate();
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
@@ -63,6 +82,13 @@ public class MainActivity extends AppCompatActivity {
         angInit();
 
     }//End of onCreate method
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d("LOG_CHECK_DESTROY", "onDestroy() called. HashCode: " + this.hashCode());
+        // Are there any listeners or resources you manually manage that should be cleaned up here?
+    }
 
     private void angInit(){
         mainLayout = findViewById(R.id.main);

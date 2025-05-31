@@ -6,17 +6,24 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
+import android.preference.PreferenceManager;
 
 import androidx.core.app.NotificationCompat;
 
 import com.example.pomodoro_timer.R;
+import com.example.pomodoro_timer.utils.AlarmMapper;
 
 public class TimerReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        int alarmResId = intent.getIntExtra("alarm_sound_res", R.raw.funny_alarm);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        String selectedAlarm = prefs.getString("selected_alarm", "Alarm 1");
+
+        // Get the corresponding raw resource ID
+        int alarmResId = AlarmMapper.getAlarmResId(selectedAlarm);
 
         //Start alarm
         AlarmPlayer.play(context, alarmResId);

@@ -5,7 +5,22 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
-    <style name="Theme.Pomodorotimer" parent="Base.Theme.Pomodorotimer" />
+    <!-- THE ACTUAL BASE THEME -->
+    <style name="Theme.Pomodorotimer" parent="Base.Theme.Pomodorotimer" >
+        <!-- Text Colors-->
+        <item name="baseTextColor">@color/white</item>
+        <item name="timerTypeTextColor">@color/white</item>
+        <item name="timerSelectionTextColor">@color/white</item>
+    </style>
+
+    <!-- THEME 2-->
+    <style name="AppTheme.Theme2" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Text Colors-->
+        <item name="baseTextColor">@color/white</item>
+        <item name="timerTypeTextColor">@color/t2_cropped_ellipse_color1</item>
+        <item name="timerSelectionTextColor">@color/category_title_color1</item>
+    </style>
+
 
     <!-- This is custom style for dialog fragment for CategoryPicker -->
     <style name="RoundedCornersDialog" parent="Theme.AppCompat.Light.Dialog">
@@ -14,6 +29,7 @@
         <item name="android:windowNoTitle">true</item>
     </style>
 
+    <!-- Custom style for spinner -->
     <style name="Widget.App.Spinner" parent="Widget.AppCompat.TextView.SpinnerItem">
         <item name="android:popupBackground">@drawable/background_gradient_card</item>
         <item name="android:dropDownVerticalOffset">48dp</item>
