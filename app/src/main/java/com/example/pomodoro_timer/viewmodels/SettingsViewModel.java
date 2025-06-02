@@ -206,7 +206,7 @@ public class SettingsViewModel extends AndroidViewModel {
     }//End of constructor
 
     //LOGIN VIEWMODEL FUNCTIONS
-    public void login(){
+    public void login() {
         final String email = loginEmail.getValue();
         final String password = loginPassword.getValue();
 
@@ -216,73 +216,124 @@ public class SettingsViewModel extends AndroidViewModel {
             return;
         }
 
+        // 1) Sign in with FirebaseAuth
         firebaseAuth.signInWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    FirebaseUser firebaseUser = task.getResult().getUser();
-                                    if (firebaseUser == null) {
-                                        toastLoginResultMessage.setValue("UNEXPECTED: FIREBASE USER IS NULL");
-                                        loginResult.setValue(false);
-                                        return;
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            FirebaseUser firebaseUser = task.getResult().getUser();
+                            if (firebaseUser == null) {
+                                toastLoginResultMessage.setValue("UNEXPECTED: FIREBASE USER IS NULL");
+                                loginResult.setValue(false);
+                                return;
+                            }
+                            final String firebaseUid = firebaseUser.getUid();
+
+                            // 2) Now check local Room DB for this firebaseUid
+                            executor.execute(() -> {
+                                UserModel localUser = userRepo.getUserByFirebaseUid(firebaseUid);
+
+                                if (localUser != null) {
+                                    // --- CASE A: User is found locally ---
+                                    if (localUser.getPassword().equals(password)) {
+                                        // Mark as logged in locally
+                                        localUser.setIsLoggedIn(true);
+
+                                        // Update Room + Firestore via repository
+                                        userRepo.updateUser(localUser, new UserRepository.RepositoryCallback() {
+                                            @Override
+                                            public void onSuccess() {
+                                                // Save session and notify UI if sync succeeds
+                                                sessionManager.saveLoginSession(localUser.getId(), localUser.getEmail());
+                                                userIdHolder.postValue(sessionManager.getUserId());
+                                                loginResult.postValue(true);
+
+                                                Log.d("SettingsViewModel", "Login Successful & isLoggedIn synced (local->Firestore)");
+                                            }
+
+                                            @Override
+                                            public void onFailure(Exception e) {
+                                                // Still log in locally if Firestore update fails
+                                                Log.e("SettingsViewModel", "Firestore sync FAILED (isLoggedIn) for userId=" + localUser.getId(), e);
+
+                                                sessionManager.saveLoginSession(localUser.getId(), localUser.getEmail());
+                                                userIdHolder.postValue(sessionManager.getUserId());
+                                                loginResult.postValue(true);
+
+                                                toastLoginResultMessage.postValue(
+                                                        "Logged in locally, but could not sync status to server."
+                                                );
+                                            }
+                                        });
+
+                                        Log.d("SettingsViewModel", "Login Successful (local user) ID=" + localUser.getId());
+                                    } else {
+                                        // Wrong password for the local user
+                                        Log.d("SettingsViewModel", "Login Failed (wrong password) for local user");
+                                        toastLoginResultMessage.postValue("Login Failed: Wrong password or username");
+                                        loginResult.postValue(false);
                                     }
-                                    final String firebaseUid = firebaseUser.getUid();
 
-                                    executor.execute(() -> {
-                                        UserModel user = userRepo.getUserByFirebaseUid(firebaseUid);
+                                } else {
+                                    // --- CASE B: User NOT found locally; attempt Firestore fetch ---
+                                    Log.d("SettingsViewModel", "Local user not found, fetching from Firestore");
 
-                                        if (user == null){
-                                            Log.d("SettingsViewModel", "User not found");
-                                            toastLoginResultMessage.postValue("User not found");
-                                            loginResult.postValue(false);
-                                            return;
+                                    userRepo.fetchUserFromFirestore(firebaseUid, new UserRepository.FirestoreUserCallback() {
+                                        @Override
+                                        public void onSuccess(UserModel remoteUser) {
+                                            // remoteUser now has: id, email, password, isLoggedIn, firebaseUid
+                                            if (remoteUser.getPassword().equals(password)) {
+                                                // Password matches Firestore copy → insert into local Room
+                                                remoteUser.setIsLoggedIn(true);
+
+                                                userRepo.insertUserLocalOnly(remoteUser, new UserRepository.RepositoryCallback() {
+                                                    @Override
+                                                    public void onSuccess() {
+                                                        // After local insert succeeds, save session
+                                                        sessionManager.saveLoginSession(remoteUser.getId(), remoteUser.getEmail());
+                                                        userIdHolder.postValue(sessionManager.getUserId());
+                                                        loginResult.postValue(true);
+
+                                                        Log.d("SettingsViewModel", "Login successful (remote→local sync). User ID=" + remoteUser.getId());
+                                                    }
+
+                                                    @Override
+                                                    public void onFailure(Exception e) {
+                                                        // Could not insert into Room—treat as failure
+                                                        Log.e("SettingsViewModel", "Failed to insert remote user into Room", e);
+                                                        toastLoginResultMessage.postValue("Login failed: cannot cache user locally.");
+                                                        loginResult.postValue(false);
+                                                    }
+                                                });
+                                            } else {
+                                                // Password mismatch with remote Firestore entry
+                                                Log.d("SettingsViewModel", "Login Failed (wrong password) for remote user");
+                                                toastLoginResultMessage.postValue("Login Failed: Wrong password or username");
+                                                loginResult.postValue(false);
+                                            }
                                         }
-                                        if (user.getPassword().equals(loginPassword.getValue())){
-                                            // Mark as logged in locally
-                                            user.setIsLoggedIn(true);
 
-                                            //Update room and firestore with UserRepository
-                                            userRepo.updateUser(user, new UserRepository.RepositoryCallback() {
-                                                @Override
-                                                public void onSuccess() {
-                                                    // Save session and notify UI if sync succeeds
-                                                    sessionManager.saveLoginSession(user.getId(), user.getEmail());
-                                                    userIdHolder.postValue(sessionManager.getUserId());
-                                                    loginResult.postValue(true);
-
-                                                    Log.d("SettingsViewModel", "Login Successful & isLoggedIn synced");
-                                                    Log.d("SettingsViewMode", String.valueOf(user.getId()));
-                                                }
-
-                                                @Override
-                                                public void onFailure(Exception e) {
-                                                    // Still log in locally if firestore fails
-                                                    Log.e("SettingsViewModel", "Firestore sync FAILED (isLoggedIn) for userId="
-                                                            + user.getId(), e);
-
-                                                    sessionManager.saveLoginSession(user.getId(), user.getEmail());
-                                                    userIdHolder.postValue(sessionManager.getUserId());
-                                                    loginResult.postValue(true);
-
-                                                    toastLoginResultMessage.postValue(
-                                                            "Logged in locally, but could not sync status to server."
-                                                    );
-                                                }
-                                            });
-
-                                            Log.d("SettingsViewModel", "Login Successful");
-                                            Log.d("USER INFO", "Email: " + user.getEmail() + " Password: " + user.getPassword() + " ID: " + user.getId());
-                                        } else {
-                                            Log.d("SettingsViewModel", "Login Failed");
-                                            toastLoginResultMessage.postValue("Login Failed: Wrong password or username");
+                                        @Override
+                                        public void onFailure(Exception e) {
+                                            // Failed to fetch from Firestore (user does not exist remotely or network error)
+                                            Log.e("SettingsViewModel", "Failed to fetch user from Firestore", e);
+                                            toastLoginResultMessage.postValue("User not found");
                                             loginResult.postValue(false);
                                         }
                                     });
                                 }
-                            }
-                        });
-
+                            });
+                        } else {
+                            // FirebaseAuth signIn failed (invalid credentials, network error, etc.)
+                            Exception e = task.getException();
+                            String msg = (e != null) ? e.getMessage() : "Unknown FirebaseAuth error";
+                            toastLoginResultMessage.setValue("FirebaseAuth sign‐in failed: " + msg);
+                            loginResult.setValue(false);
+                            Log.e("SettingsViewModel", "FirebaseAuth signIn failed", e);
+                        }
+                    }
+                });
     }//End of login method
 
     //SIGN UP VIEWMODEL FUNCTIONS
