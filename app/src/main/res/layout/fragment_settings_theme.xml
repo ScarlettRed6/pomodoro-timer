@@ -86,7 +86,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/notifications_label"
-                android:textColor="@color/white"
+                android:textColor="?attr/roundedBtnBg"
                 android:textSize="26sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
@@ -110,7 +110,7 @@
                     android:text="@string/allow_notifications_label"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    android:textColor="@color/white"
+                    android:textColor="?attr/roundedBtnBg"
                     android:gravity="center|start"/>
 
                 <!-- Allow notifications switch -->
@@ -123,63 +123,56 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_gravity="center"
-                    app:showText="true"
                     android:textSize="12sp"
-                    app:backgroundColorOnSwitchOn="@color/task_indicator_color2"
-                    app:backgroundColorOnSwitchOff="@color/icon_bg1"
-                    app:thumbColorOnSwitchOff="#FFFFFF"
-                    app:thumbColorOnSwitchOn="#4A148C"
-                    app:strokeColorOnSwitchOn="@color/cropped_ellipse_color2"
-                    app:strokeColorOnSwitchOff="@color/logout_btn_color"
-                    app:textColorOnSwitchOff="@color/white"
-                    app:textColorOnSwitchOn="@color/white"/>
+                    app:backgroundColorOnSwitchOn="?attr/bgColorOnSwitchOn"
+                    app:backgroundColorOnSwitchOff="?attr/bgColorOnSwitchOff"
+                    app:thumbColorOnSwitchOff="?attr/thumbColorOnSwitchOff"
+                    app:thumbColorOnSwitchOn="?attr/thumbColorOnSwitchOn"
+                    app:strokeColorOnSwitchOn="?attr/strokeColorOnSwitchOn"
+                    app:strokeColorOnSwitchOff="?attr/strokeColorOnSwitchOff"/>
             </LinearLayout>
 
             <!-- Nudge layout -->
-            <LinearLayout
-                android:id="@+id/nudge_layout_id"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                app:layout_constraintTop_toBottomOf="@+id/allow_notification_layout_id">
+<!--            <LinearLayout-->
+<!--                android:id="@+id/nudge_layout_id"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:gravity="center_vertical"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/allow_notification_layout_id">-->
 
-                <!-- Nudge label -->
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/nudge_label_id"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/nudge_label"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/white"
-                    android:gravity="center|start"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/allow_notification_layout_id"/>
+<!--                &lt;!&ndash; Nudge label &ndash;&gt;-->
+<!--                <com.google.android.material.textview.MaterialTextView-->
+<!--                    android:id="@+id/nudge_label_id"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:text="@string/nudge_label"-->
+<!--                    android:textSize="18sp"-->
+<!--                    android:textStyle="bold"-->
+<!--                    android:textColor="@color/white"-->
+<!--                    android:gravity="center|start"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintTop_toBottomOf="@+id/allow_notification_layout_id"/>-->
 
-                <!-- Nudge switch -->
-                <com.codersroute.flexiblewidgets.FlexibleSwitch
-                    android:id="@+id/nudge_switch_id"
-                    android:layout_width="65dp"
-                    android:layout_height="30dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="20dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_gravity="center"
-                    app:showText="true"
-                    android:textSize="12sp"
-                    app:backgroundColorOnSwitchOn="@color/task_indicator_color2"
-                    app:backgroundColorOnSwitchOff="@color/icon_bg1"
-                    app:thumbColorOnSwitchOff="#FFFFFF"
-                    app:thumbColorOnSwitchOn="#4A148C"
-                    app:strokeColorOnSwitchOn="@color/cropped_ellipse_color2"
-                    app:strokeColorOnSwitchOff="@color/logout_btn_color"
-                    app:textColorOnSwitchOff="@color/white"
-                    app:textColorOnSwitchOn="@color/white"
-                    app:layout_constraintTop_toBottomOf="@id/allow_notification_layout_id"
-                    app:layout_constraintEnd_toEndOf="parent"/>
-            </LinearLayout>
+<!--                &lt;!&ndash; Nudge switch &ndash;&gt;-->
+<!--                <com.codersroute.flexiblewidgets.FlexibleSwitch-->
+<!--                    android:id="@+id/nudge_switch_id"-->
+<!--                    android:layout_width="65dp"-->
+<!--                    android:layout_height="30dp"-->
+<!--                    android:layout_marginTop="20dp"-->
+<!--                    android:layout_marginBottom="20dp"-->
+<!--                    android:layout_marginLeft="10dp"-->
+<!--                    android:layout_marginRight="10dp"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    app:backgroundColorOnSwitchOn="?attr/bgColorOnSwitchOn"-->
+<!--                    app:backgroundColorOnSwitchOff="?attr/bgColorOnSwitchOff"-->
+<!--                    app:thumbColorOnSwitchOff="?attr/thumbColorOnSwitchOff"-->
+<!--                    app:thumbColorOnSwitchOn="?attr/thumbColorOnSwitchOn"-->
+<!--                    app:strokeColorOnSwitchOn="?attr/strokeColorOnSwitchOn"-->
+<!--                    app:strokeColorOnSwitchOff="?attr/strokeColorOnSwitchOff"-->
+<!--                    app:layout_constraintTop_toBottomOf="@id/allow_notification_layout_id"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"/>-->
+<!--            </LinearLayout>-->
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

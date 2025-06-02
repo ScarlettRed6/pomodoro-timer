@@ -23,6 +23,7 @@
             android:layout_height="wrap_content"
             android:text="@string/colon_text"
             android:textSize="24sp"
+            android:textColor="?attr/timerSelectionTextColor"
             android:layout_marginHorizontal="8dp" />
 
         <NumberPicker

@@ -32,7 +32,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/pomodoro_timer_picker_title"
                     android:textSize="20sp"
-                    android:textColor="@color/white"
+                    android:textColor="?attr/baseTextColor"
                     android:textStyle="bold"
                     android:layout_margin="6dp"/>
                 <!-- Pomodoro timer text display control -->
@@ -43,7 +43,7 @@
                     android:text="@string/pomodoro_timer_default_text"
                     android:textSize="20sp"
                     android:textStyle="bold"
-                    android:textColor="@color/icon_bg1"
+                    android:textColor="?attr/timerSelectionTextColor"
                     android:padding="10dp"
                     android:textAlignment="center"
                     android:clickable="true"
@@ -69,7 +69,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/short_break_timer_picker_title"
                     android:textSize="20sp"
-                    android:textColor="@color/white"
+                    android:textColor="?attr/baseTextColor"
                     android:textStyle="bold"
                     android:layout_margin="6dp"/>
                 <!-- Short break timer text display control -->
@@ -80,7 +80,7 @@
                     android:text="@string/short_break_timer_default_text"
                     android:textSize="20sp"
                     android:textStyle="bold"
-                    android:textColor="@color/icon_bg1"
+                    android:textColor="?attr/timerSelectionTextColor"
                     android:padding="10dp"
                     android:textAlignment="center"
                     android:clickable="true"
@@ -106,7 +106,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/long_break_timer_picker_title"
                     android:textSize="20sp"
-                    android:textColor="@color/white"
+                    android:textColor="?attr/baseTextColor"
                     android:textStyle="bold"
                     android:layout_margin="6dp"/>
                 <!-- Long break timer text display control -->
@@ -117,7 +117,7 @@
                     android:text="@string/long_break_timer_default_text"
                     android:textSize="20sp"
                     android:textStyle="bold"
-                    android:textColor="@color/icon_bg1"
+                    android:textColor="?attr/timerSelectionTextColor"
                     android:padding="10dp"
                     android:textAlignment="center"
                     android:clickable="true"
@@ -150,7 +150,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/long_break_interval_label"
-                        android:textColor="@color/icon_bg1"
+                        android:textColor="?attr/timerSelectionTextColor"
                         android:textStyle="bold"
                         android:gravity="center|start"
                         android:textSize="18sp"/>
@@ -164,8 +164,7 @@
                         android:textAlignment="center"
                         android:hint="@string/pomodoro_number_placeholder"
                         android:text="@={settingsVM.defaultLBIntervalString}"
-                        android:textColor="@color/white"
-                        android:textColorHint="@color/white"
+                        android:textColor="?attr/baseTextColor"
                         android:textStyle="bold"
                         app:layout_constraintTop_toBottomOf="@id/priority_group"
                         app:layout_constraintEnd_toEndOf="parent"/>
@@ -186,7 +185,7 @@
                         android:text="@string/auto_start_pomodoro_label"
                         android:textSize="18sp"
                         android:textStyle="bold"
-                        android:textColor="@color/icon_bg1"
+                        android:textColor="?attr/timerSelectionTextColor"
                         android:gravity="center|start"/>
 
                     <com.codersroute.flexiblewidgets.FlexibleSwitch
@@ -198,16 +197,12 @@
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
                         android:layout_gravity="center"
-                        app:showText="true"
-                        android:textSize="12sp"
-                        app:backgroundColorOnSwitchOn="@color/task_indicator_color2"
-                        app:backgroundColorOnSwitchOff="@color/icon_bg1"
-                        app:thumbColorOnSwitchOff="#FFFFFF"
-                        app:thumbColorOnSwitchOn="#4A148C"
-                        app:strokeColorOnSwitchOn="@color/cropped_ellipse_color2"
-                        app:strokeColorOnSwitchOff="@color/logout_btn_color"
-                        app:textColorOnSwitchOff="@color/white"
-                        app:textColorOnSwitchOn="@color/white"/>
+                        app:backgroundColorOnSwitchOn="?attr/bgColorOnSwitchOn"
+                        app:backgroundColorOnSwitchOff="?attr/bgColorOnSwitchOff"
+                        app:thumbColorOnSwitchOff="?attr/thumbColorOnSwitchOff"
+                        app:thumbColorOnSwitchOn="?attr/thumbColorOnSwitchOn"
+                        app:strokeColorOnSwitchOn="?attr/strokeColorOnSwitchOn"
+                        app:strokeColorOnSwitchOff="?attr/strokeColorOnSwitchOff"/>
                 </LinearLayout>
 
                 <!-- Auto start breaks control -->
@@ -225,7 +220,7 @@
                         android:text="@string/auto_start_breaks_label"
                         android:textSize="18sp"
                         android:textStyle="bold"
-                        android:textColor="@color/icon_bg1"
+                        android:textColor="?attr/timerSelectionTextColor"
                         android:gravity="center|start"/>
 
                     <com.codersroute.flexiblewidgets.FlexibleSwitch
@@ -237,16 +232,12 @@
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
                         android:layout_gravity="center"
-                        app:showText="true"
-                        android:textSize="12sp"
-                        app:backgroundColorOnSwitchOn="@color/task_indicator_color2"
-                        app:backgroundColorOnSwitchOff="@color/icon_bg1"
-                        app:thumbColorOnSwitchOff="#FFFFFF"
-                        app:thumbColorOnSwitchOn="#4A148C"
-                        app:strokeColorOnSwitchOn="@color/cropped_ellipse_color2"
-                        app:strokeColorOnSwitchOff="@color/logout_btn_color"
-                        app:textColorOnSwitchOff="@color/white"
-                        app:textColorOnSwitchOn="@color/white"/>
+                        app:backgroundColorOnSwitchOn="?attr/bgColorOnSwitchOn"
+                        app:backgroundColorOnSwitchOff="?attr/bgColorOnSwitchOff"
+                        app:thumbColorOnSwitchOff="?attr/thumbColorOnSwitchOff"
+                        app:thumbColorOnSwitchOn="?attr/thumbColorOnSwitchOn"
+                        app:strokeColorOnSwitchOn="?attr/strokeColorOnSwitchOn"
+                        app:strokeColorOnSwitchOff="?attr/strokeColorOnSwitchOff"/>
                 </LinearLayout>
 
             </LinearLayout>

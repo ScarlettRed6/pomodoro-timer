@@ -26,7 +26,7 @@
             android:id="@+id/user_account_profile_pic_id"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:src="@drawable/personal_pic_placeholder"
+            android:src="?attr/defaultUserPic"
             app:layout_constraintTop_toBottomOf="@+id/guideline1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
@@ -37,7 +37,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{settingsVM.loginEmail}"
-            android:textColor="@color/white"
+            android:textSize="25sp"
+            android:textColor="?attr/roundedBtnBg"
             android:layout_margin="10dp"
             app:layout_constraintTop_toBottomOf="@+id/user_account_profile_pic_id"
             app:layout_constraintStart_toStartOf="parent"
@@ -64,7 +65,7 @@
                 android:layout_weight="1"
                 android:gravity="center|start"
                 android:text="@string/edit_profile_label"
-                android:textColor="@color/white"
+                android:textColor="?attr/baseTextColor"
                 android:textSize="18sp" />
 
             <ImageButton
@@ -80,76 +81,76 @@
         </LinearLayout>
 
         <!-- Notifications button -->
-        <LinearLayout
-            android:id="@+id/notifications_layout_id"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:focusable="true"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:layout_marginTop="14dp"
-            android:background="@drawable/background_dim_curved_purple2"
-            app:layout_constraintTop_toBottomOf="@+id/edit_profile_layout_id">
+<!--        <LinearLayout-->
+<!--            android:id="@+id/notifications_layout_id"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:clickable="true"-->
+<!--            android:focusable="true"-->
+<!--            android:gravity="center_vertical"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:paddingStart="16dp"-->
+<!--            android:paddingEnd="16dp"-->
+<!--            android:layout_marginTop="14dp"-->
+<!--            android:background="@drawable/background_dim_curved_purple2"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/edit_profile_layout_id">-->
 
-            <com.google.android.material.textview.MaterialTextView
-                android:layout_width="0dp"
-                android:layout_height="60dp"
-                android:layout_weight="1"
-                android:gravity="center|start"
-                android:text="@string/notifications_label"
-                android:textColor="@color/white"
-                android:textSize="18sp" />
+<!--            <com.google.android.material.textview.MaterialTextView-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="60dp"-->
+<!--                android:layout_weight="1"-->
+<!--                android:gravity="center|start"-->
+<!--                android:text="@string/notifications_label"-->
+<!--                android:textColor="@color/white"-->
+<!--                android:textSize="18sp" />-->
 
-            <ImageButton
-                android:id="@+id/notifications_arrow_id"
-                android:layout_width="34dp"
-                android:layout_height="34dp"
-                android:background="@android:color/transparent"
-                android:scaleType="fitCenter"
-                android:rotation="270"
-                android:src="@drawable/ic_drop_down_arrow"
-                android:contentDescription="@string/dropdown_icon"/>
+<!--            <ImageButton-->
+<!--                android:id="@+id/notifications_arrow_id"-->
+<!--                android:layout_width="34dp"-->
+<!--                android:layout_height="34dp"-->
+<!--                android:background="@android:color/transparent"-->
+<!--                android:scaleType="fitCenter"-->
+<!--                android:rotation="270"-->
+<!--                android:src="@drawable/ic_drop_down_arrow"-->
+<!--                android:contentDescription="@string/dropdown_icon"/>-->
 
-        </LinearLayout>
+<!--        </LinearLayout>-->
 
         <!-- Privacy button -->
-        <LinearLayout
-            android:id="@+id/privacy_layout_id"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:focusable="true"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:layout_marginTop="14dp"
-            android:background="@drawable/background_dim_curved_purple2"
-            app:layout_constraintTop_toBottomOf="@+id/notifications_layout_id">
+<!--        <LinearLayout-->
+<!--            android:id="@+id/privacy_layout_id"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:clickable="true"-->
+<!--            android:focusable="true"-->
+<!--            android:gravity="center_vertical"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:paddingStart="16dp"-->
+<!--            android:paddingEnd="16dp"-->
+<!--            android:layout_marginTop="14dp"-->
+<!--            android:background="@drawable/background_dim_curved_purple2"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/notifications_layout_id">-->
 
-            <com.google.android.material.textview.MaterialTextView
-                android:layout_width="0dp"
-                android:layout_height="60dp"
-                android:layout_weight="1"
-                android:gravity="center|start"
-                android:text="@string/privacy_label"
-                android:textColor="@color/white"
-                android:textSize="18sp" />
+<!--            <com.google.android.material.textview.MaterialTextView-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="60dp"-->
+<!--                android:layout_weight="1"-->
+<!--                android:gravity="center|start"-->
+<!--                android:text="@string/privacy_label"-->
+<!--                android:textColor="@color/white"-->
+<!--                android:textSize="18sp" />-->
 
-            <ImageButton
-                android:id="@+id/privacy_arrow_id"
-                android:layout_width="34dp"
-                android:layout_height="34dp"
-                android:background="@android:color/transparent"
-                android:scaleType="fitCenter"
-                android:rotation="270"
-                android:src="@drawable/ic_drop_down_arrow"
-                android:contentDescription="@string/dropdown_icon"/>
+<!--            <ImageButton-->
+<!--                android:id="@+id/privacy_arrow_id"-->
+<!--                android:layout_width="34dp"-->
+<!--                android:layout_height="34dp"-->
+<!--                android:background="@android:color/transparent"-->
+<!--                android:scaleType="fitCenter"-->
+<!--                android:rotation="270"-->
+<!--                android:src="@drawable/ic_drop_down_arrow"-->
+<!--                android:contentDescription="@string/dropdown_icon"/>-->
 
-        </LinearLayout>
+<!--        </LinearLayout>-->
 
         <!-- Logout button -->
         <com.google.android.material.button.MaterialButton
@@ -158,11 +159,11 @@
             android:layout_height="wrap_content"
             android:text="@string/logout_label"
             android:textSize="18sp"
-            android:textColor="@color/white"
+            android:textColor="?attr/baseTextColor"
             android:layout_marginTop="18dp"
             android:padding="12dp"
             android:background="@drawable/background_dim_curved_pink"
             app:backgroundTint="@null"
-            app:layout_constraintTop_toBottomOf="@+id/privacy_layout_id"/>
+            app:layout_constraintTop_toBottomOf="@+id/edit_profile_layout_id"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

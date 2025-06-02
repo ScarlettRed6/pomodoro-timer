@@ -7,7 +7,7 @@
             name="statsVM"
             type="com.example.pomodoro_timer.viewmodels.StatsViewModel" />
     </data>
-    
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -18,6 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Hi, User!"
+            android:textColor="?attr/baseTextColor"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
@@ -28,6 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="You're making excellent progress this week!"
+            android:textColor="?attr/baseTextColor"
             app:layout_constraintTop_toBottomOf="@+id/greetings_user_text_id"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
@@ -84,7 +86,7 @@
                             android:layout_weight="1"
                             android:text="Productivity"
                             android:textStyle="bold"
-                            android:textColor="@color/white"/>
+                            android:textColor="?attr/baseTextColor"/>
 
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/productivity_percent_score_id"
@@ -92,7 +94,7 @@
                             android:layout_height="wrap_content"
                             android:text="75%"
                             android:textStyle="bold"
-                            android:textColor="@color/white"/>
+                            android:textColor="?attr/baseTextColor"/>
 
                     </LinearLayout>
 
@@ -141,7 +143,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:text="@{String.valueOf(statsVM.pomodoroSessions)}" />
+                            android:text="@{String.valueOf(statsVM.pomodoroSessions)}"
+                            android:textColor="?attr/baseTextColor"/>
 
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/pomodoro_count_label_id"
@@ -149,6 +152,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/total_pomodoros_label"
                             android:textSize="12sp"
+                            android:textColor="?attr/baseTextColor"
                             android:layout_gravity="center"/>
 
                     </LinearLayout>
@@ -167,7 +171,7 @@
                             android:id="@+id/focus_image_icon_id"
                             android:layout_width="40dp"
                             android:layout_height="40dp"
-                            android:src="@drawable/ic_tomato"
+                            android:src="@drawable/ic_clock"
                             android:layout_gravity="center"
                             android:contentDescription="@string/tomato_icon"/>
 
@@ -176,7 +180,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:text='@{String.valueOf(statsVM.totalFocus)+ "h"}' />
+                            android:text='@{String.valueOf(statsVM.totalFocus)+ "h"}'
+                            android:textColor="?attr/baseTextColor"/>
 
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/focus_count_label_id"
@@ -184,6 +189,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/total_focus_label"
                             android:textSize="12sp"
+                            android:textColor="?attr/baseTextColor"
                             android:layout_gravity="center"/>
 
                     </LinearLayout>
@@ -203,7 +209,7 @@
                             android:id="@+id/break_image_icon_id"
                             android:layout_width="40dp"
                             android:layout_height="40dp"
-                            android:src="@drawable/ic_tomato"
+                            android:src="@drawable/ic_break"
                             android:layout_gravity="center"
                             android:contentDescription="@string/tomato_icon"/>
 
@@ -212,6 +218,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@{String.valueOf(statsVM.breakTime)}"
+                            android:textColor="?attr/baseTextColor"
                             android:layout_gravity="center"/>
 
                         <com.google.android.material.textview.MaterialTextView
@@ -220,7 +227,8 @@
                             android:layout_height="wrap_content"
                             android:text="@string/total_break_times_label"
                             android:textSize="12sp"
-                            android:layout_gravity="center"/>
+                            android:layout_gravity="center"
+                            android:textColor="?attr/baseTextColor"/>
 
                     </LinearLayout>
 
@@ -243,7 +251,7 @@
                     android:layout_below="@id/pomodoro_count_per_week_bar_graph_id"
                     android:gravity="center_vertical">
 
-                    <Button
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/prev_month_button_id"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -251,7 +259,8 @@
                         android:textSize="18sp"
                         android:minWidth="48dp"
                         android:background="@drawable/background_dim_curved_purple2"
-                        android:textColor="@color/text_color" />
+                        app:backgroundTint="@null"
+                        android:textColor="?attr/timerTypeTextColor" />
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/month_year_label_id"
@@ -262,9 +271,10 @@
                         android:textAlignment="center"
                         android:textStyle="bold"
                         android:textSize="16sp"
+                        android:textColor="?attr/timerTypeTextColor"
                         android:layout_marginHorizontal="16dp" />
 
-                    <Button
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/next_month_button_id"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -272,7 +282,8 @@
                         android:textSize="18sp"
                         android:minWidth="48dp"
                         android:background="@drawable/background_dim_curved_purple2"
-                        android:textColor="@color/text_color" />
+                        app:backgroundTint="@null"
+                        android:textColor="?attr/timerTypeTextColor" />
 
                 </LinearLayout>
 

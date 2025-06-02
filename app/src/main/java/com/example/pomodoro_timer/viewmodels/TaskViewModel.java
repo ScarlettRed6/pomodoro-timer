@@ -154,7 +154,7 @@ public class TaskViewModel extends AndroidViewModel {
     public void initializeCategories(){
         executor.execute(() -> {
             if (!db.userDao().hasCategory(1)){
-                CategoryModel guestCategory = new CategoryModel(1, "Work","this Category", R.drawable.ic_category_laptop);
+                CategoryModel guestCategory = new CategoryModel(1, "Work","this Category", R.attr.categoryLaptopIcon);
                 db.categoryDao().insert(guestCategory);
                 categoryList.postValue(db.categoryDao().getAllCategories(1));
             }
@@ -333,6 +333,7 @@ public class TaskViewModel extends AndroidViewModel {
         executor.execute(() -> {
             CategoryModel newCategory = new CategoryModel(userId, categoryTitle, categoryDescription, icon);
             db.categoryDao().insert(newCategory);
+            Log.d("TaskViewModel_AddCat", "Adding category. User: " + userId + ", Title: " + categoryTitle + ", IconAttrID: " + icon);
             categoryList.postValue(db.categoryDao().getAllCategories(userId)); //Refresh category list after insert
         });
     }

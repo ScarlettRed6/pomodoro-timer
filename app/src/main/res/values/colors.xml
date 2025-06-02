@@ -66,7 +66,7 @@
     <color name="t2_cropped_ellipse_color3">#ECE3FC</color>
 
     <!-- Button colors -->
-    <color name="t2_logout_btn_color">#4D0B0B</color>
+    <color name="t2_logout_btn_color">#804D0B0B</color>
 
     <color name="t2_text_color">#E6442F</color>
 
@@ -98,7 +98,7 @@
     <color name="t2_bottom_nav_color2">#D73F2C</color>
 
     <!-- card colors or for dimmed backgrounds -->
-    <color name="t2_background_dim_color1">#99271D</color>
+    <color name="t2_background_dim_color1">#8099271D</color>
     <color name="t2_background_dim_color2">#CCFFFFFF</color>
 
     <!-- Misc colors -->

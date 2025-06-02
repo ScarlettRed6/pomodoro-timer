@@ -25,7 +25,12 @@
     <attr name="nextMonthBtnColor" format="color"/>
 
     <!-- Switch Colors -->
-    <attr name="switchColor" format="color"/>
+    <attr name="bgColorOnSwitchOn" format="color"/>
+    <attr name="bgColorOnSwitchOff" format="color"/>
+    <attr name="thumbColorOnSwitchOn" format="color"/>
+    <attr name="thumbColorOnSwitchOff" format="color"/>
+    <attr name="strokeColorOnSwitchOn" format="color"/>
+    <attr name="strokeColorOnSwitchOff" format="color"/>
 
     <!-- Custom Background colors -->
     <attr name="backgroundDimCurvedColor1" format="color"/> <!-- from background_dim_curved_pink -->
@@ -45,6 +50,54 @@
 
     <attr name="roundedBtnBg" format="color"/> <!-- from rounded_btn_bg -->
     <attr name="roundedBtnBg2" format="color"/> <!-- from rounded_btn_bg2 -->
+    <attr name="roundedBtnBg2.2" format="color"/> <!-- from rounded_btn_bg2-->
+    <attr name="roundedBtnBg2.3" format="color"/> <!-- from rounded_btn_bg2 -->
+
+    <!-- Timer Donut progress color -->
+    <attr name="timerDonutProgressColor" format="color"/>
+    <attr name="timerDonutProgressColor2" format="color"/>
+    <attr name="timerDonutProgressColor3" format="color"/>
+
+    <!-- Image Icons -->
+    <!-- Timer pause and start and stop icon-->
+    <attr name="startImageIcon" format="reference"/>
+    <attr name="pauseImageIcon" format="reference"/>
+    <attr name="stopImageIcon" format="reference"/>
+
+    <!-- Category icons -->
+    <attr name="categoryLaptopIcon" format="reference"/>
+    <attr name="categoryBookIcon" format="reference"/>
+    <!-- Category icon selector -->
+    <attr name="iconSelectedColor1" format="reference"/>
+    <attr name="iconSelectedColor2" format="reference"/>
+    <attr name="iconNotSelectedColor" format="reference"/>
+
+    <!-- Add task/category icon -->
+    <attr name="addIcon" format="reference"/>
+    <attr name="addCategoryPickerIcon" format="reference"/>
+
+    <!-- Background app images -->
+    <attr name="backgroundTaskScreen" format="reference" />
+    <attr name="backgroundTimerScreen" format="reference" />
+    <attr name="backgroundStatsScreen" format="reference" />
+    <attr name="backgroundSettingsScreen" format="reference" />
+    <attr name="backgroundDefaultScreen" format="reference" />
+
+    <!-- Attributes for CalendarHeatMapView -->
+    <attr name="calendarEmptyColor" format="color|reference" />
+    <attr name="calendarTextColor" format="color|reference" /> <!-- You might already have a baseTextColor -->
+    <attr name="calendarHeaderBackgroundColor" format="color|reference" />
+    <attr name="calendarTodayIndicatorColor" format="color|reference" />
+
+    <!-- Attributes for the heatmap colors (assuming 4 levels for now) -->
+    <attr name="calendarHeatmapColorLowest" format="color|reference" />
+    <attr name="calendarHeatmapColorLow" format="color|reference" />
+    <attr name="calendarHeatmapColorMedium" format="color|reference" />
+    <attr name="calendarHeatmapColorHigh" format="color|reference" />
+
+    <!-- Misc icons -->
+    <attr name="deleteIcon" format="reference"/>
+    <attr name="defaultUserPic" format="reference"/>
 
 
 </resources>

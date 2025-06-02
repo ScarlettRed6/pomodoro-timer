@@ -161,9 +161,29 @@ public class AddTaskFragment extends Fragment {
                 binding.taskCategoryIconId.setVisibility(View.VISIBLE);
                 binding.taskCategoryTitleId.setVisibility(View.VISIBLE);
                 binding.removePickedCategoryBtnId.setVisibility(View.VISIBLE);
-                binding.taskCategoryIconId.setImageResource(category.getIcon());
+
+                // --- FIX IS HERE ---
+                if (category.getIcon() != null && category.getIcon() != 0) {
+                    android.util.TypedValue typedValue = new android.util.TypedValue();
+                    // Use the context of the ImageView itself or the fragment's view context
+                    android.content.Context context = binding.taskCategoryIconId.getContext();
+                    context.getTheme().resolveAttribute(category.getIcon(), typedValue, true);
+
+                    if (typedValue.resourceId != 0) {
+                        binding.taskCategoryIconId.setImageResource(typedValue.resourceId);
+                    } else {
+                        // Fallback or error: Attribute couldn't be resolved
+                        binding.taskCategoryIconId.setVisibility(View.GONE); // Hide icon if not found
+                        Log.e(getTag(), "Could not resolve attribute to drawable: " + Integer.toHexString(category.getIcon()));
+                    }
+                } else {
+                    // No icon ID in category model
+                    binding.taskCategoryIconId.setVisibility(View.GONE);
+                }
+                // --- END OF FIX ---
+
                 binding.taskCategoryTitleId.setText(category.getCategoryTitle());
-            }else{
+            } else {
                 binding.addTaskCategoryBtnId.setVisibility(View.VISIBLE);
                 binding.removePickedCategoryBtnId.setVisibility(View.GONE);
                 binding.taskCategoryIconId.setVisibility(View.GONE);

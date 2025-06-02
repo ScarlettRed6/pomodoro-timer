@@ -6,12 +6,15 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.core.view.GestureDetectorCompat;
+
+import com.example.pomodoro_timer.R;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -21,6 +24,7 @@ import java.util.Map;
 public class CalendarHeatMapView extends View {
 
     //Default dimensions and colors
+    private static final int DEFAULT_SQUARE_CORNER_RADIUS_DP = 4;
     private static final int DEFAULT_SQUARE_SIZE_DP = 32;
     private static final int DEFAULT_SQUARE_SPACING_DP = 2;
     private static final int DEFAULT_TEXT_SIZE_SP = 12;
@@ -30,7 +34,7 @@ public class CalendarHeatMapView extends View {
     private static final int DEFAULT_TEXT_COLOR = Color.parseColor("#333333");
     private static final int DEFAULT_HEADER_BG_COLOR = Color.parseColor("#F0F0F0");
     private static final int DEFAULT_TODAY_INDICATOR_COLOR = Color.parseColor("#FF5722");
-    private static final int[] HEAT_MAP_COLORS = {
+    private static final int[] DEFAULT_HEAT_MAP_COLORS = {
             Color.parseColor("#e5d0ff"), //Lowest
             Color.parseColor("#dabcff"), //
             Color.parseColor("#cca3ff"), //
@@ -52,6 +56,7 @@ public class CalendarHeatMapView extends View {
     private int headerTextSize;
     private int dayNumberSize;
     private int headerHeight;
+    private float cornerRadius;
 
     // Colors
     private int emptyColor;
@@ -87,6 +92,7 @@ public class CalendarHeatMapView extends View {
 
     private void init(@Nullable AttributeSet attrs) {
         // Convert dp to pixels
+        Context context = getContext();
         float density = getResources().getDisplayMetrics().density;
         squareSize = (int) (DEFAULT_SQUARE_SIZE_DP * density);
         squareSpacing = (int) (DEFAULT_SQUARE_SPACING_DP * density);
@@ -94,13 +100,21 @@ public class CalendarHeatMapView extends View {
         headerTextSize = (int) (DEFAULT_HEADER_TEXT_SIZE_SP * density);
         dayNumberSize = (int) (DEFAULT_DAY_NUMBER_SIZE_SP * density);
         headerHeight = (int) (headerTextSize * 2.5f);
+        //Initialize corner radius
+        cornerRadius = DEFAULT_SQUARE_CORNER_RADIUS_DP * density;
 
         // Default colors
-        emptyColor = DEFAULT_EMPTY_COLOR;
-        textColor = DEFAULT_TEXT_COLOR;
-        headerBgColor = DEFAULT_HEADER_BG_COLOR;
-        todayIndicatorColor = DEFAULT_TODAY_INDICATOR_COLOR;
-        heatMapColors = HEAT_MAP_COLORS;
+        emptyColor = resolveThemeColor(context, R.attr.calendarEmptyColor, DEFAULT_EMPTY_COLOR);
+        textColor = resolveThemeColor(context, R.attr.calendarTextColor, DEFAULT_TEXT_COLOR);
+        headerBgColor = resolveThemeColor(context, R.attr.calendarHeaderBackgroundColor, DEFAULT_HEADER_BG_COLOR);
+        todayIndicatorColor = resolveThemeColor(context, R.attr.calendarTodayIndicatorColor, DEFAULT_TODAY_INDICATOR_COLOR);
+
+        heatMapColors = new int[]{
+                resolveThemeColor(context, R.attr.calendarHeatmapColorLowest, DEFAULT_HEAT_MAP_COLORS[3]),
+                resolveThemeColor(context, R.attr.calendarHeatmapColorLow, DEFAULT_HEAT_MAP_COLORS[2]),
+                resolveThemeColor(context, R.attr.calendarHeatmapColorMedium, DEFAULT_HEAT_MAP_COLORS[1]),
+                resolveThemeColor(context, R.attr.calendarHeatmapColorHigh, DEFAULT_HEAT_MAP_COLORS[0])
+        };
 
         // Initialize paints
         squarePaint = new Paint();
@@ -208,21 +222,12 @@ public class CalendarHeatMapView extends View {
                 today.get(Calendar.YEAR) == yearToShow;
         int todayDayOfMonth = today.get(Calendar.DAY_OF_MONTH);
 
-        // Start position for drawing
         int startX = getPaddingLeft();
         int startY = getPaddingTop() + headerHeight;
 
-        // Draw month header
         String monthHeader = calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault()) +
                 " " + calendar.get(Calendar.YEAR);
 
-        // Draw header background
-        canvas.drawRect(startX, getPaddingTop(), getWidth() - getPaddingRight(), startY, headerBgPaint);
-
-        // Draw month name and year
-        canvas.drawText(monthHeader, getWidth() / 2f, getPaddingTop() + headerTextSize, headerTextPaint);
-
-        // Draw day labels (S, M, T, W, T, F, S)
         String[] dayLabels = {"S", "M", "T", "W", "T", "F", "S"};
         for (int i = 0; i < 7; i++) {
             float x = startX + i * (squareSize + squareSpacing) + squareSize / 2f;
@@ -230,21 +235,19 @@ public class CalendarHeatMapView extends View {
             canvas.drawText(dayLabels[i], x, y, textPaint);
         }
 
-        // Calculate day offset based on first day of month
         int dayOffset = firstDayOfWeek - Calendar.SUNDAY;
 
-        // Draw the calendar squares
+        //Drawing the calendar squares
         int day = 1;
         for (int week = 0; week < getWeeksInMonth(); week++) {
             for (int weekday = 0; weekday < 7; weekday++) {
                 int position = week * 7 + weekday;
 
-                // Skip days before the start of the month
+                //This Skip days before the start of the month
                 if (position < dayOffset || day > daysInMonth) {
                     continue;
                 }
 
-                // Create date string for lookup
                 Calendar currentDate = (Calendar) calendar.clone();
                 currentDate.set(Calendar.DAY_OF_MONTH, day);
 
@@ -253,7 +256,7 @@ public class CalendarHeatMapView extends View {
                         currentDate.get(Calendar.MONTH) + 1,
                         currentDate.get(Calendar.DAY_OF_MONTH));
 
-                // Determine color based on data
+                //Determine color based on data
                 Integer value = dataPoints.get(dateKey);
                 int color;
 
@@ -274,7 +277,8 @@ public class CalendarHeatMapView extends View {
                 float bottom = top + squareSize;
 
                 RectF rect = new RectF(left, top, right, bottom);
-                canvas.drawRect(rect, squarePaint);
+                // canvas.drawRect(rect, squarePaint); // OLD WAY
+                canvas.drawRoundRect(rect, cornerRadius, cornerRadius, squarePaint); // NEW WAY
 
                 // Draw day number
                 float textX = left + (squareSize / 2f);
@@ -289,7 +293,7 @@ public class CalendarHeatMapView extends View {
                             top + padding,
                             right - padding,
                             bottom - padding);
-                    canvas.drawRect(todayRect, todayIndicatorPaint);
+                    canvas.drawRoundRect(todayRect, cornerRadius - padding, cornerRadius - padding, todayIndicatorPaint);
                 }
 
                 day++;
@@ -459,4 +463,20 @@ public class CalendarHeatMapView extends View {
         this.heatMapColors = colors;
         invalidate();
     }
+
+    private int resolveThemeColor(Context context, int attrRes, int defaultColor) {
+        TypedValue typedValue = new TypedValue();
+        if (context.getTheme().resolveAttribute(attrRes, typedValue, true) &&
+                typedValue.type >= TypedValue.TYPE_FIRST_COLOR_INT &&
+                typedValue.type <= TypedValue.TYPE_LAST_COLOR_INT) {
+            return typedValue.data;
+        }
+        // Log fallback or handle error - good practice to know if a theme attribute is missing
+        // You can get the resource name like this:
+        // String resourceName = "";
+        // try { resourceName = getResources().getResourceName(attrRes); } catch (Exception e) {}
+        // Log.w("CalendarHeatMapView", "Theme attribute not found or not a color: " + resourceName + ". Using default.");
+        return defaultColor;
+    }
+
 }

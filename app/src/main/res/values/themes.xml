@@ -9,16 +9,176 @@
     <style name="Theme.Pomodorotimer" parent="Base.Theme.Pomodorotimer" >
         <!-- Text Colors-->
         <item name="baseTextColor">@color/white</item>
-        <item name="timerTypeTextColor">@color/white</item>
-        <item name="timerSelectionTextColor">@color/white</item>
+        <item name="timerTypeTextColor">@color/count_down_color</item>
+        <item name="timerSelectionTextColor">@color/icon_bg1</item>
+
+        <!-- Buttons colors -->
+        <item name="saveBtnColor">@color/white</item>
+        <item name="cancelBtnColor">@color/category_title_color3</item>
+
+        <!-- Switch Colors -->
+        <item name="bgColorOnSwitchOn">@color/task_indicator_color2</item>
+        <item name="bgColorOnSwitchOff">@color/bottom_nav_color1</item>
+        <item name="thumbColorOnSwitchOn">@color/white</item>
+        <item name="thumbColorOnSwitchOff">@color/category_title_color4</item>
+        <item name="strokeColorOnSwitchOn">@color/task_indicator_color2</item>
+        <item name="strokeColorOnSwitchOff">@color/bottom_nav_color1</item>
+
+        <!-- Custom Background colors -->
+        <item name="backgroundDimCurvedColor1">@color/logout_btn_color</item>
+        <item name="backgroundDimCurvedColor2">@color/background_dim_color1</item>
+        <item name="backgroundDimCurvedColor3">@color/background_dim_color1</item>
+        <item name="backgroundDimCurvedColor4">@color/background_dim_color2</item>
+
+        <item name="backgroundGradientCardColor1.1">@color/bottom_nav_color2</item>
+        <item name="backgroundGradientCardColor1.2">@color/bottom_nav_color1</item>
+        <item name="backgroundGradientCardColor2.1">@color/text_color</item>
+        <item name="backgroundGradientCardColor2.2">@color/cropped_ellipse_color2</item>
+        <item name="backgroundGradientCardColor3.1">@color/text_color</item>
+        <item name="backgroundGradientCardColor3.2">@color/cropped_ellipse_color2</item>
+
+        <item name="bottomNavBgCurved1.1">@color/bottom_nav_color2</item>
+        <item name="bottomNavBgCurved1.2">@color/bottom_nav_color1</item>
+
+        <item name="roundedBtnBg">@color/white</item>
+        <item name="roundedBtnBg2">@color/icon_bg1</item>
+        <item name="roundedBtnBg2.2">@color/icon_bg2</item>
+        <item name="roundedBtnBg2.3">@color/icon_bg3</item>
+
+        <!-- Timer Donut progress color -->
+        <item name="timerDonutProgressColor">@color/cropped_ellipse_color1</item>
+        <item name="timerDonutProgressColor2">@color/cropped_ellipse_color2</item>
+        <item name="timerDonutProgressColor3">@color/cropped_ellipse_color3</item>
+
+        <!-- Image Icons -->
+        <!-- Timer pause and start and stop icon-->
+        <item name="startImageIcon">@drawable/ic_start</item>
+        <item name="pauseImageIcon">@drawable/ic_pause</item>
+        <item name="stopImageIcon">@drawable/ic_stop</item>
+
+        <!-- Category icons -->
+        <item name="categoryLaptopIcon">@drawable/ic_category_laptop</item>
+        <item name="categoryBookIcon">@drawable/ic_category_book</item>
+        <!-- Category icon selector -->
+        <item name="iconSelectedColor1">@color/white</item>
+        <item name="iconSelectedColor2">@color/cropped_ellipse_color2</item>
+        <item name="iconNotSelectedColor">@color/dim_color2</item>
+
+        <!-- Add task/category icon -->
+        <item name="addIcon">@drawable/ic_add_task</item>
+        <item name="addCategoryPickerIcon">@drawable/ic_add2</item>
+
+        <!-- Background app images -->
+        <item name="backgroundTaskScreen">@drawable/background_app1</item>
+        <item name="backgroundTimerScreen">@drawable/background_app2</item>
+        <item name="backgroundStatsScreen">@drawable/background_app3</item>
+        <item name="backgroundSettingsScreen">@drawable/background_app4</item>
+        <item name="backgroundDefaultScreen">@drawable/background_app1</item>
+
+        <!-- Attributes for CalendarHeatMapView -->
+        <item name="calendarEmptyColor">#E6E6E6</item>
+        <item name="calendarTextColor">@color/count_down_color</item> <!-- You might already have a baseTextColor -->
+        <item name="calendarHeaderBackgroundColor">@color/bottom_nav_color1</item>
+        <item name="calendarTodayIndicatorColor">#FF5722</item>
+
+        <!-- Attributes for the heatmap colors (assuming 4 levels for now) -->
+        <item name="calendarHeatmapColorLowest">@color/task_indicator_color1</item>
+        <item name="calendarHeatmapColorLow">@color/task_indicator_color2</item>
+        <item name="calendarHeatmapColorMedium">@color/text_color</item>
+        <item name="calendarHeatmapColorHigh">@color/category_title_color3</item>
+
+        <!-- Misc icons -->
+        <item name="deleteIcon">@drawable/ic_delete</item>
+        <item name="defaultUserPic">@drawable/ic_tomato</item>
+
     </style>
 
     <!-- THEME 2-->
-    <style name="AppTheme.Theme2" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="AppTheme.Theme2" parent="Base.Theme.Pomodorotimer">
         <!-- Text Colors-->
         <item name="baseTextColor">@color/white</item>
-        <item name="timerTypeTextColor">@color/t2_cropped_ellipse_color1</item>
-        <item name="timerSelectionTextColor">@color/category_title_color1</item>
+        <item name="timerTypeTextColor">@color/t2_count_down_color</item>
+        <item name="timerSelectionTextColor">@color/t2_text_color</item>
+
+        <!-- Buttons colors -->
+        <item name="saveBtnColor">@color/t2_icon_bg1</item>
+        <item name="cancelBtnColor">@color/t2_background_dim_color1</item>
+
+        <!-- Switch Colors -->
+        <item name="bgColorOnSwitchOn">@color/t2_task_indicator_color2</item>
+        <item name="bgColorOnSwitchOff">@color/t2_category_title_color1</item>
+        <item name="thumbColorOnSwitchOn">@color/white</item>
+        <item name="thumbColorOnSwitchOff">@color/category_title_color4</item>
+        <item name="strokeColorOnSwitchOn">@color/t2_task_indicator_color2</item>
+        <item name="strokeColorOnSwitchOff">@color/t2_category_title_color1</item>
+
+        <!-- Custom Background colors -->
+        <item name="backgroundDimCurvedColor1">@color/t2_logout_btn_color</item>
+        <item name="backgroundDimCurvedColor2">@color/t2_background_dim_color1</item>
+        <item name="backgroundDimCurvedColor3">@color/t2_background_dim_color1</item>
+        <item name="backgroundDimCurvedColor4">@color/background_dim_color2</item>
+
+        <item name="backgroundGradientCardColor1.1">@color/t2_bottom_nav_color2</item>
+        <item name="backgroundGradientCardColor1.2">@color/t2_bottom_nav_color1</item>
+        <item name="backgroundGradientCardColor2.1">@color/t2_text_color</item>
+        <item name="backgroundGradientCardColor2.2">@color/t2_cropped_ellipse_color2</item>
+        <item name="backgroundGradientCardColor3.1">@color/t2_text_color</item>
+        <item name="backgroundGradientCardColor3.2">@color/t2_cropped_ellipse_color2</item>
+
+        <item name="bottomNavBgCurved1.1">@color/t2_bottom_nav_color2</item>
+        <item name="bottomNavBgCurved1.2">@color/t2_bottom_nav_color1</item>
+
+        <item name="roundedBtnBg">@color/t2_icon_bg1</item>
+        <item name="roundedBtnBg2">@color/t2_category_title_color2</item>
+        <item name="roundedBtnBg2.2">@color/t2_progress_bar_color1</item>
+        <item name="roundedBtnBg2.3">@color/t2_cropped_ellipse_color1</item>
+
+        <!-- Timer Donut progress color -->
+        <item name="timerDonutProgressColor">@color/t2_category_title_color3</item>
+        <item name="timerDonutProgressColor2">@color/t2_cropped_ellipse_color2</item>
+        <item name="timerDonutProgressColor3">@color/cropped_ellipse_color3</item>
+
+        <!-- Image Icons -->
+        <!-- Timer pause and start and stop icon-->
+        <item name="startImageIcon">@drawable/ic_start_t2</item>
+        <item name="pauseImageIcon">@drawable/ic_pause_t2</item>
+        <item name="stopImageIcon">@drawable/ic_stop_t2</item>
+
+        <!-- Category icons -->
+        <item name="categoryLaptopIcon">@drawable/ic_category_laptop_t2</item>
+        <item name="categoryBookIcon">@drawable/ic_category_book_t2</item>
+        <!-- Category icon selector -->
+        <item name="iconSelectedColor1">@color/t2_cropped_ellipse_color2</item>
+        <item name="iconSelectedColor2">@color/white</item>
+        <item name="iconNotSelectedColor">@color/dim_color2</item>
+
+        <!-- Add task/category icon -->
+        <item name="addIcon">@drawable/ic_add_task_t2</item>
+        <item name="addCategoryPickerIcon">@drawable/ic_add2_t2</item>
+
+        <!-- Background app images -->
+        <item name="backgroundTaskScreen">@drawable/background_app5</item>
+        <item name="backgroundTimerScreen">@drawable/background_app5</item>
+        <item name="backgroundStatsScreen">@drawable/background_app5</item>
+        <item name="backgroundSettingsScreen">@drawable/background_app5</item>
+        <item name="backgroundDefaultScreen">@drawable/background_app5</item>
+
+        <!-- Attributes for CalendarHeatMapView -->
+        <item name="calendarEmptyColor">#E6E6E6</item>
+        <item name="calendarTextColor">@color/t2_count_down_color</item> <!-- You might already have a baseTextColor -->
+        <item name="calendarHeaderBackgroundColor">@color/bottom_nav_color1</item>
+        <item name="calendarTodayIndicatorColor">#FF5722</item>
+
+        <!-- Attributes for the heatmap colors -->
+        <item name="calendarHeatmapColorLowest">@color/t2_task_indicator_color1</item>
+        <item name="calendarHeatmapColorLow">#992D1F</item>
+        <item name="calendarHeatmapColorMedium">@color/t2_category_title_color1</item>
+        <item name="calendarHeatmapColorHigh">@color/t2_category_title_color3</item>
+
+        <!-- Misc icons -->
+        <item name="deleteIcon">@drawable/ic_delete_t2</item>
+        <item name="defaultUserPic">@drawable/tomato_image</item>
+
     </style>
 
 

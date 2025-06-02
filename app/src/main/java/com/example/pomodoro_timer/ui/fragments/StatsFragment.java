@@ -3,6 +3,7 @@ package com.example.pomodoro_timer.ui.fragments;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.annotation.AttrRes;
+import androidx.annotation.ColorInt;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -232,6 +235,11 @@ public class StatsFragment extends Fragment {
         List<String> labels = new ArrayList<>();
         Map<String, Integer> groupedSessions = new TreeMap<>();
 
+        int baseTextColor = getThemeColor(R.attr.baseTextColor);
+        int gradientStartColor = getThemeColor(R.attr.backgroundGradientCardColor2_2); // Assuming you used underscores for periods in attr name
+        int gradientMidColor = getThemeColor(R.attr.backgroundGradientCardColor2_1);   // Or adjust to your actual attribute names
+        int gradientEndColor = getThemeColor(R.attr.backgroundGradientCardColor1_2);
+
         SimpleDateFormat keyFormat = null;
         SimpleDateFormat labelFormat = null;
         long now = System.currentTimeMillis();
@@ -322,9 +330,9 @@ public class StatsFragment extends Fragment {
         }
 
         BarDataSet dataSet = new BarDataSet(entries, "Pomodoro Sessions");
-        dataSet.setColor(ContextCompat.getColor(requireContext(), R.color.text_color));
+        dataSet.setColor(gradientMidColor);
         dataSet.setValueTextSize(12F);
-        dataSet.setGradientColor(Color.parseColor("#7356F3"), Color.parseColor("#F790FA"));
+        dataSet.setGradientColor(gradientStartColor, gradientMidColor);
 
         BarData barData = new BarData(dataSet);
         barData.setBarWidth(barWidth);
@@ -397,6 +405,16 @@ public class StatsFragment extends Fragment {
 
         barChart.invalidate();
     }//End of setupBarGraph method
+
+    @ColorInt
+    private int getThemeColor(@AttrRes int colorAttr) {
+        TypedValue typedValue = new TypedValue();
+        if (getContext() != null && getContext().getTheme().resolveAttribute(colorAttr, typedValue, true)) {
+            return typedValue.data; // For colors, .data holds the color value
+        }
+        Log.w("StatsFragment", "Theme attribute not found: " + getResources().getResourceName(colorAttr) + ". Using default black.");
+        return Color.BLACK;
+    }
 
     private void updateFirstStats(){
         statsVM.updateStats(userId);

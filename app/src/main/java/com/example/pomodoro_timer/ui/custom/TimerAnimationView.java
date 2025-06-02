@@ -10,6 +10,7 @@ import android.graphics.RectF;
 import android.graphics.Shader;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 
 import androidx.core.content.ContextCompat;
@@ -60,9 +61,9 @@ public class TimerAnimationView extends View {
         //Also changes by size/scalability
 
         int[] colors = new int[]{
-                ContextCompat.getColor(getContext(), R.color.cropped_ellipse_color1),
-                ContextCompat.getColor(getContext(), R.color.cropped_ellipse_color2),
-                ContextCompat.getColor(getContext(), R.color.cropped_ellipse_color3)
+                getColorFromAttr(getContext(), R.attr.timerDonutProgressColor),
+                getColorFromAttr(getContext(), R.attr.timerDonutProgressColor2),
+                getColorFromAttr(getContext(), R.attr.timerDonutProgressColor3)
         };
 
         float[] positionz = new float[]{ 0f, 5.5f, 1f};
@@ -74,6 +75,29 @@ public class TimerAnimationView extends View {
         ));
 
     }//End of onSizeChanged method
+
+    private int getColorFromAttr(Context context, int attr) {
+        TypedValue typedValue = new TypedValue();
+        context.getTheme().resolveAttribute(attr, typedValue, true);
+        // It's crucial to check the type.
+        // It can be a color direct value (TYPE_INT_COLOR_*) or a reference to a color resource (TYPE_REFERENCE)
+        if (typedValue.type >= TypedValue.TYPE_FIRST_COLOR_INT && typedValue.type <= TypedValue.TYPE_LAST_COLOR_INT) {
+            // It's a direct color value
+            return typedValue.data;
+        } else if (typedValue.type == TypedValue.TYPE_REFERENCE) {
+            // It's a reference to a color resource (e.g., @color/some_color)
+            // In this case, typedValue.resourceId will hold the ID (e.g., R.color.some_color)
+            // and ContextCompat.getColor can resolve it.
+            // However, resolveAttribute with 'resolveRefs = true' should have already resolved this.
+            // If it's still a reference, it means the attribute itself points to a color resource.
+            return ContextCompat.getColor(context, typedValue.resourceId);
+        }
+        // Fallback color if the attribute is not defined or not a color
+        // You might want to throw an exception or return a default color
+        Log.w("TimerAnimationView", "Warning: Attribute not found or not a color: " + context.getResources().getResourceName(attr));
+        return Color.GRAY; // Default fallback color
+    }
+
 
     @Override
     protected void onDraw(Canvas canvas) {

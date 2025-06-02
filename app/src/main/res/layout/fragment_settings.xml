@@ -18,7 +18,8 @@
             android:layout_height="wrap_content"
             app:tabMode="fixed"
             app:tabGravity="fill"
-            app:tabTextColor="@color/white"
+            app:tabTextColor="?attr/baseTextColor"
+            app:tabIndicatorColor="?attr/timerTypeTextColor"
             android:background="@android:color/transparent"
             app:layout_constraintTop_toTopOf="parent" />
 

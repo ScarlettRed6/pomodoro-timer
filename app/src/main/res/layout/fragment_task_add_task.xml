@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
     
     <data>
         <variable
@@ -12,7 +13,6 @@
         android:layout_height="match_parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -31,12 +31,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/title_label"
-                    android:textColor="@android:color/white"
+                    android:textColor="?attr/baseTextColor"
                     android:textSize="20sp" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:hintEnabled="false"
                     app:boxBackgroundMode="none"
                     app:counterEnabled="true"
                     app:counterMaxLength="30">
@@ -47,7 +48,10 @@
                         android:hint="@string/short_desc_label"
                         android:inputType="text"
                         android:text="@={taskVM.taskTitle}"
-                        android:textSize="16sp"/>
+                        android:textSize="16sp"
+                        android:maxLength="30"
+                        android:textColor="?attr/baseTextColor"
+                        android:textColorHint="?attr/roundedBtnBg"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -59,7 +63,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/priority_level"
-                android:textColor="@android:color/white"
+                android:textColor="?attr/baseTextColor"
                 android:textSize="25sp"
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="30dp"
@@ -82,6 +86,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/priority_high"
+                    android:textColor="?attr/baseTextColor"
                     android:onClick="@{() -> taskVM.setPriority(1, priorityHigh.getId())}"/>
 
                 <RadioButton
@@ -89,6 +94,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/priority_medium"
+                    android:textColor="?attr/baseTextColor"
                     android:onClick="@{() -> taskVM.setPriority(2, priorityMedium.getId())}"/>
 
                 <RadioButton
@@ -96,6 +102,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/priority_low"
+                    android:textColor="?attr/baseTextColor"
                     android:onClick="@{() -> taskVM.setPriority(3, priorityLow.getId())}"/>
 
             </RadioGroup>
@@ -106,7 +113,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/pomodoro_count"
-                android:textColor="@android:color/white"
+                android:textColor="?attr/roundedBtnBg"
                 android:textSize="25sp"
                 android:layout_marginTop="15dp"
                 android:layout_marginStart="30dp"
@@ -142,12 +149,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/desc_label"
-                    android:textColor="@android:color/white"
+                    android:textColor="?attr/baseTextColor"
                     android:textSize="20sp" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:hintEnabled="false"
                     app:boxBackgroundMode="none">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -157,7 +165,9 @@
                         android:text="@={taskVM.taskDescription}"
                         android:textSize="16sp"
                         android:maxLines="5"
-                        android:gravity="top|start"/>
+                        android:gravity="top|start"
+                        android:textColor="?attr/baseTextColor"
+                        android:textColorHint="?attr/roundedBtnBg"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -183,7 +193,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="@string/add_task_category_label"
-                        android:textColor="@color/count_down_color"
+                        android:textColor="?attr/timerTypeTextColor"
                         android:textSize="20sp"
                         android:layout_weight="1"/>
 
@@ -191,7 +201,7 @@
                         android:id="@+id/remove_picked_category_btn_id"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
-                        android:src="@drawable/ic_delete"
+                        android:src="?attr/deleteIcon"
                         android:contentDescription="@string/add_category_btn"
                         android:background="@android:color/transparent"
                         android:visibility="gone"
@@ -203,18 +213,19 @@
                 </LinearLayout>
 
                 <!-- This plus icon disappears if a category is picked -->
+
+                <!-- APPEARS -->
                 <ImageButton
                     android:id="@+id/add_task_category_btn_id"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:src="@drawable/ic_add2"
-                    android:contentDescription="@string/add_category_btn"
+                    android:layout_gravity="center"
                     android:background="@android:color/transparent"
+                    android:contentDescription="@string/add_category_btn"
                     android:elevation="10dp"
                     android:scaleType="fitCenter"
-                    android:layout_gravity="center"/>
+                    android:src="?attr/addCategoryPickerIcon" />
 
-                <!-- APPEARS -->
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -232,7 +243,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@{taskVM.categoryTitle}"
-                        android:textColor="@color/count_down_color"
+                        android:textColor="?attr/timerSelectionTextColor"
                         android:textSize="18sp"
                         android:visibility="gone"
                         android:layout_gravity="center"
@@ -245,10 +256,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/cancel_btn"
-                android:textColor="@color/white"
+                android:textColor="?attr/baseTextColor"
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="16dp"
-                android:backgroundTint="@color/category_title_color3"
+                android:backgroundTint="?attr/cancelBtnColor"
                 app:layout_constraintTop_toBottomOf="@+id/task_category_picker_layout_id"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"/>
@@ -258,8 +269,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/save_btn"
-                android:textColor="@color/icon_bg1"
-                android:backgroundTint="@color/white"
+                android:textColor="?attr/timerSelectionTextColor"
+                android:backgroundTint="?attr/saveBtnColor"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="16dp"
                 app:layout_constraintTop_toBottomOf="@+id/task_category_picker_layout_id"

@@ -16,7 +16,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:contentDescription="@string/category_icon"
-            app:srcCompat="@{categoryModel.icon}"
+            app:srcCompatThemeAttr="@{categoryModel.icon}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
@@ -27,6 +27,7 @@
             android:layout_height="wrap_content"
             android:text="@{categoryModel.categoryTitle}"
             android:textSize="18sp"
+            android:textColor="?attr/baseTextColor"
             app:layout_constraintStart_toEndOf="@id/category_icon"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"

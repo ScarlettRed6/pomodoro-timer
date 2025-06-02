@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
@@ -92,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void angInit(){
         mainLayout = findViewById(R.id.main);
-        mainLayout.setBackgroundResource(R.drawable.background_app1);
+        //mainLayout.setBackgroundResource(R.drawable.background_app1);
         profileContainer = findViewById(R.id.profile_container_id);
         viewProfile = findViewById(R.id.view_profile);
         sharedVM = new ViewModelProvider(this).get(SharedViewModel.class);
@@ -147,6 +148,7 @@ public class MainActivity extends AppCompatActivity {
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
             int destId = destination.getId();
             sharedVM.setShowAddTaskBtn(destId == R.id.menu_task); //Show FAB only in Task
+            changeBackground(destId);
         });
 
         bottomNav.setOnItemSelectedListener(item -> {
@@ -183,15 +185,32 @@ public class MainActivity extends AppCompatActivity {
 
     }//End of setupNavigation method
 
-    private void changeBackground(int destinationId){
-        if(destinationId == R.id.menu_task){
-            mainLayout.setBackgroundResource(R.drawable.background_app1);
-        }else if(destinationId == R.id.menu_timer){
-            mainLayout.setBackgroundResource(R.drawable.background_app2);
-        }else if(destinationId == R.id.menu_stats){
-            mainLayout.setBackgroundResource(R.drawable.background_app3);
-        }else if(destinationId == R.id.menu_settings){
-            mainLayout.setBackgroundResource(R.drawable.background_app4);
+    private void changeBackground(int destinationId) {
+        int backgroundAttr = R.attr.backgroundDefaultScreen;
+
+        if (destinationId == R.id.menu_task) {
+            backgroundAttr = R.attr.backgroundTaskScreen;
+        } else if (destinationId == R.id.menu_timer) {
+            backgroundAttr = R.attr.backgroundTimerScreen;
+        } else if (destinationId == R.id.menu_stats) {
+            backgroundAttr = R.attr.backgroundStatsScreen;
+        } else if (destinationId == R.id.menu_settings) {
+            backgroundAttr = R.attr.backgroundSettingsScreen;
+        }
+        // Resolve the theme attribute to an actual resource ID
+        TypedValue typedValue = new TypedValue();
+        getTheme().resolveAttribute(backgroundAttr, typedValue, true);
+
+        if (typedValue.resourceId != 0) {
+            mainLayout.setBackgroundResource(typedValue.resourceId);
+        } else {
+            // Fallback if the attribute is not defined in the current theme
+            // This shouldn't happen if you've defined it in all themes.
+            // You could set a default color or a common default drawable here.
+            Log.w("MainActivity", "Background attribute not found in theme, using default.");
+            // Example fallback:
+            // mainLayout.setBackgroundResource(R.drawable.default_fallback_background);
+            // Or get another attribute like backgroundDefaultScreen if it was missed in the if-else
         }
     }
 

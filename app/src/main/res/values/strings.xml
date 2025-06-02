@@ -17,7 +17,7 @@
 
     <!-- Titles and description labels -->
     <string name="title_label">Title</string>
-    <string name="short_desc_label">Short Description</string>
+    <string name="short_desc_label">Short Title</string>
     <string name="priority_level">Priority Level</string>
     <string name="priority_high">High</string>
     <string name="priority_medium">Medium</string>

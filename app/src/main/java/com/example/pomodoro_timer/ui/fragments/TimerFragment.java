@@ -6,8 +6,10 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -172,7 +174,7 @@ public class TimerFragment extends Fragment {
             bottomNav = getActivity().findViewById(R.id.bottom_nav);
         }
 
-        binding.startBtnIcon.setImageResource(R.drawable.ic_start);
+        setImageFromThemeAttribute(requireContext(), startBtnIcon, R.attr.startImageIcon);
         startBtn.setOnClickListener(v -> {
             startBtnIcon.animate()
                         .rotation(270)
@@ -186,12 +188,12 @@ public class TimerFragment extends Fragment {
                 timerVM.pauseTimer();
                 cancelSystemAlarm();
                 bottomNavSetVisible();
-                binding.startBtnIcon.setImageResource(R.drawable.ic_start);
+                setImageFromThemeAttribute(requireContext(), startBtnIcon, R.attr.startImageIcon);
             } else{
                 timerVM.startOrResumeTimer();
                 scheduleSystemsAlarm();
                 bottomNavSetGone();
-                binding.startBtnIcon.setImageResource(R.drawable.ic_pause);
+                setImageFromThemeAttribute(requireContext(), startBtnIcon, R.attr.pauseImageIcon);
             }
         });//End of startBtn listener
 
@@ -208,10 +210,32 @@ public class TimerFragment extends Fragment {
             //End of animation
             timerVM.stopTimer();
             cancelSystemAlarm();
-            binding.startBtnIcon.setImageResource(R.drawable.ic_start);
+            setImageFromThemeAttribute(requireContext(), startBtnIcon, R.attr.startImageIcon);
         });
 
     }//End of timerListener method
+
+    // Helper method to set an ImageView's source from a theme attribute
+    private void setImageFromThemeAttribute(Context context, ImageView imageView, int attributeResId) {
+        TypedValue typedValue = new TypedValue();
+        context.getTheme().resolveAttribute(attributeResId, typedValue, true);
+
+        if (typedValue.resourceId != 0) { // typedValue.resourceId will hold the actual R.drawable.id
+            try {
+                imageView.setImageResource(typedValue.resourceId);
+            } catch (Resources.NotFoundException e) {
+                Log.e("ThemeUtils", "Drawable resource not found for attribute: "
+                        + context.getResources().getResourceName(attributeResId), e);
+                // Optionally set a default/fallback icon
+                // imageView.setImageResource(R.drawable.ic_default_fallback);
+            }
+        } else {
+            Log.w("ThemeUtils", "Warning: Attribute not found or not a drawable reference: "
+                    + context.getResources().getResourceName(attributeResId));
+            // Optionally set a default/fallback icon
+            // imageView.setImageResource(R.drawable.ic_default_fallback);
+        }
+    }
 
     private void autoStartBreak(){
         boolean autoStartBreaks = settingsVM.getAutoStartBreaks().getValue();
@@ -385,7 +409,7 @@ public class TimerFragment extends Fragment {
                 Log.d("LOG_SESSION_FINISHED", "SESSION FINISHED");
                 Log.d("LOG_USERID_TIMERFRAGMENT", "USER ID: " + userId);
                 bottomNavSetVisible();
-                startBtnIcon.setImageResource(R.drawable.ic_start);
+                setImageFromThemeAttribute(requireContext(), startBtnIcon, R.attr.startImageIcon);
                 if (isUserLoggedIn && timerVM.wasSessionStartedWhileLoggedIn()) {
                     if("Pomodoro".equals(currentType)){
                         timerVM.recordPomodoroSession(userId, timerVM.getTotalTime());

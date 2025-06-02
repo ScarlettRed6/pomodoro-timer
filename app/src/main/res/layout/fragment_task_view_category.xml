@@ -30,7 +30,7 @@
             android:layout_width="108dp"
             android:layout_height="108dp"
             android:layout_margin="6dp"
-            android:src="@drawable/ic_category_laptop"
+            app:srcCompatThemeAttr="@{taskVM.categoryIcon}"
             android:background="@drawable/ic_selector_bg"
             android:contentDescription="@string/selector_icon_laptop"
             android:scaleType="centerInside"
@@ -67,10 +67,10 @@
             android:id="@+id/apply_category_tasks_button_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/cropped_ellipse_color1"
+            android:backgroundTint="?attr/cancelBtnColor"
             android:text="apply"
             android:textSize="16sp"
-            android:textColor="@color/white"
+            android:textColor="?attr/baseTextColor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/category_description_display_id"/>
 

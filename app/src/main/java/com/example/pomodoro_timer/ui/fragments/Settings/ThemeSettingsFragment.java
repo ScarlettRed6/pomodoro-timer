@@ -79,14 +79,6 @@ public class ThemeSettingsFragment extends Fragment {
         themeAdapter.setDropDownViewResource(R.layout.item_theme_spinner_dropdown);
         binding.themeSpinnerId.setAdapter(themeAdapter);
 
-        // Set selected item from ViewModel
-        settingsVM.getSelectedTheme().observe(getViewLifecycleOwner(), selected -> {
-            int index = themeList.indexOf(selected);
-            if (index >= 0) {
-                binding.themeSpinnerId.setSelection(index);
-            }
-        });
-
         // Load current theme
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(requireContext());
         int savedThemeIndex = prefs.getInt("selected_theme_index", 0);
@@ -109,7 +101,9 @@ public class ThemeSettingsFragment extends Fragment {
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {}
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
         });
     }//End of themeSpinnerAdapter method
 

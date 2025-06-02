@@ -83,15 +83,15 @@ public class EditCategoryFragment extends Fragment {
                 binding.icon2
         };
 
-        binding.icon1.setTag(R.drawable.ic_category_laptop);
-        binding.icon2.setTag(R.drawable.ic_category_book);
+        binding.icon1.setTag(R.attr.categoryLaptopIcon);
+        binding.icon2.setTag(R.attr.categoryBookIcon);
 
         binding.icon1.setOnClickListener(v -> {
-            setIconSelection(v, R.drawable.ic_category_laptop);
+            setIconSelection(v, R.attr.categoryLaptopIcon);
         });
 
         binding.icon2.setOnClickListener(v -> {
-            setIconSelection(v, R.drawable.ic_category_book);
+            setIconSelection(v, R.attr.categoryBookIcon);
         });
 
     }//End of setIconSelector method

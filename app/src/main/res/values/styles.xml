@@ -3,9 +3,9 @@
 
     <!-- Number picker custom style -->
     <style name="NumberPickerTheme" parent="Theme.AppCompat.Light">
-        <item name="colorAccent">@color/icon_bg1</item>
+        <item name="colorAccent">?attr/timerSelectionTextColor</item>
         <item name="colorControlNormal">@android:color/transparent</item>
-        <item name="android:textColorPrimary">@color/icon_bg2</item>
+        <item name="android:textColorPrimary">?attr/timerTypeTextColor</item>
         <item name="android:textSize">16sp</item>
     </style>
 
@@ -22,23 +22,23 @@
 
     <!-- Custom positive button style -->
     <style name="PositiveButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
-        <item name="android:textColor">@color/cropped_ellipse_color1</item>
+        <item name="android:textColor">?attr/timerTypeTextColor</item>
         <item name="android:textStyle">bold</item>
     </style>
     <!-- Custom negative button style -->
     <style name="NegativeButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
-        <item name="android:textColor">@color/cropped_ellipse_color2</item>
+        <item name="android:textColor">?attr/timerDonutProgressColor2</item>
         <item name="android:textStyle">bold</item>
     </style>
     <!-- Custom dialog title style -->
     <style name="CustomDialogTitleStyle" parent="TextAppearance.AppCompat.Title">
-        <item name="android:textColor">@color/count_down_color</item>
+        <item name="android:textColor">?attr/timerTypeTextColor</item>
     </style>
 
     <!-- Custom popup menu style -->
     <style name="PopupMenuStyle" parent="android:Theme.Holo.Light.DarkActionBar">
         <item name="android:popupMenuStyle">@style/MyApp.PopupMenu</item>
-        <item name="android:textColor">@color/text_color</item>
+        <item name="android:textColor">?attr/timerSelectionTextColor</item>
         <item name="android:textStyle">bold</item>
     </style>
 

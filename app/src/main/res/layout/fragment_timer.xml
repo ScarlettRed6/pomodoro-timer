@@ -61,6 +61,7 @@
                     android:layout_height="wrap_content"
                     android:text=""
                     android:textSize="18sp"
+                    android:textColor="?attr/baseTextColor"
                     app:layout_constraintStart_toEndOf="@+id/priority_level_dot_id"
                     app:layout_constraintEnd_toStartOf="@+id/session_count_id"
                     app:layout_constraintTop_toTopOf="parent"
@@ -72,6 +73,7 @@
                     android:layout_height="wrap_content"
                     android:text=""
                     android:textSize="16sp"
+                    android:textColor="?attr/baseTextColor"
                     app:layout_constraintStart_toEndOf="@+id/task_title_id"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -118,7 +120,7 @@
                 android:layout_gravity="center"
                 android:padding="8dp"
                 android:contentDescription="@string/start_resume_pause_btn"
-                android:src="@drawable/ic_stop"/>
+                android:src="?attr/stopImageIcon"/>
 
         </FrameLayout>
 
@@ -140,7 +142,7 @@
                 android:layout_gravity="center"
                 android:padding="5dp"
                 android:contentDescription="@string/start_resume_pause_btn"
-                android:src="@drawable/ic_start"/>
+                android:src="?attr/startImageIcon"/>
 
         </FrameLayout>
 
@@ -150,7 +152,7 @@
             android:layout_height="wrap_content"
             android:text="@{timerVM.timerText}"
             android:textSize="50sp"
-            android:textColor="@color/count_down_color"
+            android:textColor="?attr/timerTypeTextColor"
             app:layout_constraintTop_toTopOf="@id/timer_animation_view_id"
             app:layout_constraintBottom_toBottomOf="@+id/timer_animation_view_id"
             app:layout_constraintEnd_toEndOf="parent"
@@ -164,7 +166,7 @@
             android:textSize="18sp"
             android:textStyle="italic"
             android:layout_margin="10dp"
-            android:textColor="@color/count_down_color"
+            android:textColor="?attr/timerTypeTextColor"
             app:layout_constraintBottom_toTopOf="@+id/timer_text_id"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>

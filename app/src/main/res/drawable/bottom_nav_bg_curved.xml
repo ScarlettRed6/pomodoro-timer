@@ -5,8 +5,8 @@
     <gradient
         android:type="linear"
         android:angle="90"
-        android:startColor="@color/bottom_nav_color2"
-        android:endColor="@color/bottom_nav_color1"/>
+        android:startColor="?attr/bottomNavBgCurved1.1"
+        android:endColor="?attr/bottomNavBgCurved1.2"/>
     <corners
         android:topLeftRadius="10dp"
         android:topRightRadius="10dp"/>

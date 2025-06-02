@@ -74,10 +74,10 @@ public class AddCategoryFragment extends Fragment {
         };
 
         binding.icon1.setOnClickListener(v ->{
-            setIconSelection(v, R.drawable.ic_category_laptop);
+            setIconSelection(v, R.attr.categoryLaptopIcon);
         });
         binding.icon2.setOnClickListener(v ->{
-            setIconSelection(v, R.drawable.ic_category_book);
+            setIconSelection(v, R.attr.categoryBookIcon);
         });
 
     }//End of setIconSelector method

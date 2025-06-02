@@ -2,9 +2,9 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
     <gradient
-        android:endColor="@color/icon_bg1"
-        android:centerColor="@color/icon_bg2"
-        android:startColor="@color/icon_bg3"
+        android:endColor="?attr/roundedBtnBg2"
+        android:centerColor="?attr/roundedBtnBg2.2"
+        android:startColor="?attr/roundedBtnBg2.3"
         android:angle="90"/>
     <corners android:radius="20dp"/>
     <padding
