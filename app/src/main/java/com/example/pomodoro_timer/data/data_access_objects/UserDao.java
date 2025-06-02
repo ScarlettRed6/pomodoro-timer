@@ -42,4 +42,8 @@ public interface UserDao {
     //@Query("SELECT * FROM users")
     //public UserModel[] loadAllUsers();
 
+    // Return the current maximum 'id' in the users table (1 if no users exist).
+    // We use COALESCE to default to 1 when the table is empty.
+    @Query("SELECT COALESCE(MAX(id), 1) FROM users")
+    int getMaxIdNow();
 }
