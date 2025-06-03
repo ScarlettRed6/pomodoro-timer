@@ -243,7 +243,7 @@ public class TimerFragment extends Fragment {
             // Optionally set a default/fallback icon
             // imageView.setImageResource(R.drawable.ic_default_fallback);
         }
-    }
+    }//End of setImageFromThemeAttribute method
 
     private void autoStartBreak(){
         boolean autoStartBreaks = settingsVM.getAutoStartBreaks().getValue();

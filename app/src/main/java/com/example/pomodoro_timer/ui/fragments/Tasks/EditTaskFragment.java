@@ -97,7 +97,7 @@ public class EditTaskFragment extends Fragment {
             int taskId = taskVM.getTaskId().getValue();
             int categoryId = taskVM.getCategory().getValue() != null ? taskVM.getCategory().getValue().getId() : 0;
 
-            if (taskTitle != null && !taskTitle.isEmpty() && sessionCount > 0 && priorityLevel > 0 && taskDescription != null && !taskDescription.isEmpty()) {
+            if (taskTitle != null && !taskTitle.isEmpty() && sessionCount > 0 && priorityLevel > 0 && taskDescription != null) {
                 if (isUserLoggedIn) {
                     taskVM.updateTask(userId, taskId, taskTitle, sessionCount, priorityLevel, categoryId, taskDescription);
                 } else {
