@@ -89,6 +89,15 @@ public class StatsFragment extends Fragment {
             calendarHeatMapView.setDataPoints(map);
         });
 
+        statsVM.getProductivityScore().observe(getViewLifecycleOwner(), productivity -> {
+            if (productivity != null) {
+                String currentFilter = statsVM.getCurrentFilter().getValue();
+                if (currentFilter != null) {
+                    setEgoMessage(currentFilter);
+                }
+            }
+        });
+
         calendarHeatMapView.setOnDateClickListener((date, value) -> {
             SimpleDateFormat sdf = new SimpleDateFormat("MMMM d, yyyy", Locale.getDefault());
             String formattedDate = sdf.format(date.getTime());
@@ -155,6 +164,7 @@ public class StatsFragment extends Fragment {
         if (isUserLoggedIn){
             statsVM.resetStats();
             userId = sharedVM.getCurrentUserId().getValue();
+            statsVM.setLoggedEmail(sharedVM.getCurrentEmail().getValue());
             listenSessionUserId();
             handleBarGraph("All");
             updateFirstStats();
@@ -222,9 +232,52 @@ public class StatsFragment extends Fragment {
 
                 // Update productivity score based on filtered data
                 statsVM.updateProductivityForFilter(filterType, totalSessionsForPeriod);
-            }
+
+                new android.os.Handler(android.os.Looper.getMainLooper()).post(() -> {
+                    setEgoMessage(filterType);
+                });
+            }//End of if statement
         });
     }//End of handleBarGraph method
+
+    private void setEgoMessage(String date){
+        // Get the current productivity score
+        Integer productivityValue = statsVM.getProductivityScore().getValue();
+        int productivity = (productivityValue != null) ? productivityValue : 0;
+
+        String baseMessage = setMessageBasedOnProductivity(productivity);
+        String message;
+
+        //This sets the message based on the date selected and productivity level
+        if (date.equals("Week")){
+            message = baseMessage + " progress this week!";
+        } else if (date.equals("Month")){
+            message = baseMessage + " progress this month!";
+        } else if (date.equals("Year")){
+            message = baseMessage + " progress this year!";
+        } else {
+            message = "You're making excellent progress!";
+        }
+
+        binding.egoMessageTextId.setText(message);
+        Log.d("EGO_MESSAGE", "Filter: " + date + ", Productivity: " + productivity + ", Message: " + message);
+
+    }//End of setEgoMessage method
+
+    private String setMessageBasedOnProductivity(int productivity){
+        Log.d("CHECK_PRODUCTIVITY", "Productivity: " + productivity);
+        if (productivity >= 100){
+            return "You're making excellent";
+        } else if (productivity >= 75){
+            return "You're making great";
+        } else if (productivity >= 50){
+            return "You're making good";
+        } else if (productivity >= 25){
+            return "You're making decent";
+        } else {
+            return "You're making poor";
+        }
+    }//End of setMessageBasedOnProductivity method
 
     private void listenSessionUserId(){
         sharedVM.getCurrentUserId().observe(getViewLifecycleOwner(), id -> {

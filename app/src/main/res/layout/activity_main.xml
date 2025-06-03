@@ -20,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.07"/>
+            app:layout_constraintGuide_percent="0.04"/>
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline2"
@@ -39,32 +39,32 @@
         <!-- End of Guidelines -->
 
         <!-- Profile circle image view -->
-        <LinearLayout
-            android:id="@+id/profile_container_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:padding="5dp"
-            android:focusable="true"
-            android:clickable="true"
-            app:layout_constraintBottom_toTopOf="@+id/guideline1"
-            app:layout_constraintEnd_toEndOf="parent">
+<!--        <LinearLayout-->
+<!--            android:id="@+id/profile_container_id"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:layout_marginEnd="10dp"-->
+<!--            android:padding="5dp"-->
+<!--            android:focusable="true"-->
+<!--            android:clickable="true"-->
+<!--            app:layout_constraintBottom_toTopOf="@+id/guideline1"-->
+<!--            app:layout_constraintEnd_toEndOf="parent">-->
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/profile_image"
-                android:layout_width="44dp"
-                android:layout_height="41dp"
-                android:src="?attr/defaultUserPic" />
+<!--            <de.hdodenhof.circleimageview.CircleImageView-->
+<!--                android:id="@+id/profile_image"-->
+<!--                android:layout_width="44dp"-->
+<!--                android:layout_height="41dp"-->
+<!--                android:src="?attr/defaultUserPic" />-->
 
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/ic_drop_down_arrow"
-                android:contentDescription="@string/dropdown_icon"/>
+<!--            <ImageView-->
+<!--                android:layout_width="40dp"-->
+<!--                android:layout_height="40dp"-->
+<!--                android:src="@drawable/ic_drop_down_arrow"-->
+<!--                android:contentDescription="@string/dropdown_icon"/>-->
 
-        </LinearLayout>
+<!--        </LinearLayout>-->
 
         <!-- Fragment container -->
         <androidx.fragment.app.FragmentContainerView
@@ -114,45 +114,45 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- Fullscreen transparent overlay -->
-    <View
-        android:id="@+id/dropdown_overlay"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/transparent"
-        android:visibility="gone"/>
+<!--    <View-->
+<!--        android:id="@+id/dropdown_overlay"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:background="@android:color/transparent"-->
+<!--        android:visibility="gone"/>-->
 
-    <!-- Your dropdown menu -->
-    <LinearLayout
-        android:id="@+id/profile_dropdown"
-        android:orientation="vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end|top"
-        android:background="@drawable/background_curved_white"
-        android:visibility="gone"
-        android:layout_marginTop="55dp"
-        android:layout_marginEnd="16dp"
-        android:padding="4dp">
+<!--    &lt;!&ndash; Your dropdown menu &ndash;&gt;-->
+<!--    <LinearLayout-->
+<!--        android:id="@+id/profile_dropdown"-->
+<!--        android:orientation="vertical"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="end|top"-->
+<!--        android:background="@drawable/background_curved_white"-->
+<!--        android:visibility="gone"-->
+<!--        android:layout_marginTop="55dp"-->
+<!--        android:layout_marginEnd="16dp"-->
+<!--        android:padding="4dp">-->
 
-        <!-- Add menu items here -->
-        <TextView
-            android:id="@+id/my_account"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/my_account"
-            android:textStyle="bold"
-            android:padding="8dp"
-            android:layout_marginEnd="50dp"/>
+<!--        &lt;!&ndash; Add menu items here &ndash;&gt;-->
+<!--        <TextView-->
+<!--            android:id="@+id/my_account"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="@string/my_account"-->
+<!--            android:textStyle="bold"-->
+<!--            android:padding="8dp"-->
+<!--            android:layout_marginEnd="50dp"/>-->
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/view_profile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:focusable="true"
-            android:text="@string/view_profile"
-            android:textColor="@color/task_indicator_color2"
-            android:textStyle="italic"
-            android:padding="8dp"/>
-    </LinearLayout>
+<!--        <com.google.android.material.textview.MaterialTextView-->
+<!--            android:id="@+id/view_profile"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:clickable="true"-->
+<!--            android:focusable="true"-->
+<!--            android:text="@string/view_profile"-->
+<!--            android:textColor="@color/task_indicator_color2"-->
+<!--            android:textStyle="italic"-->
+<!--            android:padding="8dp"/>-->
+<!--    </LinearLayout>-->
 </FrameLayout>

@@ -29,7 +29,7 @@ public class StatsViewModel extends AndroidViewModel {
     private final AppDatabase database;
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
-    private int targertSessions = 8;
+    private int targetSessions = 12;
     private final MutableLiveData<Integer> productivityScore = new MutableLiveData<>(0);
     private final MutableLiveData<Double> totalFocus = new MutableLiveData<>();
     private final MutableLiveData<Double> breakTime = new MutableLiveData<>();
@@ -38,6 +38,7 @@ public class StatsViewModel extends AndroidViewModel {
     private final MutableLiveData<List<PomodoroLogModel>> pomodoroLogs = new MutableLiveData<>();
     private final MutableLiveData<Integer> currentFilteredSessions = new MutableLiveData<>(0);
     private final MutableLiveData<String> currentFilter = new MutableLiveData<>("All");
+    private final MutableLiveData<String> loggedEmail = new MutableLiveData<>("User");
 
     //Getters and setters
     public MutableLiveData<Integer> getProductivityScore() {
@@ -78,6 +79,12 @@ public class StatsViewModel extends AndroidViewModel {
     }
     public void setPomodoroSessions(int sessions) {
         pomodoroSessions.setValue(sessions);
+    }
+    public void setLoggedEmail(String email) {
+        loggedEmail.setValue(email);
+    }
+    public LiveData<String> getLoggedEmail() {
+        return loggedEmail;
     }
 
     //Constructor
@@ -147,17 +154,17 @@ public class StatsViewModel extends AndroidViewModel {
     private int getTargetSessionsForFilter(String filter) {
         switch (filter) {
             case "Week":
-                return targertSessions; // 8 sessions per week
+                return targetSessions; // 8 sessions per week
             case "Month":
-                return targertSessions * 4; // 32 sessions per month (8 * 4 weeks)
+                return targetSessions * 4; // 32 sessions per month (8 * 4 weeks)
             case "Year":
-                return targertSessions * 52; // 416 sessions per year (8 * 52 weeks)
+                return targetSessions * 52; // 416 sessions per year (8 * 52 weeks)
             case "All":
                 // For "All", calculate based on days since first log
                 // You might want to adjust this logic based on your needs
-                return targertSessions * 4; // Default to monthly target
+                return targetSessions * 4; // Default to monthly target
             default:
-                return targertSessions;
+                return targetSessions;
         }
     }
 

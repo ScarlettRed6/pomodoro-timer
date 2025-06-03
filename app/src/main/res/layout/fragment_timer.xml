@@ -51,6 +51,7 @@
                     android:layout_height="10dp"
                     android:backgroundTint="@color/progress_bar_color2"
                     android:background="@color/progress_bar_color1"
+                    android:visibility="invisible"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"/>

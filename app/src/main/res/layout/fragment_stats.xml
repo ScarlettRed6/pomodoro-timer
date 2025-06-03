@@ -17,11 +17,22 @@
             android:id="@+id/greetings_user_text_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hi, User!"
+            android:text="Hi!, "
             android:textColor="?attr/baseTextColor"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toStartOf="@+id/user_text_id"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintHorizontal_chainStyle="packed" /> <!-- Add this -->
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/user_text_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:formattedEmail="@{statsVM.loggedEmail}"
+            android:textColor="?attr/baseTextColor"
+            app:layout_constraintStart_toEndOf="@+id/greetings_user_text_id"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/greetings_user_text_id" />
 
         <!-- Ego message text -->
         <com.google.android.material.textview.MaterialTextView

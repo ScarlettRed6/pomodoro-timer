@@ -39,10 +39,10 @@ public class MainActivity extends AppCompatActivity {
 
     //Fields
     private ConstraintLayout mainLayout;
-    private LinearLayout profileContainer;
-    private View dropdownOverlay;
-    private LinearLayout dropdownMenu;
-    private MaterialTextView viewProfile;
+    //private LinearLayout profileContainer;
+    //private View dropdownOverlay;
+    //private LinearLayout dropdownMenu;
+    //private MaterialTextView viewProfile;
     private SharedViewModel sharedVM;
     private boolean isLoggedIn = false;
 
@@ -94,8 +94,8 @@ public class MainActivity extends AppCompatActivity {
     private void angInit(){
         mainLayout = findViewById(R.id.main);
         //mainLayout.setBackgroundResource(R.drawable.background_app1);
-        profileContainer = findViewById(R.id.profile_container_id);
-        viewProfile = findViewById(R.id.view_profile);
+        //profileContainer = findViewById(R.id.profile_container_id);
+        //viewProfile = findViewById(R.id.view_profile);
         sharedVM = new ViewModelProvider(this).get(SharedViewModel.class);
         isLoggedIn = sharedVM.getIsUserLoggedIn().getValue();
 
@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
         restoreSession();
         setupNavigation();
         showFab();
-        showProfileDropDown();
+        //showProfileDropDown();
     }//End of angInit method
 
     private void setGuest(){
@@ -133,16 +133,16 @@ public class MainActivity extends AppCompatActivity {
 
         SharedViewModel sharedVM = new ViewModelProvider(this).get(SharedViewModel.class);
 
-        //Navigate to settings screen from view profile
-        viewProfile.setOnClickListener(v -> {
-            Log.d("Dropdown", "View Profile clicked");
-
-            //Delays to allow navigation to happen first
-            v.postDelayed(() -> {
-                hideDropdown();
-                bottomNav.setSelectedItemId(R.id.menu_settings);
-            }, 100);
-        });
+//        //Navigate to settings screen from view profile
+//        viewProfile.setOnClickListener(v -> {
+//            Log.d("Dropdown", "View Profile clicked");
+//
+//            //Delays to allow navigation to happen first
+//            v.postDelayed(() -> {
+//                hideDropdown();
+//                bottomNav.setSelectedItemId(R.id.menu_settings);
+//            }, 100);
+//        });
 
         //Setup FAB control
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
@@ -251,39 +251,39 @@ public class MainActivity extends AppCompatActivity {
 
     }//End of showFab method
 
-    private void showProfileDropDown() {
-        dropdownOverlay = findViewById(R.id.dropdown_overlay);
-        dropdownMenu = findViewById(R.id.profile_dropdown);
-
-        profileContainer.setOnClickListener(v -> {
-            boolean isVisible = dropdownMenu.getVisibility() == View.VISIBLE;
-
-            if (isVisible) {
-                hideDropdown();
-            } else {
-                dropdownOverlay.setVisibility(View.VISIBLE);
-                dropdownMenu.setVisibility(View.VISIBLE);
-            }
-        });
-
-        dropdownOverlay.setOnClickListener(v -> hideDropdown());
-
-        //Handle dropdown item clicks
-        findViewById(R.id.my_account).setOnClickListener(v -> {
-            Log.d("Dropdown", "My Account clicked");
-            hideDropdown();
-        });
-
-//        findViewById(R.id.view_profile).setOnClickListener(v -> {
-//            Log.d("Dropdown", "View Profile clicked");
+//    private void showProfileDropDown() {
+//        dropdownOverlay = findViewById(R.id.dropdown_overlay);
+//        dropdownMenu = findViewById(R.id.profile_dropdown);
+//
+//        profileContainer.setOnClickListener(v -> {
+//            boolean isVisible = dropdownMenu.getVisibility() == View.VISIBLE;
+//
+//            if (isVisible) {
+//                hideDropdown();
+//            } else {
+//                dropdownOverlay.setVisibility(View.VISIBLE);
+//                dropdownMenu.setVisibility(View.VISIBLE);
+//            }
+//        });
+//
+//        dropdownOverlay.setOnClickListener(v -> hideDropdown());
+//
+//        //Handle dropdown item clicks
+//        findViewById(R.id.my_account).setOnClickListener(v -> {
+//            Log.d("Dropdown", "My Account clicked");
 //            hideDropdown();
 //        });
-    }//End of showProfileDropDown method
+//
+////        findViewById(R.id.view_profile).setOnClickListener(v -> {
+////            Log.d("Dropdown", "View Profile clicked");
+////            hideDropdown();
+////        });
+//    }//End of showProfileDropDown method
 
-    private void hideDropdown() {
-        dropdownOverlay.setVisibility(View.GONE);
-        dropdownMenu.setVisibility(View.GONE);
-    }
+//    private void hideDropdown() {
+//        dropdownOverlay.setVisibility(View.GONE);
+//        dropdownMenu.setVisibility(View.GONE);
+//    }
 
     private void restoreSession(){
         SessionManager sessionManager = new SessionManager(this);
