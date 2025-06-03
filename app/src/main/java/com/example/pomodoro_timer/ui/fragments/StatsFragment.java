@@ -213,6 +213,15 @@ public class StatsFragment extends Fragment {
         statsVM.getPomodoroLogs(userId, start, now).observe(getViewLifecycleOwner(), pomodoroLogs -> {
             if (pomodoroLogs != null) {
                 setupBarGraph(pomodoroLogs, filterType);
+
+                // Calculate total sessions for this filter period
+                int totalSessionsForPeriod = 0;
+                for (PomodoroLogModel log : pomodoroLogs) {
+                    totalSessionsForPeriod += log.getSessionCount();
+                }
+
+                // Update productivity score based on filtered data
+                statsVM.updateProductivityForFilter(filterType, totalSessionsForPeriod);
             }
         });
     }//End of handleBarGraph method

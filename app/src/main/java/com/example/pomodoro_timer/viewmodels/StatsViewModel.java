@@ -29,16 +29,26 @@ public class StatsViewModel extends AndroidViewModel {
     private final AppDatabase database;
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
+    private int targertSessions = 8;
     private final MutableLiveData<Integer> productivityScore = new MutableLiveData<>(0);
     private final MutableLiveData<Double> totalFocus = new MutableLiveData<>();
     private final MutableLiveData<Double> breakTime = new MutableLiveData<>();
     private final MutableLiveData<Integer> pomodoroSessions = new MutableLiveData<>();
     private final MutableLiveData<Integer> taskID = new MutableLiveData<>();
     private final MutableLiveData<List<PomodoroLogModel>> pomodoroLogs = new MutableLiveData<>();
+    private final MutableLiveData<Integer> currentFilteredSessions = new MutableLiveData<>(0);
+    private final MutableLiveData<String> currentFilter = new MutableLiveData<>("All");
 
     //Getters and setters
     public MutableLiveData<Integer> getProductivityScore() {
         return productivityScore;
+    }
+    public LiveData<Integer> getCurrentFilteredSessions() {
+        return currentFilteredSessions;
+    }
+
+    public MutableLiveData<String> getCurrentFilter() {
+        return currentFilter;
     }
     public LiveData<Double> getTotalFocus() {
         DecimalFormat decimalFormat = new DecimalFormat("#.##");
@@ -123,8 +133,47 @@ public class StatsViewModel extends AndroidViewModel {
     }//End of resetStats method
 
     private void calculateProductivityScore(int totalPomodoros) {
-        //Implement later
+        String filter = currentFilter.getValue();
+        int targetSessions = getTargetSessionsForFilter(filter);
+
+        int score = 0;
+        if (targetSessions > 0) {
+            score = Math.min(100, (totalPomodoros * 100) / targetSessions);
+        }
+
+        productivityScore.postValue(score);
     }//End of calculateProductivityScore method
+
+    private int getTargetSessionsForFilter(String filter) {
+        switch (filter) {
+            case "Week":
+                return targertSessions; // 8 sessions per week
+            case "Month":
+                return targertSessions * 4; // 32 sessions per month (8 * 4 weeks)
+            case "Year":
+                return targertSessions * 52; // 416 sessions per year (8 * 52 weeks)
+            case "All":
+                // For "All", calculate based on days since first log
+                // You might want to adjust this logic based on your needs
+                return targertSessions * 4; // Default to monthly target
+            default:
+                return targertSessions;
+        }
+    }
+
+    // Add this new method to update productivity for filtered data
+    public void updateProductivityForFilter(String filter, int filteredSessions) {
+        currentFilter.setValue(filter);
+        currentFilteredSessions.setValue(filteredSessions);
+
+        int targetSessions = getTargetSessionsForFilter(filter);
+        int score = 0;
+        if (targetSessions > 0) {
+            score = Math.min(100, (filteredSessions * 100) / targetSessions);
+        }
+
+        productivityScore.postValue(score);
+    }
 
     public LiveData<Map<String, Integer>> getHeatMapDataForMonth(int userId, int month, int year) {
         Calendar startCal = Calendar.getInstance();
