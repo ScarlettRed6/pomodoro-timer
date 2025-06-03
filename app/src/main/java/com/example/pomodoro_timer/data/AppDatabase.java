@@ -7,11 +7,14 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 import com.example.pomodoro_timer.data.data_access_objects.CategoryDao;
+import com.example.pomodoro_timer.data.data_access_objects.CompletedTaskLogDao;
 import com.example.pomodoro_timer.data.data_access_objects.PomodoroLogDao;
 import com.example.pomodoro_timer.data.data_access_objects.StatsDao;
 import com.example.pomodoro_timer.data.data_access_objects.TaskDao;
 import com.example.pomodoro_timer.data.data_access_objects.UserDao;
+import com.example.pomodoro_timer.data.data_access_objects.UserPreferencesDao;
 import com.example.pomodoro_timer.model.CategoryModel;
+import com.example.pomodoro_timer.model.CompletedTaskLogModel;
 import com.example.pomodoro_timer.model.PomodoroLogModel;
 import com.example.pomodoro_timer.model.StatsModel;
 import com.example.pomodoro_timer.model.TaskModel;
@@ -19,8 +22,8 @@ import com.example.pomodoro_timer.model.UserModel;
 import com.example.pomodoro_timer.model.UserPreferencesModel;
 
 @Database(
-        entities = { CategoryModel.class, TaskModel.class, UserModel.class, StatsModel.class, PomodoroLogModel.class, UserPreferencesModel.class },
-        version = 25
+        entities = { CategoryModel.class, TaskModel.class, UserModel.class, StatsModel.class, PomodoroLogModel.class, UserPreferencesModel.class, CompletedTaskLogModel.class },
+        version = 26
 )
 public abstract class AppDatabase extends RoomDatabase {
     private static final String DB_NAME = "pomodoro_timer_db";
@@ -30,6 +33,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract UserDao userDao();
     public abstract StatsDao statsDao();
     public abstract PomodoroLogDao pomodoroLogDao();
+    public abstract CompletedTaskLogDao completedTaskLogDao();
 
     public static AppDatabase getInstance(final Context context) {
         if (INSTANCE == null) {

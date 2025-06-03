@@ -187,7 +187,7 @@ public class StatsViewModel extends AndroidViewModel {
         long endTime = endCal.getTimeInMillis();
 
         return Transformations.map(
-                database.taskDao().observeCompletedTaskCountsByDateRange(userId, startTime, endTime),
+                database.completedTaskLogDao().observeCompletedTaskCountsByDateRange(userId, startTime, endTime),
                 list -> {
                     Map<String, Integer> map = new HashMap<>();
                     for (DateTaskCount entry : list) {
@@ -199,7 +199,7 @@ public class StatsViewModel extends AndroidViewModel {
     }//End of getHeatMapDataForMonth method
 
     public LiveData<Map<String, Integer>> getHeatMapData(int userId) {
-        return Transformations.map(database.taskDao().observeCompletedTaskCountsByDate(userId), list -> {
+        return Transformations.map(database.completedTaskLogDao().observeCompletedTaskCountsByDate(userId), list -> {
             Map<String, Integer> map = new HashMap<>();
             for (DateTaskCount entry : list) {
                 map.put(entry.date, entry.completedCount);

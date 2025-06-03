@@ -11,10 +11,14 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.pomodoro_timer.R;
 import com.example.pomodoro_timer.data.AppDatabase;
 import com.example.pomodoro_timer.model.CategoryModel;
+import com.example.pomodoro_timer.model.CompletedTaskLogModel;
 import com.example.pomodoro_timer.model.TaskModel;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -394,12 +398,17 @@ public class TaskViewModel extends AndroidViewModel {
                 newRemainingSessions = currentTask.getSessionCount();
             }
 
+            //This also updates the UI
             currentTask.setSessionsCompleted(newRemainingSessions);
 
             //If no remaining sessions, mark as completed and set completion date
             if (newRemainingSessions == currentTask.getSessionCount()) {
                 currentTask.setIsCompleted(true);
-                currentTask.setTimeFinished(System.currentTimeMillis()); //Changed from setTimeFinished
+                long completionTime = System.currentTimeMillis();
+                currentTask.setTimeFinished(completionTime);
+
+                logCompletedTask(currentTask.getUserId(), completionTime);
+
                 Log.d("LOG_TASK_COMPLETED", "Task completed: " + currentTask.getTaskTitle());
             }
 
@@ -418,6 +427,30 @@ public class TaskViewModel extends AndroidViewModel {
                             ", Completed: " + currentTask.getIsCompleted());
         });
     }//End of decreaseTaskSession method
+
+    private void logCompletedTask(int userId, long completionTime) {
+        executor.execute(() -> {
+            // Format date as YYYY-MM-DD
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            String completionDate = dateFormat.format(new Date(completionTime));
+
+            // Check if log already exists for this user and date
+            CompletedTaskLogModel existingLog = db.completedTaskLogDao().getLogByUserAndDate(userId, completionDate);
+
+            if (existingLog != null) {
+                // Update existing log by incrementing count
+                existingLog.setCompletedCount(existingLog.getCompletedCount() + 1);
+                existingLog.setTimestamp(completionTime); // Update timestamp to latest completion
+                db.completedTaskLogDao().update(existingLog);
+                Log.d("LOG_COMPLETED_TASK", "Updated existing log for " + completionDate + ", new count: " + existingLog.getCompletedCount());
+            } else {
+                // Create new log entry
+                CompletedTaskLogModel newLog = new CompletedTaskLogModel(userId, completionDate, 1, completionTime);
+                db.completedTaskLogDao().insert(newLog);
+                Log.d("LOG_COMPLETED_TASK", "Created new log for " + completionDate);
+            }
+        });
+    }
 
     public void displayCategoryWithProgress(int userId){
         executor.execute(() -> {
