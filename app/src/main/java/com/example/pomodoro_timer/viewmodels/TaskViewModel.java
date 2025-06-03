@@ -192,6 +192,8 @@ public class TaskViewModel extends AndroidViewModel {
 
             db.taskDao().insert(newTask);
             taskList.postValue(db.taskDao().getAll(userId));
+
+            refreshCategoryProgress(userId);
         });
     }//End of addTask for logged in user method\
 
@@ -213,6 +215,8 @@ public class TaskViewModel extends AndroidViewModel {
             List<TaskModel> allTasks = db.taskDao().getAll(task.getUserId());
             Log.d("LOG_CHECK_TASK_FROM_DB", allTasks != null ? allTasks.toString() : "No tasks found");
             taskList.postValue(allTasks);
+
+            refreshCategoryProgress(task.getUserId());
         });
     }//End of deleteTask method
 
@@ -308,11 +312,7 @@ public class TaskViewModel extends AndroidViewModel {
     }//End of displayCompletedTask method
 
     public void displayCategory(int userId){
-        executor.execute(() -> {
-            List<CategoryModel> allCategories = db.categoryDao().getAllCategories(userId);
-            Log.d("LOG_CHECK_CATEGORY_FROM_DB", allCategories != null ? allCategories.toString() : "No categories found");
-            categoryList.postValue(allCategories);
-        });
+        displayCategoryWithProgress(userId);
     }
 
     public void displayTaskByCategory(int userId, int categoryId){
@@ -410,6 +410,8 @@ public class TaskViewModel extends AndroidViewModel {
             List<TaskModel> allTasks = db.taskDao().getAll(currentTask.getUserId());
             taskList.postValue(allTasks);
 
+            refreshCategoryProgress(currentTask.getUserId());
+
             Log.d("LOG_TASK_SESSION_UPDATE",
                     "Task: " + currentTask.getTaskTitle() +
                             ", Remaining sessions: " + newRemainingSessions +
@@ -417,5 +419,26 @@ public class TaskViewModel extends AndroidViewModel {
         });
     }//End of decreaseTaskSession method
 
+    public void displayCategoryWithProgress(int userId){
+        executor.execute(() -> {
+            List<CategoryModel> allCategories = db.categoryDao().getAllCategories(userId);
+
+            // Calculate progress for each category
+            for (CategoryModel category : allCategories) {
+                int totalTasks = db.categoryDao().getTotalTasksInCategory(userId, category.getId());
+                int completedTasks = db.categoryDao().getCompletedTasksInCategory(userId, category.getId());
+
+                category.setTotalTasks(totalTasks);
+                category.setCompletedTasks(completedTasks);
+            }
+
+            Log.d("LOG_CHECK_CATEGORY_FROM_DB", allCategories != null ? allCategories.toString() : "No categories found");
+            categoryList.postValue(allCategories);
+        });
+    }
+
+    private void refreshCategoryProgress(int userId) {
+        displayCategoryWithProgress(userId);
+    }
 
 }

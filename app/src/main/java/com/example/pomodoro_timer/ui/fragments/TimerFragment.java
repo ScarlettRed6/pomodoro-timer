@@ -87,6 +87,8 @@ public class TimerFragment extends Fragment {
         settingsVM.getLongBreakMinutes().observe(getViewLifecycleOwner(), minutes -> updateTimerTotalTime());
         settingsVM.getLongBreakSeconds().observe(getViewLifecycleOwner(), seconds -> updateTimerTotalTime());
 
+        isRunningDisableBottomNav();
+
         settingsVM.getAllowNotifications().observe(getViewLifecycleOwner(), allow -> {
             isAllowNotifications = Objects.requireNonNullElse(allow, false);
         });
@@ -187,18 +189,15 @@ public class TimerFragment extends Fragment {
             if(Boolean.TRUE.equals(timerVM.getIsRunning().getValue())){
                 timerVM.pauseTimer();
                 cancelSystemAlarm();
-                bottomNavSetVisible();
                 setImageFromThemeAttribute(requireContext(), startBtnIcon, R.attr.startImageIcon);
             } else{
                 timerVM.startOrResumeTimer();
                 scheduleSystemsAlarm();
-                bottomNavSetGone();
                 setImageFromThemeAttribute(requireContext(), startBtnIcon, R.attr.pauseImageIcon);
             }
         });//End of startBtn listener
 
         stopBtn.setOnClickListener(v -> {
-            bottomNavSetVisible();
             stopBtnIcon.animate()
                     .scaleX(1.3f)
                     .scaleY(1.3f)
@@ -209,11 +208,20 @@ public class TimerFragment extends Fragment {
                             .setDuration(150));
             //End of animation
             timerVM.stopTimer();
+            skipBreak();
             cancelSystemAlarm();
             setImageFromThemeAttribute(requireContext(), startBtnIcon, R.attr.startImageIcon);
         });
 
     }//End of timerListener method
+
+    private void skipBreak(){
+        String type = timerVM.getTimerTypeText().getValue();
+        if ("Short Break".equals(type) || "Long Break".equals(type)) {
+            timerVM.setTimerType();
+            Log.d("LOG_SKIP_BREAK", "BREAK SKIPPED, TIMER TYPE: " + timerVM.getTimerTypeText().getValue());
+        }
+    }//End of skipBreak method
 
     // Helper method to set an ImageView's source from a theme attribute
     private void setImageFromThemeAttribute(Context context, ImageView imageView, int attributeResId) {
@@ -257,11 +265,21 @@ public class TimerFragment extends Fragment {
         }, 100);
     }//End of autoStartBreak method
 
+    private void isRunningDisableBottomNav(){
+        timerVM.getIsRunning().observe(getViewLifecycleOwner(), isRunning -> {
+            if(!isRunning){
+                bottomNavSetVisible();
+            }else {
+                bottomNavSetGone();
+            }
+        });
+    }//End of isRunningDisableBottomNav method
+
     private void bottomNavSetGone(){
         //This sets the animation of bottom nav when GONE it has animation of fade out
         bottomNav.animate()
                 .alpha(0f)
-                .setDuration(300)
+                .setDuration(100)
                 .withEndAction(() -> bottomNav.setVisibility(View.GONE))
                 .start();
     }//End of bottomNavSetGone method
@@ -270,7 +288,7 @@ public class TimerFragment extends Fragment {
         bottomNav.setVisibility(View.VISIBLE);
         bottomNav.animate()
                 .alpha(1f)
-                .setDuration(300)
+                .setDuration(100)
                 .start();
     }//End of bottomNavSetVisible method
 
@@ -408,7 +426,6 @@ public class TimerFragment extends Fragment {
             if (finished != null && finished) {//If session is finished
                 Log.d("LOG_SESSION_FINISHED", "SESSION FINISHED");
                 Log.d("LOG_USERID_TIMERFRAGMENT", "USER ID: " + userId);
-                bottomNavSetVisible();
                 setImageFromThemeAttribute(requireContext(), startBtnIcon, R.attr.startImageIcon);
                 if (isUserLoggedIn && timerVM.wasSessionStartedWhileLoggedIn()) {
                     if("Pomodoro".equals(currentType)){

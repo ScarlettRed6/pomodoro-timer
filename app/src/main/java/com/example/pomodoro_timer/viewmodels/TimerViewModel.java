@@ -247,6 +247,8 @@ public class TimerViewModel extends AndroidViewModel {
             timerTypeText.setValue("Pomodoro");
         }
 
+        Log.d("REMAINING_INTERVAL", "REMAINING INTERVAL: " + currentLongBreakInterval.getValue());
+
     }//End of setTimerType method
 
     public long getTodayMidnightMillis() {

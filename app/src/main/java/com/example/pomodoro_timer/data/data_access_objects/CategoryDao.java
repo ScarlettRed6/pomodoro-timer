@@ -28,6 +28,12 @@ public interface CategoryDao {
     @Query("SELECT * FROM categories WHERE id = :categoryId")
     CategoryModel getCategoryById(int categoryId);
 
+    @Query("SELECT COUNT(*) FROM tasks WHERE user_Id = :userId AND category_Id = :categoryId")
+    int getTotalTasksInCategory(int userId, int categoryId);
+
+    @Query("SELECT COUNT(*) FROM tasks WHERE user_Id = :userId AND category_Id = :categoryId AND is_Completed = 1")
+    int getCompletedTasksInCategory(int userId, int categoryId);
+
     //@Query("SELECT * FROM CategoryModel")
     //public CategoryModel[] loadAllUsers();
 }
