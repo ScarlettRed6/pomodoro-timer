@@ -251,6 +251,7 @@ public class TimerFragment extends Fragment {
         binding.getRoot().postDelayed(() -> {
             if (autoStartBreaks && !"Pomodoro".equals(timerVM.getTimerTypeText().getValue())) {
                 timerVM.startOrResumeTimer();
+                scheduleSystemsAlarm();
                 Log.d("LOG_AUTOBREAK", "AUTO START BREAK , CHECK TIMERTYPE: " + currentType);
             }
         }, 100);
@@ -261,6 +262,7 @@ public class TimerFragment extends Fragment {
         binding.getRoot().postDelayed(() -> {
             if (autoStartPomodoro && !("Short Break".equals(timerVM.getTimerTypeText().getValue()) || "Long Break".equals(timerVM.getTimerTypeText().getValue()))) {
                 timerVM.startOrResumeTimer();
+                scheduleSystemsAlarm();
                 Log.d("LOG_AUTOPOMO", "AUTO START POMODORO , CHECK TIMERTYPE: " + currentType);
             }
         }, 100);
