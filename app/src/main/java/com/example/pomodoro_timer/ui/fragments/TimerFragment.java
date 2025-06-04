@@ -219,6 +219,7 @@ public class TimerFragment extends Fragment {
         String type = timerVM.getTimerTypeText().getValue();
         if ("Short Break".equals(type) || "Long Break".equals(type)) {
             timerVM.setTimerType();
+            updateTimerTotalTime();
             Log.d("LOG_SKIP_BREAK", "BREAK SKIPPED, TIMER TYPE: " + timerVM.getTimerTypeText().getValue());
         }
     }//End of skipBreak method
