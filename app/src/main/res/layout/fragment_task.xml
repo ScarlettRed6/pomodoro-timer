@@ -35,6 +35,20 @@
             app:layout_constraintGuide_percent="0.85"
             android:orientation="horizontal"/>
 
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintGuide_percent="0.10"
+            android:orientation="horizontal"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintGuide_percent="0.60"
+            android:orientation="horizontal"/>
+
         <!-- End of Guidelines -->
 
         <!-- just the task label -->
@@ -66,11 +80,11 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/task_recycler_view_id"
             android:layout_width="0dp"
-            android:layout_height="260dp"
+            android:layout_height="0dp"
             app:layout_constraintStart_toEndOf="@+id/guideline1"
             app:layout_constraintEnd_toStartOf="@id/guideline2"
-            app:layout_constraintTop_toBottomOf="@+id/task_lists_label_id"
-            app:layout_constraintBottom_toTopOf="@+id/category_lists_label_id"/>
+            app:layout_constraintTop_toBottomOf="@+id/guideline4"
+            app:layout_constraintBottom_toTopOf="@+id/guideline5"/>
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/you_have_no_tasks"
