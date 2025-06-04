@@ -65,7 +65,7 @@ public class AddTaskFragment extends Fragment {
     }//End of checkUser method
 
     private void clearCredentials(){
-        binding.priorityGroup.clearCheck();
+        //binding.priorityGroup.clearCheck();
         taskVM.clearTaskFields();
         taskVM.clearCategoryFields();
     }
@@ -73,7 +73,7 @@ public class AddTaskFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        binding.priorityGroup.clearCheck();
+        //binding.priorityGroup.clearCheck();
         taskVM.clearTaskFields();
         taskVM.clearCategoryFields();
     }

@@ -254,7 +254,7 @@ public class TaskViewModel extends AndroidViewModel {
         taskDescription.setValue(task.getTaskDescription());
         sessionCount.setValue(String.valueOf(task.getSessionCount()));
         priorityLevel.setValue(task.getPriorityLevel()); //Set initial priority
-        selectedPriority.setValue(getRadioButtonIdForPriority(task.getPriorityLevel()));
+        //selectedPriority.setValue(getRadioButtonIdForPriority(task.getPriorityLevel()));
         taskId.setValue(task.getId());
         matchCategory(task.getCategoryId());
     }//End of loadEditTask method
@@ -278,18 +278,18 @@ public class TaskViewModel extends AndroidViewModel {
         });
     }//End of matchCategory method
 
-    private int getRadioButtonIdForPriority(int priority) {
-        switch (priority) {
-            case 1:
-                return R.id.priority_high;
-            case 2:
-                return R.id.priority_medium;
-            case 3:
-                return R.id.priority_low;
-            default:
-                return -1;
-        }
-    }//End of getRadioButtonIdForPriority method
+//    private int getRadioButtonIdForPriority(int priority) {
+//        switch (priority) {
+//            case 1:
+//                return R.id.priority_high;
+//            case 2:
+//                return R.id.priority_medium;
+//            case 3:
+//                return R.id.priority_low;
+//            default:
+//                return -1;
+//        }
+//    }//End of getRadioButtonIdForPriority method
 
     public void displayTask(int userId){
         executor.execute(() -> {

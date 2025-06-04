@@ -65,13 +65,13 @@ public class EditTaskFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        binding.priorityGroup.clearCheck();
+        //binding.priorityGroup.clearCheck();
         taskVM.clearTaskFields();
         taskVM.clearCategoryFields();
     }
 
     private void clearCredentials(){
-        binding.priorityGroup.clearCheck();
+        //binding.priorityGroup.clearCheck();
         taskVM.clearTaskFields();
         taskVM.clearCategoryFields();
     }

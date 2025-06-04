@@ -6,7 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.NumberPicker;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -118,7 +120,7 @@ public class TimerSettingsFragment extends Fragment {
             NumberPicker minutePicker = dialogView.findViewById(R.id.pomodoro_minute_picker_id);
             NumberPicker secondPicker = dialogView.findViewById(R.id.pomodoro_second_picker_id);
             //Pomodoro minutes picker
-            minutePicker.setMinValue(1);
+            minutePicker.setMinValue(0);
             minutePicker.setMaxValue(59);
             //Pomodoro seconds picker
             secondPicker.setMinValue(0);
@@ -129,12 +131,16 @@ public class TimerSettingsFragment extends Fragment {
             minutePicker.setValue(pomodoroMinutes);
             secondPicker.setValue(pomodoroSeconds);
 
-            new androidx.appcompat.app.AlertDialog.Builder(requireContext(), R.style.CustomDialogTheme)
+            new AlertDialog.Builder(requireContext(), R.style.CustomDialogTheme)
                     .setTitle("Set Pomodoro Timer")
                     .setView(dialogView)
                     .setPositiveButton("OK", (dialog, which) -> {
                         int newPomodoroMinutes = minutePicker.getValue();
                         int newPomodoroSeconds = secondPicker.getValue();
+                        if (secondPicker.getValue() == 0 && minutePicker.getValue() == 0){
+                            Toast.makeText(getContext(), "You think setting it to zero finishes your task?", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
                         settingsVM.setPomodoroMinutes(newPomodoroMinutes);
                         settingsVM.setPomodoroSeconds(newPomodoroSeconds);
                         updateDisplayTime();
@@ -150,7 +156,7 @@ public class TimerSettingsFragment extends Fragment {
             NumberPicker minutePicker = dialogView.findViewById(R.id.short_break_minute_picker_id);
             NumberPicker secondPicker = dialogView.findViewById(R.id.short_break_second_picker_id);
             //Short break minutes picker
-            minutePicker.setMinValue(1);
+            minutePicker.setMinValue(0);
             minutePicker.setMaxValue(59);
             //Short break seconds picker
             secondPicker.setMinValue(0);
@@ -166,6 +172,10 @@ public class TimerSettingsFragment extends Fragment {
                     .setPositiveButton("OK", (dialog, which) -> {
                         int newShortBreakMinutes = minutePicker.getValue();
                         int newShortBreakSeconds = secondPicker.getValue();
+                        if (secondPicker.getValue() == 0 && minutePicker.getValue() == 0){
+                            Toast.makeText(getContext(), "You think setting it to zero finishes your task?", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
                         settingsVM.setShortBreakMinutes(newShortBreakMinutes);
                         settingsVM.setShortBreakSeconds(newShortBreakSeconds);
                         updateDisplayTime();
@@ -181,7 +191,7 @@ public class TimerSettingsFragment extends Fragment {
             NumberPicker minutePicker = dialogView.findViewById(R.id.long_break_minute_picker_id);
             NumberPicker secondPicker = dialogView.findViewById(R.id.long_break_second_picker_id);
             //Long break minutes picker
-            minutePicker.setMinValue(1);
+            minutePicker.setMinValue(0);
             minutePicker.setMaxValue(59);
             //Long break seconds picker
             secondPicker.setMinValue(0);
@@ -197,6 +207,10 @@ public class TimerSettingsFragment extends Fragment {
                     .setPositiveButton("OK", (dialog, which) -> {
                         int newLongBreakMinutes = minutePicker.getValue();
                         int newLongBreakSeconds = secondPicker.getValue();
+                        if (secondPicker.getValue() == 0 && minutePicker.getValue() == 0){
+                            Toast.makeText(getContext(), "You think setting it to zero finishes your task?", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
                         settingsVM.setLongBreakMinutes(newLongBreakMinutes);
                         settingsVM.setLongBreakSeconds(newLongBreakSeconds);
                         updateDisplayTime();

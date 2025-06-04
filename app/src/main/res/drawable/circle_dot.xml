@@ -1,0 +1,9 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+
+    <solid android:color="?attr/backgroundGradientCardColor2.2" /> <!-- Or your desired default color -->
+
+    <size
+        android:width="10dp"
+        android:height="10dp" />
+</shape>
