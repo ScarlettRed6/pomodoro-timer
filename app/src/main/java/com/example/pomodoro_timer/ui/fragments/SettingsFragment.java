@@ -65,7 +65,7 @@ public class SettingsFragment extends Fragment {
             } else if (position == 1) {
                 tab.setText("Timer");
             } else {
-                tab.setText("Notifications");
+                tab.setText("Preferences");
             }
         }).attach();
     }//End of pagerAdapter method

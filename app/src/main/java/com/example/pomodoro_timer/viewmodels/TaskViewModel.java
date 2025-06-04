@@ -145,7 +145,7 @@ public class TaskViewModel extends AndroidViewModel {
             int newPosition = currentTasks.size();
 
             if (!db.userDao().hasTask(1)){
-                TaskModel guestTask = new TaskModel(1, "Goon", 1, 1, 1, "Test Description");
+                TaskModel guestTask = new TaskModel(1, "Work", 1, 1, 1, "Test Description");
                 guestTask.setPosition(newPosition);
 
                 db.taskDao().insert(guestTask);
